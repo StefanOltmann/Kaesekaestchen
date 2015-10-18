@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+ <item
+  android:id="@+id/app_beenden"
+  android:title="@string/app_beenden"
+  android:icon="@drawable/beenden" />
+</menu>

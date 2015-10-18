@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:background="@color/hintergrund_farbe"
+    android:scrollbars="horizontal">
+    
+    <ImageView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:src="@drawable/icon_large"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dip"
+        android:layout_marginBottom="5dip" />
+        
+    <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:stretchColumns="1">
+        
+        <TableRow>
+            <ImageView
+                android:src="@drawable/spieler_symbol_kaese" />
+            <Spinner
+                android:id="@+id/spieler_typ_1_spinner"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dip"
+                android:entries="@array/spielerTypen" />
+        </TableRow>
+        
+        <TableRow>
+            <ImageView
+                android:src="@drawable/spieler_symbol_maus" />
+            <Spinner
+                android:id="@+id/spieler_typ_2_spinner"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dip"
+                android:entries="@array/spielerTypen" />
+        </TableRow>
+    </TableLayout>
+    
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|center_horizontal">
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/feld_groesse"
+            style="@style/SpielerNamen" />
+            
+        <Spinner
+            android:id="@+id/feld_groesse_x"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/feldGroessen" />
+            
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="x"
+            style="@style/SpielerNamen" />
+            
+        <Spinner
+            android:id="@+id/feld_groesse_y"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/feldGroessen" />
+            
+    </LinearLayout>
+    
+    <Button
+        android:id="@+id/spielen"
+        android:text="@string/spielen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dip"
+        android:drawableLeft="@drawable/spielen"
+        android:drawablePadding="10dip" />
+        
+</LinearLayout>

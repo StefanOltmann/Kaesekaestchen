@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="hintergrund_farbe">#eeeaab</color>
+    <color name="spieler_1_farbe">#00F</color>
+    <color name="spieler_2_farbe">#F00</color>
+</resources>

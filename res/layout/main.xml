@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:background="@color/hintergrund_farbe"
+    android:orientation="vertical" >
+
+    <TableLayout
+        android:id="@+id/tableLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal" >
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:text="@string/spieler"
+                android:layout_gravity="center_vertical"
+                style="@style/SpielerNamen" />
+            
+            <ImageView
+                android:id="@+id/aktuellerSpielerSymbol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/spieler_symbol_kaese" />
+
+            <TextView
+                android:id="@+id/punkteAnzeige"
+                android:layout_gravity="center_vertical"
+                style="@style/SpielerNamen" />
+            
+        </TableRow>
+
+    </TableLayout>
+
+    <de.stefan_oltmann.kaesekaestchen.SpielfeldView
+        android:id="@+id/spielfeldView"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent" />
+
+</LinearLayout>

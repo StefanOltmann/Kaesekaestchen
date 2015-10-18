@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="spielerTypen">
+        <item>Human</item>
+        <item>KI Easy</item>
+        <item>KI Medium</item>
+        <!-- item>KI Hard</item -->
+    </array>
+</resources>

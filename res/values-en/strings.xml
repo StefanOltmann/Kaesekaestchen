@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">"Dots'n'Boxes"</string>
+    <string name="feld_groesse">Field:</string>
+    <string name="spielen">Play</string>
+    <string name="app_beenden">Quit</string>
+    <string name="spieler">Player:</string>
+    <string name="spieler_1_name">Cheese</string>
+    <string name="spieler_2_name">Mouse</string>
+    <string name="game_score">Score Board</string>
+    <string name="gewinner">Winner</string>
+    <string name="play_again">Play again!</string>
+    <string name="zurueck_zum_hauptmenue">main menu</string>
+</resources>
