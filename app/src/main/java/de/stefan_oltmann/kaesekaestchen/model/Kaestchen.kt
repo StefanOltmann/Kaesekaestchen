@@ -270,18 +270,18 @@ class Kaestchen(val rasterX: Int,
         return result
     }
 
-    override fun equals(other: Any?): Boolean {
+    override fun equals(obj: Any?): Boolean {
 
-        if (this === other)
+        if (this === obj)
             return true
 
-        if (other == null)
+        if (obj == null)
             return false
 
-        if (javaClass != other.javaClass)
+        if (javaClass != obj.javaClass)
             return false
 
-        val other = other as Kaestchen
+        val other = obj as Kaestchen
 
         if (rasterX != other.rasterX)
             return false
