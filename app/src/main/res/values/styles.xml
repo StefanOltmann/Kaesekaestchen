@@ -2,6 +2,6 @@
 <resources>
     <style name="SpielerNamen">
         <item name="android:textSize">30sp</item>
-        <item name="android:textColor">#000</item>
+        <item name="android:textColor">#000000</item>
     </style>
 </resources>

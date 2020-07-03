@@ -160,7 +160,7 @@ class SpielActivity : Activity() {
                     } catch (ignore: InterruptedException) {
                     }
 
-                    eingabe = computerGegnerZug(spieler.spielerTyp)
+                    eingabe = fuehreKiGegnerZugAus(spieler.spielerTyp)
                 }
 
                 waehleStrich(eingabe)
@@ -192,7 +192,7 @@ class SpielActivity : Activity() {
                         AlertDialog.Builder(this@SpielActivity)
                             .setTitle(resources.getText(R.string.game_score))
                             .setIcon(resources.getDrawable(pokalBildId))
-                            .setMessage(generateGameOverDialogMessage())
+                            .setMessage(erzeugeGameOverDialogMessage())
                             .setCancelable(false)
                             .setPositiveButton(resources.getText(R.string.play_again))
                             { _, _ ->
@@ -211,14 +211,14 @@ class SpielActivity : Activity() {
         }
     }
 
-    private fun generateGameOverDialogMessage() : String {
+    private fun erzeugeGameOverDialogMessage() : String {
 
         val gewinner = ermittleGewinner()
 
         val sb = StringBuilder()
 
         sb.append(resources.getString(R.string.gewinner))
-        sb.append(" :")
+        sb.append(": ")
         sb.append(gewinner!!.name)
         sb.appendln()
 
@@ -232,7 +232,7 @@ class SpielActivity : Activity() {
         return sb.toString()
     }
 
-    private fun computerGegnerZug(spielerTyp: SpielerTyp): Strich {
+    private fun fuehreKiGegnerZugAus(spielerTyp: SpielerTyp): Strich {
 
         val strich = waehleLetztenOffenenStrichFuerKaestchen()
 
