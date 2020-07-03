@@ -30,31 +30,29 @@ package de.stefan_oltmann.kaesekaestchen.model
  *
  * @author Stefan Oltmann
  */
-class Strich(private val kaestchenOben: Kaestchen?,
-             private val kaestchenUnten: Kaestchen?,
-             private val kaestchenLinks: Kaestchen?,
-             private val kaestchenRechts: Kaestchen?) {
+data class Strich(private val kaestchenOben: Kaestchen?,
+                  private val kaestchenUnten: Kaestchen?,
+                  private val kaestchenLinks: Kaestchen?,
+                  private val kaestchenRechts: Kaestchen?) {
 
     /* Auflistung zum Durch-iterieren */
     private val kaestchenListe: MutableList<Kaestchen> = mutableListOf()
 
     init {
-
         kaestchenOben?.let { kaestchenListe.add(it) }
         kaestchenUnten?.let { kaestchenListe.add(it) }
         kaestchenLinks?.let { kaestchenListe.add(it) }
         kaestchenRechts?.let { kaestchenListe.add(it) }
     }
 
+    /**
+     * Ein Kästchen hat zu Beginn noch keinen Besitzer
+     */
     var besitzer: Spieler? = null
-
-//    fun getKaestchenListe(): List<Kaestchen> {
-//        return Collections.unmodifiableList(kaestchenListe)
-//    }
 
     /**
      * Wenn eines der Kästchen um diesen Strich nur noch zwei Besitzer hat, dann
-     * h#tte es nach dem Setzen dieses Striches nur noch einen... Damit würde
+     * hätte es nach dem Setzen dieses Striches nur noch einen... Damit würde
      * man dem Gegner ein Kästchen schenken.
      */
     fun isKoennteUmliegendendesKaestchenSchliessen(): Boolean {
@@ -64,63 +62,5 @@ class Strich(private val kaestchenOben: Kaestchen?,
                 return true
 
         return false
-    }
-
-    override fun toString(): String {
-        return ("Strich [kaestchenOben=" + kaestchenOben + ", kaestchenUnten="
-                + kaestchenUnten + ", kaestchenLinks=" + kaestchenLinks
-                + ", kaestchenRechts=" + kaestchenRechts + ", besitzer="
-                + besitzer + "]")
-    }
-
-    override fun hashCode(): Int {
-        val prime = 31
-        var result = 1
-        result = prime * result + (kaestchenLinks?.hashCode() ?: 0)
-        result = prime * result + (kaestchenOben?.hashCode() ?: 0)
-        result = prime * result + (kaestchenRechts?.hashCode() ?: 0)
-        result = prime * result + (kaestchenUnten?.hashCode() ?: 0)
-        return result
-    }
-
-    override fun equals(obj: Any?): Boolean {
-
-        if (this === obj)
-            return true
-
-        if (obj == null)
-            return false
-
-        if (javaClass != obj.javaClass)
-            return false
-
-        val other = obj as Strich
-
-        if (kaestchenLinks == null) {
-            if (other.kaestchenLinks != null)
-                return false
-
-        } else if (kaestchenLinks != other.kaestchenLinks)
-            return false
-
-        if (kaestchenOben == null) {
-            if (other.kaestchenOben != null)
-                return false
-        } else if (kaestchenOben != other.kaestchenOben)
-            return false
-
-        if (kaestchenRechts == null) {
-            if (other.kaestchenRechts != null)
-                return false
-        } else if (kaestchenRechts != other.kaestchenRechts)
-            return false
-
-        if (kaestchenUnten == null) {
-            if (other.kaestchenUnten != null)
-                return false
-        } else if (kaestchenUnten != other.kaestchenUnten)
-            return false
-
-        return true
     }
 }

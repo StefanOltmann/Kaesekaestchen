@@ -32,15 +32,11 @@ import android.graphics.Bitmap
  *
  * @author Stefan Oltmann
  */
-class Spieler(val name: String,
+data class Spieler(val name: String,
               val symbol: Bitmap,
               val farbe: Int,
               val spielerTyp: SpielerTyp) {
 
     val isComputerGegner: Boolean
         get() = spielerTyp.isComputerGegner
-
-    override fun toString(): String {
-        return "Spieler [name=$name, farbe=$farbe]"
-    }
 }
