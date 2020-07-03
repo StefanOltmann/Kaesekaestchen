@@ -33,6 +33,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.Spinner
+import de.stefan_oltmann.kaesekaestchen.model.SpielerTyp
 import de.stefan_oltmann.kaesekaestchen.model.SpielerTyp.Companion.parseStringToSpielerTyp
 
 /**
@@ -142,6 +143,13 @@ class StartseiteActivity : Activity(), View.OnClickListener {
         /*
          * Intent bauen und absetzen
          */
+
+        buildIntentAndStartActivity(spielerTyp1, spielerTyp2, feldGroesseX, feldGroesseY)
+    }
+
+    private fun buildIntentAndStartActivity(
+        spielerTyp1: SpielerTyp, spielerTyp2: SpielerTyp,
+        feldGroesseX: Int, feldGroesseY: Int) {
 
         val intent = Intent(this, SpielActivity::class.java)
 

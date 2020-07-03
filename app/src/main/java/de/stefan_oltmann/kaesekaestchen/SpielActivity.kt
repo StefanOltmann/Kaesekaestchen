@@ -40,7 +40,7 @@ import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
 /**
- * Die Haupt-Acitivty, die das Spielfeld verwaltet und den Gameloop steuert.
+ * Die Haupt-Activty, die das Spielfeld verwaltet und den Gameloop steuert.
  */
 class SpielActivity : Activity() {
 
@@ -63,9 +63,10 @@ class SpielActivity : Activity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.main)
-        val intentExtras = intent.extras
-        val spielerTyp1 = intentExtras!!["spielerTyp1"] as SpielerTyp?
-        val spielerTyp2 = intentExtras["spielerTyp2"] as SpielerTyp?
+
+        val intentExtras = intent.extras!!
+        val spielerTyp1 = intentExtras["spielerTyp1"] as SpielerTyp
+        val spielerTyp2 = intentExtras["spielerTyp2"] as SpielerTyp
         val feldGroesseX = intentExtras.getInt("feldGroesseX")
         val feldGroesseY = intentExtras.getInt("feldGroesseY")
 
@@ -80,7 +81,7 @@ class SpielActivity : Activity() {
             Spieler(
                 resources.getString(R.string.spieler_1_name),
                 BitmapFactory.decodeResource(resources, R.drawable.spieler_symbol_kaese),
-                resources.getColor(R.color.spieler_1_farbe), spielerTyp1!!
+                resources.getColor(R.color.spieler_1_farbe), spielerTyp1
             )
         )
 
@@ -88,7 +89,7 @@ class SpielActivity : Activity() {
             Spieler(
                 resources.getString(R.string.spieler_2_name),
                 BitmapFactory.decodeResource(resources, R.drawable.spieler_symbol_maus),
-                resources.getColor(R.color.spieler_2_farbe), spielerTyp2!!
+                resources.getColor(R.color.spieler_2_farbe), spielerTyp2
             )
         )
 
@@ -141,10 +142,7 @@ class SpielActivity : Activity() {
 
                     /*
                      * Der Benutzer muss nun seine Eingabe tätigen. Dieser
-                     * Gameloop- Thread soll nun darauf warten. Dafür wird hier
-                     * die wait()/notify()-Technik von Java verwendet. Solange
-                     * keine neue Eingabe getätigt wurde, schläft dieser Thread
-                     * nun.
+                     * Gameloop- Thread soll nun darauf warten.
                      */
                     while (spielfeldView!!.letzteEingabe.also { eingabe = it } == null) {
 
@@ -155,7 +153,8 @@ class SpielActivity : Activity() {
 
                 } else {
 
-                    try { /* Der Nutzer soll die Eingabe des Computers sehen. */
+                    try {
+                        /* Der Nutzer soll die Aktion der KI sehen. */
                         Thread.sleep(500)
                     } catch (ignore: InterruptedException) {
                     }
