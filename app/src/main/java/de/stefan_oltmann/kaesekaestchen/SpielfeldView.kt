@@ -31,6 +31,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
+import androidx.core.content.ContextCompat
 import de.stefan_oltmann.kaesekaestchen.model.Spielfeld
 import de.stefan_oltmann.kaesekaestchen.model.Strich
 import java.util.concurrent.locks.Condition
@@ -92,7 +93,7 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
 
     override fun onDraw(canvas: Canvas) {
 
-        canvas.drawColor(resources.getColor(R.color.hintergrund_farbe))
+        canvas.drawColor(ContextCompat.getColor(context, R.color.hintergrund_farbe))
 
         /*
          * Wurde das Spielfeld noch nicht initalisiert, dieses nicht zeichnen.

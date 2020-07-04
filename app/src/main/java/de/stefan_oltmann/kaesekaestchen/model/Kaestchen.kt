@@ -67,19 +67,6 @@ class Kaestchen(val rasterX: Int,
     private val pixelY: Int
         get() = rasterY * SpielfeldView.KAESTCHEN_SEITENLAENGE + SpielfeldView.PADDING
 
-//    val striche: List<Strich>
-//        get() {
-//
-//            val striche: MutableList<Strich> = mutableListOf()
-//
-//            strichOben?.let { striche.add(it) }
-//            strichUnten?.let { striche.add(it) }
-//            strichLinks?.let { striche.add(it) }
-//            strichRechts?.let { striche.add(it) }
-//
-//            return striche
-//        }
-
     val stricheOhneBesitzer: List<Strich>
         get() {
 
@@ -270,18 +257,18 @@ class Kaestchen(val rasterX: Int,
         return result
     }
 
-    override fun equals(obj: Any?): Boolean {
+    override fun equals(any: Any?): Boolean {
 
-        if (this === obj)
+        if (this === any)
             return true
 
-        if (obj == null)
+        if (any == null)
             return false
 
-        if (javaClass != obj.javaClass)
+        if (javaClass != any.javaClass)
             return false
 
-        val other = obj as Kaestchen
+        val other = any as Kaestchen
 
         if (rasterX != other.rasterX)
             return false
