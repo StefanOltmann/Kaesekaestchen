@@ -44,14 +44,28 @@ import de.stefan_oltmann.kaesekaestchen.model.SpielerTyp.Companion.parseStringTo
  */
 class StartseiteActivity : Activity(), View.OnClickListener {
 
-    companion object {
-        /**
-         * Wenn eine App Einstellungen speichert, dann müssen die in einer
-         * "shared preferences"-Map unter einem bestimmten Schlüssel abgelegt
-         * werden. In diesem Fall speichern wir die Spiel-Einstellungen.
-         */
-        const val GAME_SETTINGS_KEY = "game_settings"
-    }
+    /**
+     * Wenn eine App Einstellungen speichert, dann müssen die in einer
+     * "shared preferences"-Map unter einem bestimmten Schlüssel abgelegt
+     * werden. In diesem Fall speichern wir die Spiel-Einstellungen.
+     */
+    private val gameSettings
+        get() = getSharedPreferences("game_settings", Context.MODE_PRIVATE)
+
+    private val spielerTyp1Spinner
+        get() = findViewById<View>(R.id.spieler_typ_1_spinner) as Spinner
+
+    private val spielerTyp2Spinner
+        get() = findViewById<View>(R.id.spieler_typ_2_spinner) as Spinner
+
+    private val feldGroesseXSpinner
+        get() = findViewById<View>(R.id.feld_groesse_x) as Spinner
+
+    private val feldGroesseYSpinner
+        get() = findViewById<View>(R.id.feld_groesse_y) as Spinner
+
+    private val spielenButton
+        get() = findViewById<View>(R.id.spielen) as Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -59,16 +73,9 @@ class StartseiteActivity : Activity(), View.OnClickListener {
 
         setContentView(R.layout.startseite)
 
-        val spielenButton = findViewById<View>(R.id.spielen) as Button
-
         spielenButton.setOnClickListener(this)
 
-        /* Aus gespeicherten Einstellungen die View wieder aufbauen. */
-        val settings = getSharedPreferences(GAME_SETTINGS_KEY, Context.MODE_PRIVATE)
-        (findViewById<View>(R.id.spieler_typ_1_spinner) as Spinner).setSelection(settings.getInt("spielerTyp1", 0))
-        (findViewById<View>(R.id.spieler_typ_2_spinner) as Spinner).setSelection(settings.getInt("spielerTyp2", 2))
-        (findViewById<View>(R.id.feld_groesse_x) as Spinner).setSelection(settings.getInt("feldGroesseX", 3))
-        (findViewById<View>(R.id.feld_groesse_y) as Spinner).setSelection(settings.getInt("feldGroesseY", 3))
+        restoreGameSettings()
     }
 
     /**
@@ -98,58 +105,25 @@ class StartseiteActivity : Activity(), View.OnClickListener {
 
     override fun onClick(v: View) {
 
-        val spielerTyp1 =
-            parseStringToSpielerTyp((findViewById<View>(R.id.spieler_typ_1_spinner) as Spinner).selectedItem as String)
+        saveGameSettings()
 
-        val spielerTyp2 =
-            parseStringToSpielerTyp((findViewById<View>(R.id.spieler_typ_2_spinner) as Spinner).selectedItem as String)
+        val spielerTyp1 = parseStringToSpielerTyp(spielerTyp1Spinner.selectedItem as String)
+        val spielerTyp2 = parseStringToSpielerTyp(spielerTyp2Spinner.selectedItem as String)
+        val feldGroesseX = (feldGroesseXSpinner.selectedItem as String).toInt()
+        val feldGroesseY = (feldGroesseYSpinner.selectedItem as String).toInt()
 
-        val feldGroesseX: Int =
-            ((findViewById<View>(R.id.feld_groesse_x) as Spinner).selectedItem as String).toInt()
-
-        val feldGroesseY: Int =
-            ((findViewById<View>(R.id.feld_groesse_y) as Spinner).selectedItem as String).toInt()
-
-        /*
-         * Werte in Settings speichern
-         */
-
-        val settings = getSharedPreferences(GAME_SETTINGS_KEY, Context.MODE_PRIVATE)
-
-        val editor = settings.edit()
-
-        editor.putInt(
-            "spielerTyp1",
-            (findViewById<View>(R.id.spieler_typ_1_spinner) as Spinner).selectedItemPosition
-        )
-
-        editor.putInt(
-            "spielerTyp2",
-            (findViewById<View>(R.id.spieler_typ_2_spinner) as Spinner).selectedItemPosition
-        )
-
-        editor.putInt(
-            "feldGroesseX",
-            (findViewById<View>(R.id.feld_groesse_x) as Spinner).selectedItemPosition
-        )
-
-        editor.putInt(
-            "feldGroesseY",
-            (findViewById<View>(R.id.feld_groesse_y) as Spinner).selectedItemPosition
-        )
-
-        editor.apply()
-
-        /*
-         * Intent bauen und absetzen
-         */
-
-        buildIntentAndStartActivity(spielerTyp1, spielerTyp2, feldGroesseX, feldGroesseY)
+        startSpielActivity(spielerTyp1, spielerTyp2, feldGroesseX, feldGroesseY)
     }
 
-    private fun buildIntentAndStartActivity(
-        spielerTyp1: SpielerTyp, spielerTyp2: SpielerTyp,
-        feldGroesseX: Int, feldGroesseY: Int) {
+    /*
+     * Baut einen {@link Intent} zusammen auf Basis der ausgewählten Daten
+     * und startet die {@link SpielActivity} damit.
+     */
+    private fun startSpielActivity(
+        spielerTyp1: SpielerTyp,
+        spielerTyp2: SpielerTyp,
+        feldGroesseX: Int,
+        feldGroesseY: Int) {
 
         val intent = Intent(this, SpielActivity::class.java)
 
@@ -159,5 +133,31 @@ class StartseiteActivity : Activity(), View.OnClickListener {
         intent.putExtra("feldGroesseY", feldGroesseY)
 
         startActivity(intent)
+    }
+
+    /*
+     * Setzt der View die gespeicherten Game-Settings
+     */
+    private fun restoreGameSettings() {
+
+        spielerTyp1Spinner.setSelection(gameSettings.getInt("spielerTyp1", 0))
+        spielerTyp2Spinner.setSelection(gameSettings.getInt("spielerTyp2", 2))
+        feldGroesseXSpinner.setSelection(gameSettings.getInt("feldGroesseX", 3))
+        feldGroesseYSpinner.setSelection(gameSettings.getInt("feldGroesseY", 3))
+    }
+
+    /*
+     * Speichert die aktuellen Einstellugen in der View in die Game-Settings
+     */
+    private fun saveGameSettings() {
+
+        val gameSettingsEditor = gameSettings.edit()
+
+        gameSettingsEditor.putInt("spielerTyp1", spielerTyp1Spinner.selectedItemPosition)
+        gameSettingsEditor.putInt("spielerTyp2", spielerTyp2Spinner.selectedItemPosition)
+        gameSettingsEditor.putInt("feldGroesseX", feldGroesseXSpinner.selectedItemPosition)
+        gameSettingsEditor.putInt("feldGroesseY", feldGroesseYSpinner.selectedItemPosition)
+
+        gameSettingsEditor.apply()
     }
 }

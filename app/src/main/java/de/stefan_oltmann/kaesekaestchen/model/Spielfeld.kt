@@ -45,7 +45,13 @@ class Spielfeld private constructor(
      */
     private val offeneKaestchen: MutableList<Kaestchen> = mutableListOf()
 
+    val offeneKaestchenUnmodifiable: List<Kaestchen>
+        get() = Collections.unmodifiableList(offeneKaestchen)
+
     private val stricheOhneBesitzer: MutableSet<Strich> = mutableSetOf()
+
+    val stricheOhneBesitzerUnmodifiable: Set<Strich>
+        get() = Collections.unmodifiableSet(stricheOhneBesitzer)
 
     val kaestchenListe: List<Kaestchen>
         get() {
@@ -58,13 +64,6 @@ class Spielfeld private constructor(
 
             return liste.toList()
         }
-
-    val offeneKaestchenListe: List<Kaestchen>
-        get() = Collections.unmodifiableList(offeneKaestchen)
-
-    fun getStricheOhneBesitzer(): Set<Strich> {
-        return Collections.unmodifiableSet(stricheOhneBesitzer)
-    }
 
     private fun addKaestchen(kaestchen: Kaestchen) {
         kaestchenArray[kaestchen.rasterX][kaestchen.rasterY] = kaestchen
@@ -115,12 +114,14 @@ class Spielfeld private constructor(
         return mindestensEinKaestchenKonnteGeschlossenWerden
     }
 
-    val isAlleKaestchenHabenBesitzer: Boolean
-        get() = offeneKaestchen.isEmpty()
+    fun isAlleKaestchenHabenBesitzer() = offeneKaestchen.isEmpty()
 
     fun waehleStrich(strich: Strich, spieler: Spieler): Boolean {
+
         strich.besitzer = spieler
+
         stricheOhneBesitzer.remove(strich)
+
         return schliesseAlleMoeglichenKaestchen(spieler)
     }
 
