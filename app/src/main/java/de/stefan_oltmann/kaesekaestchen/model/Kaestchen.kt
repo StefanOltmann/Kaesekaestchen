@@ -35,7 +35,7 @@ import de.stefan_oltmann.kaesekaestchen.SpielfeldView
  *
  * @author Stefan Oltmann
  */
-class Kaestchen(val rasterX: Int,
+data class Kaestchen(val rasterX: Int,
                 val rasterY: Int) {
 
     /**
@@ -243,36 +243,5 @@ class Kaestchen(val rasterX: Int,
             pixelY + SpielfeldView.KAESTCHEN_SEITENLAENGE + 1.toFloat(),
             rahmenPaint
         )
-    }
-
-    override fun toString(): String {
-        return "Kaestchen [rasterX=$rasterX, rasterY=$rasterY, besitzer=$besitzer]"
-    }
-
-    override fun hashCode(): Int {
-        val prime = 31
-        var result = 1
-        result = prime * result + rasterX
-        result = prime * result + rasterY
-        return result
-    }
-
-    override fun equals(any: Any?): Boolean {
-
-        if (this === any)
-            return true
-
-        if (any == null)
-            return false
-
-        if (javaClass != any.javaClass)
-            return false
-
-        val other = any as Kaestchen
-
-        if (rasterX != other.rasterX)
-            return false
-
-        return rasterY == other.rasterY
     }
 }
