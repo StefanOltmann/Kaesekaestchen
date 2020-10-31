@@ -4,14 +4,17 @@
 
     <application
         android:allowClearUserData="true"
+        android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
-        android:icon="@drawable/icon"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name">
 
         <activity
-            android:name=".StartseiteActivity"
+            android:name=".ui.StartseiteActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -19,7 +22,7 @@
         </activity>
 
         <activity
-            android:name=".SpielActivity"
+            android:name=".ui.SpielActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
 

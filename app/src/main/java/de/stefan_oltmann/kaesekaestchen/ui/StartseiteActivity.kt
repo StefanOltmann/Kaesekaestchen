@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Kaesekaestchen. If not, see <http://www.gnu.org/licenses/>.
  */
-package de.stefan_oltmann.kaesekaestchen
+package de.stefan_oltmann.kaesekaestchen.ui
 
 import android.app.Activity
 import android.content.Context
@@ -33,6 +33,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.Spinner
+import de.stefan_oltmann.kaesekaestchen.R
 import de.stefan_oltmann.kaesekaestchen.model.SpielerTyp
 import de.stefan_oltmann.kaesekaestchen.model.SpielerTyp.Companion.parseStringToSpielerTyp
 

@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Kaesekaestchen. If not, see <http://www.gnu.org/licenses/>.
  */
-package de.stefan_oltmann.kaesekaestchen
+package de.stefan_oltmann.kaesekaestchen.ui
 
 import android.content.Context
 import android.graphics.Canvas
@@ -32,6 +32,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
 import androidx.core.content.ContextCompat
+import de.stefan_oltmann.kaesekaestchen.R
 import de.stefan_oltmann.kaesekaestchen.model.Spielfeld
 import de.stefan_oltmann.kaesekaestchen.model.Strich
 import java.util.concurrent.locks.Condition
@@ -93,7 +94,9 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
 
     override fun onDraw(canvas: Canvas) {
 
-        canvas.drawColor(ContextCompat.getColor(context, R.color.hintergrund_farbe))
+        canvas.drawColor(ContextCompat.getColor(context,
+            R.color.hintergrund_farbe
+        ))
 
         /*
          * Wurde das Spielfeld noch nicht initalisiert, dieses nicht zeichnen.

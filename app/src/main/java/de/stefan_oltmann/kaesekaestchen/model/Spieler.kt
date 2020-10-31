@@ -24,7 +24,7 @@
  */
 package de.stefan_oltmann.kaesekaestchen.model
 
-import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 
 /**
  * Diese Klasse repräsentiert einen Spieler. Dieser hat einen Namen, eine Farbe
@@ -33,9 +33,9 @@ import android.graphics.Bitmap
  * @author Stefan Oltmann
  */
 data class Spieler(val name: String,
-              val symbol: Bitmap,
-              val farbe: Int,
-              val spielerTyp: SpielerTyp) {
+                   val symbol: Drawable,
+                   val farbe: Int,
+                   val spielerTyp: SpielerTyp) {
 
     val isComputerGegner: Boolean
         get() = spielerTyp.isComputerGegner

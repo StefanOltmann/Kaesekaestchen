@@ -26,7 +26,7 @@
                 android:id="@+id/aktuellerSpielerSymbol"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/spieler_symbol_kaese" />
+                android:src="@drawable/ic_spieler_symbol_kaese" />
 
             <TextView
                 android:id="@+id/punkteAnzeige"
@@ -36,7 +36,7 @@
         </TableRow>
     </TableLayout>
 
-    <de.stefan_oltmann.kaesekaestchen.SpielfeldView
+    <de.stefan_oltmann.kaesekaestchen.ui.SpielfeldView
         android:id="@+id/spielfeldView"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent" />

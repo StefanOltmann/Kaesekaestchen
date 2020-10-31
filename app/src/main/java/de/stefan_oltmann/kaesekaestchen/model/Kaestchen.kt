@@ -28,7 +28,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
-import de.stefan_oltmann.kaesekaestchen.SpielfeldView
+import de.stefan_oltmann.kaesekaestchen.ui.SpielfeldView
 
 /**
  * Ein Kästchen auf dem Spielfeld.
@@ -36,7 +36,7 @@ import de.stefan_oltmann.kaesekaestchen.SpielfeldView
  * @author Stefan Oltmann
  */
 data class Kaestchen(val rasterX: Int,
-                val rasterY: Int) {
+                     val rasterY: Int) {
 
     /**
      * Konnte ein Spieler ein Kästchen schließen, wird er der Besitzer des
@@ -51,6 +51,7 @@ data class Kaestchen(val rasterX: Int,
     var strichRechts: Strich? = null
 
     private val rahmenPaint = Paint()
+    private val fuellungPaint = Paint()
 
     /**
      * Konstruktor zum Erstellen des Kästchen. Es muss die Position/ID des
@@ -139,18 +140,14 @@ data class Kaestchen(val rasterX: Int,
 
         if (besitzer != null) {
 
-            val fuellungPaint = Paint()
-
             fuellungPaint.color = besitzer!!.farbe
 
-            val destRect = Rect(
-                pixelX,
-                pixelY,
-                pixelX + SpielfeldView.KAESTCHEN_SEITENLAENGE,
-                pixelY + SpielfeldView.KAESTCHEN_SEITENLAENGE
-            )
+            val symbol = besitzer!!.symbol
 
-            canvas.drawBitmap(besitzer!!.symbol, null, destRect, rahmenPaint)
+            symbol.setBounds(0, 0, SpielfeldView.KAESTCHEN_SEITENLAENGE, SpielfeldView.KAESTCHEN_SEITENLAENGE)
+            canvas.translate(pixelX.toFloat(), pixelY.toFloat())
+            symbol.draw(canvas)
+            canvas.translate(-pixelX.toFloat(), -pixelY.toFloat())
         }
 
         if (strichOben == null) {

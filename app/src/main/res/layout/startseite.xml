@@ -13,35 +13,35 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dip"
         android:layout_marginBottom="5dip"
-        android:src="@drawable/icon_large" />
+        android:src="@drawable/ic_icon" />
 
     <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:stretchColumns="1">
 
         <TableRow>
 
-            <ImageView android:src="@drawable/spieler_symbol_kaese" />
+            <ImageView android:src="@drawable/ic_spieler_symbol_kaese" />
 
             <Spinner
                 android:id="@+id/spieler_typ_1_spinner"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dip"
+                android:layout_marginLeft="10dp"
                 android:entries="@array/spielerTypen" />
 
         </TableRow>
 
         <TableRow>
 
-            <ImageView android:src="@drawable/spieler_symbol_maus" />
+            <ImageView android:src="@drawable/ic_spieler_symbol_maus" />
 
             <Spinner
                 android:id="@+id/spieler_typ_2_spinner"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dip"
+                android:layout_marginLeft="10dp"
                 android:entries="@array/spielerTypen" />
 
         </TableRow>
@@ -83,9 +83,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dip"
-        android:drawableLeft="@drawable/spielen"
-        android:drawablePadding="10dip"
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/ic_spielen"
+        android:drawablePadding="10dp"
         android:text="@string/spielen" />
 
 </LinearLayout>

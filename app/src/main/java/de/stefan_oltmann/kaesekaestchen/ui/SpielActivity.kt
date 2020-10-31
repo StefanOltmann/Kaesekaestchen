@@ -22,11 +22,10 @@
  * You should have received a copy of the GNU General Public License
  * along with Kaesekaestchen. If not, see <http://www.gnu.org/licenses/>.
  */
-package de.stefan_oltmann.kaesekaestchen
+package de.stefan_oltmann.kaesekaestchen.ui
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -34,6 +33,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import de.stefan_oltmann.kaesekaestchen.R
 import de.stefan_oltmann.kaesekaestchen.model.*
 import de.stefan_oltmann.kaesekaestchen.model.Spielfeld.Companion.generiere
 import java.util.*
@@ -87,7 +87,7 @@ class SpielActivity : Activity() {
         spielerManager.addSpieler(
             Spieler(
                 resources.getString(R.string.spieler_1_name),
-                BitmapFactory.decodeResource(resources, R.drawable.spieler_symbol_kaese),
+                ContextCompat.getDrawable(applicationContext, R.drawable.ic_spieler_symbol_kaese)!!,
                 ContextCompat.getColor(applicationContext, R.color.spieler_1_farbe),
                 spielerTyp1
             )
@@ -96,7 +96,7 @@ class SpielActivity : Activity() {
         spielerManager.addSpieler(
             Spieler(
                 resources.getString(R.string.spieler_2_name),
-                BitmapFactory.decodeResource(resources, R.drawable.spieler_symbol_maus),
+                ContextCompat.getDrawable(applicationContext, R.drawable.ic_spieler_symbol_maus)!!,
                 ContextCompat.getColor(applicationContext, R.color.spieler_2_farbe),
                 spielerTyp2
             )
@@ -136,7 +136,7 @@ class SpielActivity : Activity() {
                  */
                 handler.post {
 
-                    aktuellerSpielerImageView.setImageBitmap(spieler.symbol)
+                    aktuellerSpielerImageView.setImageDrawable(spieler.symbol)
                     punkteAnzeigeTextView.text = ermittlePunktzahl(spieler).toString()
                 }
 
@@ -198,7 +198,7 @@ class SpielActivity : Activity() {
 
             // FIXME Unflexibel
             val pokalBildId =
-                if (gewinner.name == resources.getString(R.string.spieler_1_name)) R.drawable.pokal_kaese else R.drawable.pokal_maus
+                if (gewinner.name == resources.getString(R.string.spieler_1_name)) R.drawable.ic_pokal_kaese else R.drawable.ic_pokal_maus
 
             val alertDialog =
                 AlertDialog.Builder(this@SpielActivity)
@@ -230,14 +230,14 @@ class SpielActivity : Activity() {
         sb.append(resources.getString(R.string.gewinner))
         sb.append(": ")
         sb.append(gewinner.name)
-        sb.appendln()
+        sb.appendLine()
 
         for (spieler in spielerManager.spieler) {
 
             sb.append(spieler.name)
             sb.append(":\t\t")
             sb.append(ermittlePunktzahl(spieler))
-            sb.appendln()
+            sb.appendLine()
         }
 
         return sb.toString()
