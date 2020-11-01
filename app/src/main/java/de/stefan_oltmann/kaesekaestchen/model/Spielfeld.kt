@@ -125,12 +125,11 @@ class Spielfeld private constructor(
         return schliesseAlleMoeglichenKaestchen(spieler)
     }
 
-    companion object {
+    object SpielfeldFactory {
 
         /**
          * Factory Method zur Erzeugung eines Spielfeldes
          */
-        @JvmStatic
         fun generiere(anzahlH: Int, anzahlV: Int): Spielfeld {
 
             val spielfeld = Spielfeld(anzahlH, anzahlV)

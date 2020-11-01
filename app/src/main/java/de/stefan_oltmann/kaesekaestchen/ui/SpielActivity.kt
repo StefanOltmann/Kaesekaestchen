@@ -28,7 +28,6 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.Menu
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -36,7 +35,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import de.stefan_oltmann.kaesekaestchen.R
 import de.stefan_oltmann.kaesekaestchen.model.*
-import de.stefan_oltmann.kaesekaestchen.model.Spielfeld.Companion.generiere
 import java.util.*
 import java.util.concurrent.locks.Condition
 import java.util.concurrent.locks.ReentrantLock
@@ -81,7 +79,7 @@ class SpielActivity : AppCompatActivity() {
         val feldGroesseX = intentExtras.getInt("feldGroesseX")
         val feldGroesseY = intentExtras.getInt("feldGroesseY")
 
-        spielfeld = generiere(feldGroesseX, feldGroesseY)
+        spielfeld = Spielfeld.SpielfeldFactory.generiere(feldGroesseX, feldGroesseY)
 
         spielfeldView.init(spielfeld, lock, condition)
 

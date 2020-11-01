@@ -26,11 +26,14 @@ package de.stefan_oltmann.kaesekaestchen.ui
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
+import de.stefan_oltmann.kaesekaestchen.model.Kaestchen
 import de.stefan_oltmann.kaesekaestchen.model.Spielfeld
 import de.stefan_oltmann.kaesekaestchen.model.Strich
 import java.util.concurrent.locks.Condition
@@ -46,18 +49,34 @@ import kotlin.concurrent.withLock
 class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, attrs), OnTouchListener {
 
     companion object {
-        var PADDING = 5
-
-        // FIXME Kein guter Stil
-        var kaestchenSeitenlaenge = 50
+        var PADDING_PX = 10
     }
 
     private var spielfeld: Spielfeld? = null
 
+    /*
+     * Lock & Condition wird zum Warten auf den Spieler genutzt.
+     */
     private var lock: Lock? = null
     private var condition: Condition? = null
 
+    /*
+     * Seitenlaenge eines Kästchens in Pixel
+     */
+    private var kaestchenSeitenlaengePixel = 50
+
     private val paint = Paint()
+    private val rahmenPaint = Paint()
+    private val fuellungPaint = Paint()
+
+    /**
+     * Konstruktor zum Erstellen des Kästchen. Es muss die Position/ID des
+     * Kästchen angegeben werden.
+     */
+    init {
+        rahmenPaint.style = Paint.Style.STROKE
+        rahmenPaint.strokeWidth = 5f
+    }
 
     /**
      * Über die letzte Eingabe wird in Erfahrung gebracht, was der Nutzer
@@ -83,15 +102,15 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
      * diese Methode aufgerufen. Wir benutzen das um zu ermitteln, wie groß ein
      * Kästchen in Abhängigkeit von der Auflösung des Displays sein muss.
      */
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+    override fun onSizeChanged(breitePixel: Int, hoehePixel: Int, oldw: Int, oldh: Int) {
 
         if (spielfeld == null)
             return
 
-        val maxBreite = (w - PADDING * 2) / spielfeld!!.breiteInKaestchen
-        val maxHoehe = (h - PADDING * 2) / spielfeld!!.hoeheInKaestchen
+        val maxBreitePixel = (breitePixel - PADDING_PX * 2) / spielfeld!!.breiteInKaestchen
+        val maxHoehePixel = (hoehePixel - PADDING_PX * 2) / spielfeld!!.hoeheInKaestchen
 
-        kaestchenSeitenlaenge = kotlin.math.min(maxBreite, maxHoehe)
+        kaestchenSeitenlaengePixel = kotlin.math.min(maxBreitePixel, maxHoehePixel)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -115,7 +134,7 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         }
 
         for (kaestchen in spielfeld!!.kaestchenListe)
-            kaestchen.onDraw(canvas)
+            drawKaestchen(kaestchen, canvas)
     }
 
     override fun onTouch(view: View, event: MotionEvent): Boolean {
@@ -130,8 +149,8 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         if (letzteEingabe != null)
             return true
 
-        val errechnetRasterX = event.x.toInt() / kaestchenSeitenlaenge
-        val errechnetRasterY = event.y.toInt() / kaestchenSeitenlaenge
+        val errechnetRasterX = event.x.toInt() / kaestchenSeitenlaengePixel
+        val errechnetRasterY = event.y.toInt() / kaestchenSeitenlaengePixel
 
         val kaestchen = spielfeld!!.getKaestchen(errechnetRasterX, errechnetRasterY)
 
@@ -142,7 +161,7 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         if (kaestchen.besitzer != null)
             return true
 
-        val strich = kaestchen.ermittleStrich(event.x.toInt(), event.y.toInt())
+        val strich = ermittleStrich(kaestchen, event.x.toInt(), event.y.toInt())
 
         /* Wenn kein Strich ermittelt werden konnte, dann wieder rausgehen. */
         if (strich == null)
@@ -168,6 +187,181 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         }
 
         return true
+    }
+
+    private fun calcPixelX(kaestchen: Kaestchen) =
+        kaestchen.rasterX * kaestchenSeitenlaengePixel + PADDING_PX;
+
+    private fun calcPixelY(kaestchen: Kaestchen) =
+        kaestchen.rasterY * kaestchenSeitenlaengePixel + PADDING_PX;
+
+    private fun calcRectStrichOben(kaestchen: Kaestchen): Rect? =
+        if (kaestchen.strichOben == null) null else Rect(
+            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel / 4,
+            calcPixelY(kaestchen) - kaestchenSeitenlaengePixel / 4,
+            calcPixelX(kaestchen) + (kaestchenSeitenlaengePixel * 0.75).toInt(),
+            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel / 4
+        )
+
+    private fun calcRectStrichUnten(kaestchen: Kaestchen): Rect? =
+        if (kaestchen.strichUnten == null) null else Rect(
+            calcPixelX(kaestchen)  + kaestchenSeitenlaengePixel / 4,
+            calcPixelY(kaestchen) + (kaestchenSeitenlaengePixel * 0.75).toInt(),
+            calcPixelX(kaestchen)  + (kaestchenSeitenlaengePixel * 0.75).toInt(),
+            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel + kaestchenSeitenlaengePixel / 4
+        )
+
+    private fun calcRectStrichLinks(kaestchen: Kaestchen): Rect? =
+        if (kaestchen.strichLinks == null) null else Rect(
+            calcPixelX(kaestchen)  - kaestchenSeitenlaengePixel / 4,
+            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel / 4,
+            calcPixelX(kaestchen)  + kaestchenSeitenlaengePixel / 4,
+            calcPixelY(kaestchen) + (kaestchenSeitenlaengePixel * 0.75).toInt()
+        )
+
+    private fun calcRectStrichRechts(kaestchen: Kaestchen): Rect? =
+        if (kaestchen.strichRechts == null) null else Rect(
+            calcPixelX(kaestchen)  + (kaestchenSeitenlaengePixel * 0.75).toInt(),
+            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel / 4,
+            calcPixelX(kaestchen)  + kaestchenSeitenlaengePixel + kaestchenSeitenlaengePixel / 4,
+            calcPixelY(kaestchen) + (kaestchenSeitenlaengePixel * 0.75).toInt()
+        )
+
+    /**
+     * Diese Methode bestimmt, auf welchen Strich des Kästchen gedrückt wurde.
+     */
+    fun ermittleStrich(kaestchen: Kaestchen, pixelX: Int, pixelY: Int): Strich? {
+
+        calcRectStrichOben(kaestchen)?.let {
+            if (it.contains(pixelX, pixelY))
+                return kaestchen.strichOben;
+        }
+
+        calcRectStrichUnten(kaestchen)?.let {
+            if (it.contains(pixelX, pixelY))
+                return kaestchen.strichUnten;
+        }
+
+        calcRectStrichLinks(kaestchen)?.let {
+            if (it.contains(pixelX, pixelY))
+                return kaestchen.strichLinks;
+        }
+
+        calcRectStrichRechts(kaestchen)?.let {
+            if (it.contains(pixelX, pixelY))
+                return kaestchen.strichRechts;
+        }
+
+        return null
+    }
+
+    private fun drawKaestchen(kaestchen: Kaestchen, canvas: Canvas) {
+
+        val pixelX = calcPixelX(kaestchen);
+        val pixelY = calcPixelY(kaestchen);
+
+        kaestchen.besitzer?.let {
+
+            fuellungPaint.color = it.farbe
+
+            val symbol = it.symbol
+
+            symbol.setBounds(0, 0, kaestchenSeitenlaengePixel, kaestchenSeitenlaengePixel)
+            canvas.translate(pixelX.toFloat(), pixelY.toFloat())
+            symbol.draw(canvas)
+            canvas.translate(-pixelX.toFloat(), -pixelY.toFloat())
+        }
+
+        if (kaestchen.strichOben == null) {
+
+            rahmenPaint.color = Color.BLACK
+
+            canvas.drawLine(
+                pixelX.toFloat(),
+                pixelY.toFloat(),
+                pixelX + kaestchenSeitenlaengePixel.toFloat(),
+                pixelY.toFloat(),
+                rahmenPaint
+            )
+        }
+
+        if (kaestchen.strichUnten != null && kaestchen.strichUnten!!.besitzer != null)
+            rahmenPaint.color = kaestchen.strichUnten!!.besitzer!!.farbe
+        else if (kaestchen.strichUnten != null)
+            rahmenPaint.color = Color.TRANSPARENT
+        else
+            rahmenPaint.color = Color.BLACK
+
+        canvas.drawLine(
+            pixelX.toFloat(),
+            pixelY + kaestchenSeitenlaengePixel.toFloat(),
+            pixelX + kaestchenSeitenlaengePixel.toFloat(),
+            pixelY + kaestchenSeitenlaengePixel.toFloat(),
+            rahmenPaint
+        )
+
+        if (kaestchen.strichLinks == null) {
+
+            rahmenPaint.color = Color.BLACK
+
+            canvas.drawLine(
+                pixelX.toFloat(),
+                pixelY.toFloat(),
+                pixelX.toFloat(),
+                pixelY + kaestchenSeitenlaengePixel.toFloat(),
+                rahmenPaint
+            )
+        }
+
+        if (kaestchen.strichRechts != null && kaestchen.strichRechts!!.besitzer != null)
+            rahmenPaint.color = kaestchen.strichRechts!!.besitzer!!.farbe
+        else if (kaestchen.strichRechts != null)
+            rahmenPaint.color = Color.TRANSPARENT
+        else
+            rahmenPaint.color = Color.BLACK
+
+        canvas.drawLine(
+            pixelX + kaestchenSeitenlaengePixel.toFloat(),
+            pixelY.toFloat(),
+            pixelX + kaestchenSeitenlaengePixel.toFloat(),
+            pixelY + kaestchenSeitenlaengePixel.toFloat(),
+            rahmenPaint
+        )
+
+        /* Eckpunkte zeichnen */
+        rahmenPaint.color = Color.BLACK
+
+        canvas.drawRect(
+            pixelX - 1.toFloat(),
+            pixelY - 1.toFloat(),
+            pixelX + 1.toFloat(),
+            pixelY + 1.toFloat(),
+            rahmenPaint
+        )
+
+        canvas.drawRect(
+            pixelX + kaestchenSeitenlaengePixel - 1.toFloat(),
+            pixelY - 1.toFloat(),
+            pixelX + kaestchenSeitenlaengePixel + 1.toFloat(),
+            pixelY + 1.toFloat(),
+            rahmenPaint
+        )
+
+        canvas.drawRect(
+            pixelX - 1.toFloat(),
+            pixelY + kaestchenSeitenlaengePixel - 1.toFloat(),
+            pixelX + 1.toFloat(),
+            pixelY + kaestchenSeitenlaengePixel + 1.toFloat(),
+            rahmenPaint
+        )
+
+        canvas.drawRect(
+            pixelX + kaestchenSeitenlaengePixel - 1.toFloat(),
+            pixelY + kaestchenSeitenlaengePixel - 1.toFloat(),
+            pixelX + kaestchenSeitenlaengePixel + 1.toFloat(),
+            pixelY + kaestchenSeitenlaengePixel + 1.toFloat(),
+            rahmenPaint
+        )
     }
 
     fun aktualisiereAnzeige() {

@@ -29,13 +29,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import de.stefan_oltmann.kaesekaestchen.R
-import de.stefan_oltmann.kaesekaestchen.model.Spieler
 import de.stefan_oltmann.kaesekaestchen.model.SpielerTyp
 
 /**
