@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.GewonnenFragment">
+
+        <ImageView
+            android:id="@+id/pokal_image_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginBottom="32dp"
+            android:src="@drawable/ic_pokal_kaese"
+            app:layout_constraintBottom_toTopOf="@+id/kaese_image_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/kaese_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginBottom="32dp"
+            android:src="@drawable/ic_spieler_symbol_kaese"
+            app:layout_constraintBottom_toTopOf="@+id/hauptmenue_button"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/punktestand_kaese_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:text="0"
+            android:textSize="@dimen/text_size"
+            app:layout_constraintBottom_toBottomOf="@+id/kaese_image_view"
+            app:layout_constraintStart_toEndOf="@+id/kaese_image_view"
+            app:layout_constraintTop_toTopOf="@+id/kaese_image_view"
+            tools:text="99" />
+
+        <ImageView
+            android:id="@+id/maus_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:src="@drawable/ic_spieler_symbol_maus"
+            app:layout_constraintBottom_toTopOf="@+id/hauptmenue_button"
+            app:layout_constraintEnd_toEndOf="@+id/pokal_image_view" />
+
+        <TextView
+            android:id="@+id/punktestand_maus_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:text="0"
+            android:textSize="@dimen/text_size"
+            app:layout_constraintBottom_toBottomOf="@+id/maus_image_view"
+            app:layout_constraintEnd_toStartOf="@+id/maus_image_view"
+            app:layout_constraintTop_toTopOf="@+id/maus_image_view"
+            tools:text="99" />
+
+        <TextView
+            android:id="@+id/vs_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:text="VS"
+            android:textSize="36sp"
+            app:layout_constraintBottom_toBottomOf="@+id/punktestand_kaese_text"
+            app:layout_constraintEnd_toStartOf="@+id/punktestand_maus_text"
+            app:layout_constraintStart_toEndOf="@+id/punktestand_kaese_text"
+            app:layout_constraintTop_toTopOf="@+id/punktestand_kaese_text" />
+
+        <Button
+            android:id="@+id/hauptmenue_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginBottom="32dp"
+            android:text="@string/zurueck_zum_hauptmenue"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

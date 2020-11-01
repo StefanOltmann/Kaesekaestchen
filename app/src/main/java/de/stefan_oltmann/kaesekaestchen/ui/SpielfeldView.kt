@@ -33,6 +33,9 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
+import de.stefan_oltmann.kaesekaestchen.R
 import de.stefan_oltmann.kaesekaestchen.model.Kaestchen
 import de.stefan_oltmann.kaesekaestchen.model.Spielfeld
 import de.stefan_oltmann.kaesekaestchen.model.Strich
@@ -64,6 +67,10 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
      * Seitenlaenge eines Kästchens in Pixel
      */
     private var kaestchenSeitenlaengePixel = 50
+
+    private val defaultRahmenColor by lazy {
+        ContextCompat.getColor(context!!, R.color.kaestchen_rahmen_farbe)
+    }
 
     private val paint = Paint()
     private val rahmenPaint = Paint()
@@ -288,7 +295,7 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         if (kaestchen.strichUnten != null && kaestchen.strichUnten!!.besitzer != null)
             rahmenPaint.color = kaestchen.strichUnten!!.besitzer!!.farbe
         else if (kaestchen.strichUnten != null)
-            rahmenPaint.color = Color.TRANSPARENT
+            rahmenPaint.color = defaultRahmenColor
         else
             rahmenPaint.color = Color.BLACK
 
@@ -316,7 +323,7 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         if (kaestchen.strichRechts != null && kaestchen.strichRechts!!.besitzer != null)
             rahmenPaint.color = kaestchen.strichRechts!!.besitzer!!.farbe
         else if (kaestchen.strichRechts != null)
-            rahmenPaint.color = Color.TRANSPARENT
+            rahmenPaint.color = defaultRahmenColor
         else
             rahmenPaint.color = Color.BLACK
 

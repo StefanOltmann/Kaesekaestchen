@@ -49,10 +49,10 @@ data class Kaestchen(val rasterX: Int,
 
             val striche: MutableList<Strich> = mutableListOf()
 
-            if (strichOben != null && strichOben!!.besitzer == null) striche.add(strichOben!!)
-            if (strichUnten != null && strichUnten!!.besitzer == null) striche.add(strichUnten!!)
-            if (strichLinks != null && strichLinks!!.besitzer == null) striche.add(strichLinks!!)
-            if (strichRechts != null && strichRechts!!.besitzer == null) striche.add(strichRechts!!)
+            strichOben?.let { if (it.besitzer == null) striche.add(it) }
+            strichUnten?.let { if (it.besitzer == null) striche.add(it) }
+            strichLinks?.let { if (it.besitzer == null) striche.add(it) }
+            strichRechts?.let { if (it.besitzer == null) striche.add(it) }
 
             return striche
         }

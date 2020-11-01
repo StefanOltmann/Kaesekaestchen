@@ -33,6 +33,13 @@ import android.widget.Button
 import android.widget.Spinner
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_LOCKED_CLOSED
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.navigation.NavigationView
 import de.stefan_oltmann.kaesekaestchen.R
 import de.stefan_oltmann.kaesekaestchen.model.SpielerTyp
 
@@ -44,48 +51,25 @@ import de.stefan_oltmann.kaesekaestchen.model.SpielerTyp
  */
 class MainActivity : AppCompatActivity() {
 
-    /**
-     * Wenn eine App Einstellungen speichert, dann müssen die in einer
-     * "shared preferences"-Map unter einem bestimmten Schlüssel abgelegt
-     * werden. In diesem Fall speichern wir die Spiel-Einstellungen.
-     */
-    private val gameSettings
-        get() = getSharedPreferences("game_settings", Context.MODE_PRIVATE)
-
-    private val spieler1KiSwitch
-        get() = findViewById<Switch>(R.id.spieler_1_ki_switch)
-
-    private val spieler2KiSwitch
-        get() = findViewById<Switch>(R.id.spieler_2_ki_switch)
-
-    private val feldGroesseXSpinner
-        get() = findViewById<Spinner>(R.id.feld_groesse_x)
-
-    private val feldGroesseYSpinner
-        get() = findViewById<Spinner>(R.id.feld_groesse_y)
-
-    private val spielenButton
-        get() = findViewById<Button>(R.id.spielen)
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.layout_main)
+        setContentView(R.layout.activity_main)
 
-        spielenButton.setOnClickListener { onSpielenClick() }
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
-        spieler1KiSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            buttonView.text = getText(
-                if (isChecked) R.string.spieler_typ_computer else R.string.spieler_typ_mensch)
-        }
+        /* Es wird keine Seitennavigation benutzt. Daher dauerhaft deaktiviert. */
+        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        drawerLayout.setDrawerLockMode(LOCK_MODE_LOCKED_CLOSED)
 
-        spieler2KiSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            buttonView.text = getText(
-                if (isChecked) R.string.spieler_typ_computer else R.string.spieler_typ_mensch)
-        }
+        val navView: NavigationView = findViewById(R.id.nav_view)
+        val navController = findNavController(R.id.nav_host_fragment)
 
-        restoreGameSettings()
+        navView.setupWithNavController(navController)
     }
 
     /**
@@ -111,77 +95,5 @@ class MainActivity : AppCompatActivity() {
             finish()
 
         return super.onOptionsItemSelected(item)
-    }
-
-    fun onSpielenClick() {
-
-        saveGameSettings()
-
-        val spielerTyp1 = if (spieler1KiSwitch.isChecked) SpielerTyp.COMPUTER else SpielerTyp.MENSCH
-        val spielerTyp2 = if (spieler2KiSwitch.isChecked) SpielerTyp.COMPUTER else SpielerTyp.MENSCH
-
-        val feldGroesseX = (feldGroesseXSpinner.selectedItem as String).toInt()
-        val feldGroesseY = (feldGroesseYSpinner.selectedItem as String).toInt()
-
-        startSpielActivity(spielerTyp1, spielerTyp2, feldGroesseX, feldGroesseY)
-    }
-
-    /*
-     * Baut einen {@link Intent} zusammen auf Basis der ausgewählten Daten
-     * und startet die {@link SpielActivity} damit.
-     */
-    private fun startSpielActivity(
-        spielerTyp1: SpielerTyp,
-        spielerTyp2: SpielerTyp,
-        feldGroesseX: Int,
-        feldGroesseY: Int) {
-
-        val intent = Intent(this, SpielActivity::class.java)
-
-        intent.putExtra("spielerTyp1", spielerTyp1)
-        intent.putExtra("spielerTyp2", spielerTyp2)
-        intent.putExtra("feldGroesseX", feldGroesseX)
-        intent.putExtra("feldGroesseY", feldGroesseY)
-
-        startActivity(intent)
-    }
-
-    override fun onPause() {
-        super.onPause()
-
-        saveGameSettings()
-    }
-
-    /*
-     * Setzt der View die gespeicherten Game-Settings.
-     */
-    private fun restoreGameSettings() {
-
-        /*
-         * Da der View Eigenschaften gesetzt werden hier nochmal
-         * sicherstellen, dass wir auf dem UI-Thread sind.
-         */
-        runOnUiThread {
-
-            spieler1KiSwitch.isChecked = gameSettings.getBoolean("spieler_typ_1_ki", false)
-            spieler2KiSwitch.isChecked = gameSettings.getBoolean("spieler_typ_2_ki", true)
-            feldGroesseXSpinner.setSelection(gameSettings.getInt("feld_groesse_x", 6))
-            feldGroesseYSpinner.setSelection(gameSettings.getInt("feld_groesse_y", 6))
-        }
-    }
-
-    /*
-     * Speichert die aktuellen Einstellugen in der View in die Game-Settings
-     */
-    private fun saveGameSettings() {
-
-        val gameSettingsEditor = gameSettings.edit()
-
-        gameSettingsEditor.putBoolean("spieler_typ_1_ki", spieler1KiSwitch.isChecked)
-        gameSettingsEditor.putBoolean("spieler_typ_2_ki", spieler2KiSwitch.isChecked)
-        gameSettingsEditor.putInt("feld_groesse_x", feldGroesseXSpinner.selectedItemPosition)
-        gameSettingsEditor.putInt("feld_groesse_y", feldGroesseYSpinner.selectedItemPosition)
-
-        gameSettingsEditor.apply()
     }
 }

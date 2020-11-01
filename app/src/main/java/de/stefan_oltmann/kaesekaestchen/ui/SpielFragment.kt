@@ -1,63 +1,35 @@
-/*
- * Kaesekaestchen
- * A simple Dots'n'Boxes Game for Android
- *
- * Copyright (C) Stefan Oltmann
- *
- * Contact : dotsandboxes@stefan-oltmann.de
- * Homepage: http://www.stefan-oltmann.de/
- *
- * This file is part of Kaesekaestchen.
- *
- * Kaesekaestchen is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Kaesekaestchen is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Kaesekaestchen. If not, see <http://www.gnu.org/licenses/>.
- */
 package de.stefan_oltmann.kaesekaestchen.ui
 
 import android.app.AlertDialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavHostController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.navArgs
 import de.stefan_oltmann.kaesekaestchen.R
+import de.stefan_oltmann.kaesekaestchen.databinding.FragmentSpielBinding
 import de.stefan_oltmann.kaesekaestchen.model.*
 import java.util.*
 import java.util.concurrent.locks.Condition
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
-/**
- * Die Haupt-Activty, die das Spielfeld verwaltet und den Gameloop steuert.
- */
-class SpielActivity : AppCompatActivity() {
+class SpielFragment : Fragment() {
+
+    private val args: SpielFragmentArgs by navArgs()
 
     private val lock = ReentrantLock()
     private val condition : Condition = lock.newCondition()
 
-    private val spielfeldView: SpielfeldView
-        get() = findViewById<View>(R.id.spielfeldView) as SpielfeldView
-
-    private val aktuellerSpielerImageView
-        get() = findViewById<View>(R.id.aktuellerSpielerSymbol) as ImageView
-
-    private val punkteAnzeigeTextView
-        get() = findViewById<View>(R.id.punkteAnzeige) as TextView
-
-    private var spielfeld: Spielfeld? = null
+    private lateinit var spielfeld: Spielfeld
 
     private val spielerManager = SpielerManager()
 
@@ -67,41 +39,50 @@ class SpielActivity : AppCompatActivity() {
     @Volatile
     private var running = true
 
-    public override fun onCreate(savedInstanceState: Bundle?) {
+    private lateinit var binding: FragmentSpielBinding
 
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+    }
 
-        setContentView(R.layout.layout_spiel)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?): View? {
 
-        val intentExtras = intent.extras!!
-        val spielerTyp1 = intentExtras["spielerTyp1"] as SpielerTyp
-        val spielerTyp2 = intentExtras["spielerTyp2"] as SpielerTyp
-        val feldGroesseX = intentExtras.getInt("feldGroesseX")
-        val feldGroesseY = intentExtras.getInt("feldGroesseY")
+        binding = FragmentSpielBinding.inflate(inflater, container, false)
+
+        binding.lifecycleOwner = this
+
+        val spielerTyp1 = if (args.spieler1Ki) SpielerTyp.COMPUTER else SpielerTyp.MENSCH
+        val spielerTyp2 = if (args.spieler2Ki) SpielerTyp.COMPUTER else SpielerTyp.MENSCH
+        val feldGroesseX = args.feldGroesseX
+        val feldGroesseY = args.feldGroesseY
 
         spielfeld = Spielfeld.SpielfeldFactory.generiere(feldGroesseX, feldGroesseY)
 
-        spielfeldView.init(spielfeld, lock, condition)
+        binding.spielfeldView.init(spielfeld, lock, condition)
 
         spielerManager.addSpieler(
             Spieler(
-                resources.getString(R.string.spieler_1_name),
-                ContextCompat.getDrawable(applicationContext, R.drawable.ic_spieler_symbol_kaese)!!,
-                ContextCompat.getColor(applicationContext, R.color.spieler_1_farbe),
+                0, resources.getString(R.string.spieler_1_name),
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_spieler_symbol_kaese)!!,
+                ContextCompat.getColor(requireContext(), R.color.spieler_1_farbe),
                 spielerTyp1
             )
         )
 
         spielerManager.addSpieler(
             Spieler(
-                resources.getString(R.string.spieler_2_name),
-                ContextCompat.getDrawable(applicationContext, R.drawable.ic_spieler_symbol_maus)!!,
-                ContextCompat.getColor(applicationContext, R.color.spieler_2_farbe),
+                1, resources.getString(R.string.spieler_2_name),
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_spieler_symbol_maus)!!,
+                ContextCompat.getColor(requireContext(), R.color.spieler_2_farbe),
                 spielerTyp2
             )
         )
 
         startGameLoop()
+
+        return binding.root
     }
 
     override fun onStop() {
@@ -135,21 +116,21 @@ class SpielActivity : AppCompatActivity() {
                  */
                 handler.post {
 
-                    aktuellerSpielerImageView.setImageDrawable(spieler.symbol)
-                    punkteAnzeigeTextView.text = ermittlePunktzahl(spieler).toString()
+                    binding.aktuellerSpielerSymbolImageView.setImageDrawable(spieler.symbol)
+                    binding.punkteAnzeigeTextView.text = ermittlePunktzahl(spieler).toString()
                 }
 
                 var eingabe: Strich?
 
                 if (!spieler.isComputerGegner) {
 
-                    spielfeldView.resetLetzteEingabe()
+                    binding.spielfeldView.resetLetzteEingabe()
 
                     /*
                      * Der Benutzer muss nun seine Eingabe tätigen. Dieser
                      * Gameloop- Thread soll nun darauf warten.
                      */
-                    while (spielfeldView.letzteEingabe.also { eingabe = it } == null) {
+                    while (binding.spielfeldView.letzteEingabe.also { eingabe = it } == null) {
 
                         lock.withLock {
                             condition.await()
@@ -184,62 +165,24 @@ class SpielActivity : AppCompatActivity() {
              * Wenn alle Kästchen besetzt sind, ist das Spiel vorbei und der
              * "Game Score" kann angezeigt werden.
              */
-            if (isGameOver())
-                showGameOverDialog()
+            if (isGameOver()) {
+
+                val gewinner = ermittleGewinner()
+
+                val punkteStandMap = mutableMapOf<Int, Int>()
+
+                for (spieler in spielerManager.spieler)
+                    punkteStandMap.put(spieler.id, ermittlePunktzahl(spieler))
+
+                val action = SpielFragmentDirections.actionNavSpielToGewonnenFragment(
+                    gewinnerId = gewinner.id,
+                    punktestandKaese = punkteStandMap[0]!!,
+                    punktestandMaus = punkteStandMap[1]!!
+                )
+
+                NavHostFragment.findNavController(this@SpielFragment).navigate(action);
+            }
         }
-    }
-
-    private fun showGameOverDialog() {
-
-        handler.post {
-
-            val gewinner = ermittleGewinner()
-
-            // FIXME Unflexibel
-            val pokalBildId =
-                if (gewinner.name == resources.getString(R.string.spieler_1_name)) R.drawable.ic_pokal_kaese else R.drawable.ic_pokal_maus
-
-            val alertDialog =
-                AlertDialog.Builder(this@SpielActivity)
-                    .setTitle(resources.getText(R.string.game_score))
-                    .setIcon(ContextCompat.getDrawable(applicationContext, pokalBildId))
-                    .setMessage(createGameOverDialogMessage())
-                    .setCancelable(false)
-                    .setPositiveButton(resources.getText(R.string.play_again))
-                    { _, _ ->
-                        startActivity(intent)
-                    }
-                    .setNegativeButton(resources.getText(R.string.zurueck_zum_hauptmenue))
-                    { dialog, _ ->
-                        dialog.dismiss()
-                        finish()
-                    }
-                    .create()
-
-            alertDialog.show()
-        }
-    }
-
-    private fun createGameOverDialogMessage() : String {
-
-        val gewinner = ermittleGewinner()
-
-        val sb = StringBuilder()
-
-        sb.append(resources.getString(R.string.gewinner))
-        sb.append(": ")
-        sb.append(gewinner.name)
-        sb.appendLine()
-
-        for (spieler in spielerManager.spieler) {
-
-            sb.append(spieler.name)
-            sb.append(":\t\t")
-            sb.append(ermittlePunktzahl(spieler))
-            sb.appendLine()
-        }
-
-        return sb.toString()
     }
 
     private fun fuehreKiGegnerZugAus(spielerTyp: SpielerTyp): Strich {
@@ -271,7 +214,7 @@ class SpielActivity : AppCompatActivity() {
 
     private fun waehleLetztenOffenenStrichFuerKaestchen(): Strich? {
 
-        for (kaestchen in spielfeld!!.offeneKaestchenUnmodifiable)
+        for (kaestchen in spielfeld.offeneKaestchenUnmodifiable)
             if (kaestchen.stricheOhneBesitzer.size == 1)
                 return kaestchen.stricheOhneBesitzer[0]
 
@@ -280,7 +223,7 @@ class SpielActivity : AppCompatActivity() {
 
     private fun waehleZufallsStrich(): Strich {
 
-        val stricheOhneBesitzer = spielfeld!!.stricheOhneBesitzerUnmodifiable.toList()
+        val stricheOhneBesitzer = spielfeld.stricheOhneBesitzerUnmodifiable.toList()
 
         val zufallsZahl = Random().nextInt(stricheOhneBesitzer.size)
 
@@ -296,7 +239,7 @@ class SpielActivity : AppCompatActivity() {
         val aktuellerSpieler = spielerManager.getAktuellerSpieler()
 
         val kaestchenKonnteGeschlossenWerden =
-            spielfeld!!.waehleStrich(strich, aktuellerSpieler)
+            spielfeld.waehleStrich(strich, aktuellerSpieler)
 
         /*
          * Wenn ein Kästchen geschlossen werden konnte, ist derjenige Spieler
@@ -306,11 +249,11 @@ class SpielActivity : AppCompatActivity() {
         if (!kaestchenKonnteGeschlossenWerden)
             spielerManager.waehleNaechstenSpielerAus()
 
-        spielfeldView.aktualisiereAnzeige()
+        binding.spielfeldView.aktualisiereAnzeige()
     }
 
     fun isGameOver(): Boolean {
-        return spielfeld!!.isAlleKaestchenHabenBesitzer()
+        return spielfeld.isAlleKaestchenHabenBesitzer()
     }
 
     fun ermittleGewinner(): Spieler {
@@ -335,7 +278,7 @@ class SpielActivity : AppCompatActivity() {
 
         var punkte = 0
 
-        for (kaestchen in spielfeld!!.kaestchenListe)
+        for (kaestchen in spielfeld.kaestchenListe)
             if (kaestchen.besitzer == spieler)
                 punkte++
 
