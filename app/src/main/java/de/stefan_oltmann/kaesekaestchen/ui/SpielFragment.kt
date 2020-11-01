@@ -1,6 +1,5 @@
 package de.stefan_oltmann.kaesekaestchen.ui
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,10 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.navigation.NavHostController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
 import de.stefan_oltmann.kaesekaestchen.R
@@ -120,7 +116,7 @@ class SpielFragment : Fragment() {
                     binding.punkteAnzeigeTextView.text = ermittlePunktzahl(spieler).toString()
                 }
 
-                var eingabe: Strich?
+                var eingabeStrich: Strich?
 
                 if (!spieler.isComputerGegner) {
 
@@ -130,7 +126,7 @@ class SpielFragment : Fragment() {
                      * Der Benutzer muss nun seine Eingabe tätigen. Dieser
                      * Gameloop- Thread soll nun darauf warten.
                      */
-                    while (binding.spielfeldView.letzteEingabe.also { eingabe = it } == null) {
+                    while (binding.spielfeldView.letzteEingabe.also { eingabeStrich = it } == null) {
 
                         lock.withLock {
                             condition.await()
@@ -146,10 +142,10 @@ class SpielFragment : Fragment() {
                         /* Ignorieren. */
                     }
 
-                    eingabe = fuehreKiGegnerZugAus(spieler.spielerTyp)
+                    eingabeStrich = fuehreKiGegnerZugAus()
                 }
 
-                waehleStrich(eingabe!!)
+                waehleStrich(eingabeStrich!!)
 
                 /*
                  * Wurde die Activity beendet, dann auch diesen Thread stoppen.
@@ -180,12 +176,12 @@ class SpielFragment : Fragment() {
                     punktestandMaus = punkteStandMap[1]!!
                 )
 
-                NavHostFragment.findNavController(this@SpielFragment).navigate(action);
+                NavHostFragment.findNavController(this@SpielFragment).navigate(action)
             }
         }
     }
 
-    private fun fuehreKiGegnerZugAus(spielerTyp: SpielerTyp): Strich {
+    private fun fuehreKiGegnerZugAus(): Strich {
 
         val strich = waehleLetztenOffenenStrichFuerKaestchen()
 
