@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.GewonnenFragment">
+        tools:context=".ui.fragments.GewonnenFragment">
 
         <ImageView
             android:id="@+id/pokal_image_view"

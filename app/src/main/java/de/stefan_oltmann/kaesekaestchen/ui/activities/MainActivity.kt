@@ -22,16 +22,11 @@
  * You should have received a copy of the GNU General Public License
  * along with Kaesekaestchen. If not, see <http://www.gnu.org/licenses/>.
  */
-package de.stefan_oltmann.kaesekaestchen.ui
+package de.stefan_oltmann.kaesekaestchen.ui.activities
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.Spinner
-import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -41,7 +36,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import de.stefan_oltmann.kaesekaestchen.R
-import de.stefan_oltmann.kaesekaestchen.model.SpielerTyp
 
 /**
  * Diese Activity wird bei Starten der App angezeigt. Hier wird ausgewählt, wer
@@ -80,7 +74,7 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreateOptionsMenu(menu)
 
-        menuInflater.inflate(R.menu.hauptmenue, menu)
+        menuInflater.inflate(R.menu.menu, menu)
 
         return true
     }

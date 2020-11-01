@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Kaesekaestchen. If not, see <http://www.gnu.org/licenses/>.
  */
-package de.stefan_oltmann.kaesekaestchen.ui
+package de.stefan_oltmann.kaesekaestchen.ui.activities
 
 import android.content.Intent
 import android.os.Bundle

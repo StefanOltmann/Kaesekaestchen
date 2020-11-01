@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Kaesekaestchen. If not, see <http://www.gnu.org/licenses/>.
  */
-package de.stefan_oltmann.kaesekaestchen.ui
+package de.stefan_oltmann.kaesekaestchen.ui.views
 
 import android.content.Context
 import android.graphics.Canvas
@@ -33,7 +33,6 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import de.stefan_oltmann.kaesekaestchen.R
 import de.stefan_oltmann.kaesekaestchen.model.Kaestchen
@@ -158,6 +157,13 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
 
         val errechnetRasterX = event.x.toInt() / kaestchenSeitenlaengePixel
         val errechnetRasterY = event.y.toInt() / kaestchenSeitenlaengePixel
+
+        /*
+         * Wenn der Anwender irgendwo außerhalb des Spielfelds drückt soll
+         * dies einfach ignoriert werden und nicht zu einem Fehler führen.
+         */
+        if (!spielfeld!!.isImRaster(errechnetRasterX, errechnetRasterY))
+            return true
 
         val kaestchen = spielfeld!!.getKaestchen(errechnetRasterX, errechnetRasterY)
 

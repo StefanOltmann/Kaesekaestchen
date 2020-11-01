@@ -74,11 +74,14 @@ class Spielfeld private constructor(
         stricheOhneBesitzer.add(strich)
     }
 
+    fun isImRaster(rasterX: Int, rasterY: Int) =
+        rasterX < breiteInKaestchen && rasterY < hoeheInKaestchen
+
     fun getKaestchen(rasterX: Int, rasterY: Int): Kaestchen {
 
         /* Außerhalb des Rasters gibts kein Kästchen. */
-        if (rasterX >= breiteInKaestchen || rasterY >= hoeheInKaestchen)
-            throw IllegalArgumentException("Das Kästchen liegt außerhalb des Rasters.")
+        if (!isImRaster(rasterX, rasterY))
+            throw IllegalArgumentException("Das Kästchen liegt außerhalb des Rasters: $rasterX >= $breiteInKaestchen || $rasterY >= $hoeheInKaestchen")
 
         return kaestchenArray[rasterX][rasterY]!!
     }
@@ -171,7 +174,7 @@ class Spielfeld private constructor(
 
         val stricheOhneBesitzer = stricheOhneBesitzerUnmodifiable.toList()
 
-        val zufallsZahl = (0..stricheOhneBesitzer.size).random()
+        val zufallsZahl = (0..stricheOhneBesitzer.size.minus(1)).random()
 
         return stricheOhneBesitzer[zufallsZahl]
     }

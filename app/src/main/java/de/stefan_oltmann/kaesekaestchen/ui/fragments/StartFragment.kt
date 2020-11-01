@@ -1,4 +1,4 @@
-package de.stefan_oltmann.kaesekaestchen.ui
+package de.stefan_oltmann.kaesekaestchen.ui.fragments
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -7,7 +7,6 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import de.stefan_oltmann.kaesekaestchen.R
-import de.stefan_oltmann.kaesekaestchen.databinding.FragmentSpielBinding
 import de.stefan_oltmann.kaesekaestchen.databinding.FragmentStartBinding
 import de.stefan_oltmann.kaesekaestchen.model.SpielerTyp
 
@@ -75,7 +74,8 @@ class StartFragment : Fragment() {
             StartFragmentDirections.actionNavStartToNavSpiel(
                 spielerTyp1 == SpielerTyp.COMPUTER,
                 spielerTyp2 == SpielerTyp.COMPUTER,
-                feldGroesseX, feldGroesseY)
+                feldGroesseX, feldGroesseY
+            )
 
         NavHostFragment.findNavController(this).navigate(action)
     }
@@ -91,17 +91,10 @@ class StartFragment : Fragment() {
      */
     private fun restoreGameSettings() {
 
-        /*
-         * Da der View Eigenschaften gesetzt werden hier nochmal
-         * sicherstellen, dass wir auf dem UI-Thread sind.
-         */
-        //runOnUiThread {
-
         binding.spieler1KiSwitch.isChecked = gameSettings.getBoolean("spieler_typ_1_ki", false)
         binding.spieler2KiSwitch.isChecked = gameSettings.getBoolean("spieler_typ_2_ki", true)
         binding.feldGroesseXSpinner.setSelection(gameSettings.getInt("feld_groesse_x", 6))
         binding.feldGroesseYSpinner.setSelection(gameSettings.getInt("feld_groesse_y", 6))
-        //}
     }
 
     /*

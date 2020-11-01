@@ -52,7 +52,7 @@
             </TableRow>
         </TableLayout>
 
-        <de.stefan_oltmann.kaesekaestchen.ui.SpielfeldView
+        <de.stefan_oltmann.kaesekaestchen.ui.views.SpielfeldView
             android:id="@+id/spielfeld_view"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

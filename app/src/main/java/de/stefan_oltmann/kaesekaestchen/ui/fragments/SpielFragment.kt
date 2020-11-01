@@ -1,4 +1,4 @@
-package de.stefan_oltmann.kaesekaestchen.ui
+package de.stefan_oltmann.kaesekaestchen.ui.fragments
 
 import android.os.Bundle
 import android.os.Handler

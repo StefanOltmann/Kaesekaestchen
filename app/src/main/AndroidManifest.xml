@@ -12,7 +12,7 @@
 
         <!-- Der Splash Screen -->
         <activity
-            android:name=".ui.SplashScreenActivity"
+            android:name=".ui.activities.SplashScreenActivity"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +22,7 @@
 
         <!-- Hauptaktivity -->
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait">

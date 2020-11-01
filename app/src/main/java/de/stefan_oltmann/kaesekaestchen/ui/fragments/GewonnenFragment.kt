@@ -1,4 +1,4 @@
-package de.stefan_oltmann.kaesekaestchen.ui
+package de.stefan_oltmann.kaesekaestchen.ui.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,7 +10,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
 import de.stefan_oltmann.kaesekaestchen.R
 import de.stefan_oltmann.kaesekaestchen.databinding.FragmentGewonnenBinding
-import de.stefan_oltmann.kaesekaestchen.databinding.FragmentSpielBinding
 
 class GewonnenFragment : Fragment() {
 
