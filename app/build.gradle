@@ -11,13 +11,20 @@ android {
         applicationId "de.stefan_oltmann.kaesekaestchen"
         minSdkVersion 14
         targetSdkVersion 30
-        versionCode 9
-        versionName "0.6.1"
+        versionCode 10
+        versionName "0.6.2"
     }
 }
 
 dependencies {
+
+    // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     implementation "androidx.core:core-ktx:$coreKtxVersion"
+
+    // Rückwärtskompatiblität
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
+
+    // Material Design
+    implementation "com.google.android.material:material:$rootProject.materialVersion"
 }

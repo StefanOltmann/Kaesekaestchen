@@ -31,6 +31,8 @@
                 android:id="@+id/aktuellerSpielerSymbol"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
+                android:width="32dp"
+                android:height="32dp"
                 android:src="@drawable/ic_spieler_symbol_kaese" />
 
             <TextView

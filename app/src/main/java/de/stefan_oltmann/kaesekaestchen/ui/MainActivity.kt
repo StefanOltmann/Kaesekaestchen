@@ -24,7 +24,6 @@
  */
 package de.stefan_oltmann.kaesekaestchen.ui
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -33,6 +32,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.Spinner
+import androidx.appcompat.app.AppCompatActivity
 import de.stefan_oltmann.kaesekaestchen.R
 import de.stefan_oltmann.kaesekaestchen.model.SpielerTyp
 import de.stefan_oltmann.kaesekaestchen.model.SpielerTyp.Companion.parseStringToSpielerTyp
@@ -43,7 +43,7 @@ import de.stefan_oltmann.kaesekaestchen.model.SpielerTyp.Companion.parseStringTo
  *
  * @author Stefan Oltmann
  */
-class StartseiteActivity : Activity(), View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * Wenn eine App Einstellungen speichert, dann müssen die in einer
@@ -72,7 +72,7 @@ class StartseiteActivity : Activity(), View.OnClickListener {
 
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.startseite)
+        setContentView(R.layout.layout_main)
 
         spielenButton.setOnClickListener(this)
 

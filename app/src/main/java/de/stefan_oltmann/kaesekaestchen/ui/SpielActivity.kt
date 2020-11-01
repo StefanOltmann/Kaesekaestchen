@@ -24,14 +24,15 @@
  */
 package de.stefan_oltmann.kaesekaestchen.ui
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.Menu
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import de.stefan_oltmann.kaesekaestchen.R
 import de.stefan_oltmann.kaesekaestchen.model.*
@@ -44,7 +45,7 @@ import kotlin.concurrent.withLock
 /**
  * Die Haupt-Activty, die das Spielfeld verwaltet und den Gameloop steuert.
  */
-class SpielActivity : Activity() {
+class SpielActivity : AppCompatActivity() {
 
     private val lock = ReentrantLock()
     private val condition : Condition = lock.newCondition()
@@ -72,7 +73,7 @@ class SpielActivity : Activity() {
 
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.main)
+        setContentView(R.layout.layout_spiel)
 
         val intentExtras = intent.extras!!
         val spielerTyp1 = intentExtras["spielerTyp1"] as SpielerTyp
@@ -108,6 +109,19 @@ class SpielActivity : Activity() {
     override fun onStop() {
         running = false
         super.onStop()
+    }
+
+    /**
+     * Diese Methode muss überschrieben werden, wenn ein Menü angezeigt werden
+     * soll. Die App benutzt dieses um ein Beenden-Menü anzubieten.
+     */
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+
+        super.onCreateOptionsMenu(menu)
+
+        menuInflater.inflate(R.menu.hauptmenue, menu)
+
+        return true
     }
 
     private fun startGameLoop() {
