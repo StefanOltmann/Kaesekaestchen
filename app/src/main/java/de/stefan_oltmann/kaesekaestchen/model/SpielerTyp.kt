@@ -25,44 +25,12 @@
 package de.stefan_oltmann.kaesekaestchen.model
 
 /**
- * Spieler können entweder Menschen sein oder eine von 3 KI-Stärken.
+ * Spieler können entweder Menschen oder ein Computer sein.
  *
  * @author Stefan Oltmann
  */
 enum class SpielerTyp {
 
     MENSCH,
-    COMPUTER_EINFACH,
-    COMPUTER_MITTEL,
-    COMPUTER_SCHWER;
-
-    val isComputerGegner: Boolean
-        get() = this == COMPUTER_EINFACH || this == COMPUTER_MITTEL || this == COMPUTER_SCHWER
-
-    companion object {
-
-        /**
-         * Wenn im Spinner ein Typ ausgewählt wurde, können wir nur die
-         * String-Repräsentation davon abfragen. Der Spinner nimmt leider keine
-         * Enums entgegen. Deshalb müssen wir den richtigen Typ aus dem String
-         * parsen.
-         */
-        @JvmStatic
-        fun parseStringToSpielerTyp(string: String): SpielerTyp {
-
-            if (string == "Mensch" || string == "Human")
-                return MENSCH
-
-            if (string == "KI Leicht" || string == "KI Easy")
-                return COMPUTER_EINFACH
-
-            if (string == "KI Mittel" || string == "KI Medium")
-                return COMPUTER_MITTEL
-
-            if (string == "KI Schwer" || string == "KI Hard")
-                return COMPUTER_SCHWER
-
-            throw IllegalArgumentException("Unbekannter SpielerTyp: $string")
-        }
-    }
+    COMPUTER;
 }

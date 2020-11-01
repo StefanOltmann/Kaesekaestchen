@@ -111,19 +111,6 @@ class SpielActivity : AppCompatActivity() {
         super.onStop()
     }
 
-    /**
-     * Diese Methode muss überschrieben werden, wenn ein Menü angezeigt werden
-     * soll. Die App benutzt dieses um ein Beenden-Menü anzubieten.
-     */
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-
-        super.onCreateOptionsMenu(menu)
-
-        menuInflater.inflate(R.menu.hauptmenue, menu)
-
-        return true
-    }
-
     private fun startGameLoop() {
 
         val thread = Thread(GameLoopRunnable())
@@ -266,28 +253,19 @@ class SpielActivity : AppCompatActivity() {
 
         var zufallsStrich = waehleZufallsStrich()
 
-        /*
-         * Die einfache KI wählt einfach irgendeinen Strich, die mittlere KI
-         * passt wenigstens auf, dass kein Strich gewählt wird, der beim Zug des
-         * Gegners ein Kästchen schließen könnte und diesem damit einen Punkt
-         * schenkt.
-         */
-        if (spielerTyp === SpielerTyp.COMPUTER_MITTEL) {
+        var loopCounter = 0
 
-            var loopCounter = 0
+        while (zufallsStrich.isKoennteUmliegendendesKaestchenSchliessen()) {
 
-            while (zufallsStrich.isKoennteUmliegendendesKaestchenSchliessen()) {
+            zufallsStrich = waehleZufallsStrich()
 
-                zufallsStrich = waehleZufallsStrich()
-
-                /*
-                 * Dies wird maximal 30 Mal versucht. Konnte dann immer noch
-                 * keine gefunden werden, gibt es entweder keine mehr oder der
-                 * Gegner darf auch mal Glück haben.
-                 */
-                if (++loopCounter >= 30)
-                    break
-            }
+            /*
+             * Dies wird maximal 30 Mal versucht. Konnte dann immer noch
+             * keine gefunden werden, gibt es entweder keine mehr oder der
+             * Gegner darf auch mal Glück haben.
+             */
+            if (++loopCounter >= 30)
+                break
         }
 
         return zufallsStrich

@@ -18,35 +18,41 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:stretchColumns="1">
 
         <TableRow>
 
-            <ImageView android:src="@drawable/ic_spieler_symbol_kaese" />
+            <ImageView
+                android:id="@+id/spieler1ImageView"
+                android:src="@drawable/ic_spieler_symbol_kaese" />
 
-            <Spinner
-                android:id="@+id/spieler_typ_1_spinner"
-                android:layout_height="match_parent"
+            <Switch
+                android:id="@+id/spieler_1_ki_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:textSize="@dimen/text_size"
-                android:entries="@array/spielerTypen" />
+                android:padding="16dp"
+                android:text="@string/spieler_typ_mensch"
+                android:textSize="@dimen/text_size" />
 
         </TableRow>
 
         <TableRow>
 
-            <ImageView android:src="@drawable/ic_spieler_symbol_maus" />
+            <ImageView
+                android:id="@+id/spieler2ImageView"
+                android:src="@drawable/ic_spieler_symbol_maus" />
 
-            <Spinner
-                android:id="@+id/spieler_typ_2_spinner"
-                android:layout_height="match_parent"
+            <Switch
+                android:id="@+id/spieler_2_ki_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:textSize="@dimen/text_size"
-                android:entries="@array/spielerTypen" />
+                android:padding="16dp"
+                android:text="@string/spieler_typ_mensch"
+                android:textSize="@dimen/text_size" />
 
         </TableRow>
     </TableLayout>

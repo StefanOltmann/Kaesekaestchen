@@ -11,4 +11,6 @@
     <string name="gewinner">Winner</string>
     <string name="play_again">Play again!</string>
     <string name="zurueck_zum_hauptmenue">main menu</string>
+    <string name="spieler_typ_mensch">Human</string>
+    <string name="spieler_typ_computer">KI player</string>
 </resources>

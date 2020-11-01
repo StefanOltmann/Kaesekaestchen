@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <array name="spielerTypen">
-        <item>Mensch</item>
-        <item>KI Leicht</item>
-        <item>KI Mittel</item>
-        <!-- item>KI Schwer</item -->
-    </array>
     <array name="feldGroessen">
         <item>"3"</item>
         <item>"4"</item>

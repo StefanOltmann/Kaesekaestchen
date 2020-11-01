@@ -32,10 +32,11 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.Spinner
+import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import de.stefan_oltmann.kaesekaestchen.R
+import de.stefan_oltmann.kaesekaestchen.model.Spieler
 import de.stefan_oltmann.kaesekaestchen.model.SpielerTyp
-import de.stefan_oltmann.kaesekaestchen.model.SpielerTyp.Companion.parseStringToSpielerTyp
 
 /**
  * Diese Activity wird bei Starten der App angezeigt. Hier wird ausgewählt, wer
@@ -43,7 +44,7 @@ import de.stefan_oltmann.kaesekaestchen.model.SpielerTyp.Companion.parseStringTo
  *
  * @author Stefan Oltmann
  */
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity() {
 
     /**
      * Wenn eine App Einstellungen speichert, dann müssen die in einer
@@ -53,20 +54,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private val gameSettings
         get() = getSharedPreferences("game_settings", Context.MODE_PRIVATE)
 
-    private val spielerTyp1Spinner
-        get() = findViewById<View>(R.id.spieler_typ_1_spinner) as Spinner
+    private val spieler1KiSwitch
+        get() = findViewById<Switch>(R.id.spieler_1_ki_switch)
 
-    private val spielerTyp2Spinner
-        get() = findViewById<View>(R.id.spieler_typ_2_spinner) as Spinner
+    private val spieler2KiSwitch
+        get() = findViewById<Switch>(R.id.spieler_2_ki_switch)
 
     private val feldGroesseXSpinner
-        get() = findViewById<View>(R.id.feld_groesse_x) as Spinner
+        get() = findViewById<Spinner>(R.id.feld_groesse_x)
 
     private val feldGroesseYSpinner
-        get() = findViewById<View>(R.id.feld_groesse_y) as Spinner
+        get() = findViewById<Spinner>(R.id.feld_groesse_y)
 
     private val spielenButton
-        get() = findViewById<View>(R.id.spielen) as Button
+        get() = findViewById<Button>(R.id.spielen)
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -74,7 +75,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         setContentView(R.layout.layout_main)
 
-        spielenButton.setOnClickListener(this)
+        spielenButton.setOnClickListener { onSpielenClick() }
+
+        spieler1KiSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            buttonView.text = getText(
+                if (isChecked) R.string.spieler_typ_computer else R.string.spieler_typ_mensch)
+        }
+
+        spieler2KiSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            buttonView.text = getText(
+                if (isChecked) R.string.spieler_typ_computer else R.string.spieler_typ_mensch)
+        }
 
         restoreGameSettings()
     }
@@ -104,12 +115,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onClick(v: View) {
+    fun onSpielenClick() {
 
         saveGameSettings()
 
-        val spielerTyp1 = parseStringToSpielerTyp(spielerTyp1Spinner.selectedItem as String)
-        val spielerTyp2 = parseStringToSpielerTyp(spielerTyp2Spinner.selectedItem as String)
+        val spielerTyp1 = if (spieler1KiSwitch.isChecked) SpielerTyp.COMPUTER else SpielerTyp.MENSCH
+        val spielerTyp2 = if (spieler2KiSwitch.isChecked) SpielerTyp.COMPUTER else SpielerTyp.MENSCH
+
         val feldGroesseX = (feldGroesseXSpinner.selectedItem as String).toInt()
         val feldGroesseY = (feldGroesseYSpinner.selectedItem as String).toInt()
 
@@ -136,15 +148,28 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         startActivity(intent)
     }
 
+    override fun onPause() {
+        super.onPause()
+
+        saveGameSettings()
+    }
+
     /*
-     * Setzt der View die gespeicherten Game-Settings
+     * Setzt der View die gespeicherten Game-Settings.
      */
     private fun restoreGameSettings() {
 
-        spielerTyp1Spinner.setSelection(gameSettings.getInt("spielerTyp1", 0))
-        spielerTyp2Spinner.setSelection(gameSettings.getInt("spielerTyp2", 2))
-        feldGroesseXSpinner.setSelection(gameSettings.getInt("feldGroesseX", 3))
-        feldGroesseYSpinner.setSelection(gameSettings.getInt("feldGroesseY", 3))
+        /*
+         * Da der View Eigenschaften gesetzt werden hier nochmal
+         * sicherstellen, dass wir auf dem UI-Thread sind.
+         */
+        runOnUiThread {
+
+            spieler1KiSwitch.isChecked = gameSettings.getBoolean("spieler_typ_1_ki", false)
+            spieler2KiSwitch.isChecked = gameSettings.getBoolean("spieler_typ_2_ki", true)
+            feldGroesseXSpinner.setSelection(gameSettings.getInt("feld_groesse_x", 6))
+            feldGroesseYSpinner.setSelection(gameSettings.getInt("feld_groesse_y", 6))
+        }
     }
 
     /*
@@ -154,10 +179,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         val gameSettingsEditor = gameSettings.edit()
 
-        gameSettingsEditor.putInt("spielerTyp1", spielerTyp1Spinner.selectedItemPosition)
-        gameSettingsEditor.putInt("spielerTyp2", spielerTyp2Spinner.selectedItemPosition)
-        gameSettingsEditor.putInt("feldGroesseX", feldGroesseXSpinner.selectedItemPosition)
-        gameSettingsEditor.putInt("feldGroesseY", feldGroesseYSpinner.selectedItemPosition)
+        gameSettingsEditor.putBoolean("spieler_typ_1_ki", spieler1KiSwitch.isChecked)
+        gameSettingsEditor.putBoolean("spieler_typ_2_ki", spieler2KiSwitch.isChecked)
+        gameSettingsEditor.putInt("feld_groesse_x", feldGroesseXSpinner.selectedItemPosition)
+        gameSettingsEditor.putInt("feld_groesse_y", feldGroesseYSpinner.selectedItemPosition)
 
         gameSettingsEditor.apply()
     }

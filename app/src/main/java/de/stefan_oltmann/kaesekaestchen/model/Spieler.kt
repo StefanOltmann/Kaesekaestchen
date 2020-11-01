@@ -38,5 +38,5 @@ data class Spieler(val name: String,
                    val spielerTyp: SpielerTyp) {
 
     val isComputerGegner: Boolean
-        get() = spielerTyp.isComputerGegner
+        get() = spielerTyp == SpielerTyp.COMPUTER
 }
