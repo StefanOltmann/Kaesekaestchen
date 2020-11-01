@@ -31,8 +31,6 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
-import androidx.core.content.ContextCompat
-import de.stefan_oltmann.kaesekaestchen.R
 import de.stefan_oltmann.kaesekaestchen.model.Spielfeld
 import de.stefan_oltmann.kaesekaestchen.model.Strich
 import java.util.concurrent.locks.Condition
@@ -48,14 +46,18 @@ import kotlin.concurrent.withLock
 class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, attrs), OnTouchListener {
 
     companion object {
-        var KAESTCHEN_SEITENLAENGE = 50
         var PADDING = 5
+
+        // FIXME Kein guter Stil
+        var kaestchenSeitenlaenge = 50
     }
 
     private var spielfeld: Spielfeld? = null
 
     private var lock: Lock? = null
     private var condition: Condition? = null
+
+    private val paint = Paint()
 
     /**
      * Über die letzte Eingabe wird in Erfahrung gebracht, was der Nutzer
@@ -89,14 +91,10 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         val maxBreite = (w - PADDING * 2) / spielfeld!!.breiteInKaestchen
         val maxHoehe = (h - PADDING * 2) / spielfeld!!.hoeheInKaestchen
 
-        KAESTCHEN_SEITENLAENGE = kotlin.math.min(maxBreite, maxHoehe)
+        kaestchenSeitenlaenge = kotlin.math.min(maxBreite, maxHoehe)
     }
 
     override fun onDraw(canvas: Canvas) {
-
-        canvas.drawColor(ContextCompat.getColor(context,
-            R.color.hintergrund_farbe
-        ))
 
         /*
          * Wurde das Spielfeld noch nicht initalisiert, dieses nicht zeichnen.
@@ -110,7 +108,7 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
                 0f,
                 width.toFloat(),
                 height.toFloat(),
-                Paint()
+                paint
             )
 
             return
@@ -132,8 +130,9 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         if (letzteEingabe != null)
             return true
 
-        val errechnetRasterX = event.x.toInt() / KAESTCHEN_SEITENLAENGE
-        val errechnetRasterY = event.y.toInt() / KAESTCHEN_SEITENLAENGE
+        val errechnetRasterX = event.x.toInt() / kaestchenSeitenlaenge
+        val errechnetRasterY = event.y.toInt() / kaestchenSeitenlaenge
+
         val kaestchen = spielfeld!!.getKaestchen(errechnetRasterX, errechnetRasterY)
 
         /*
@@ -143,7 +142,11 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         if (kaestchen.besitzer != null)
             return true
 
-        val strich = kaestchen.ermittleStrich(event.x.toInt(), event.y.toInt()) ?: return true
+        val strich = kaestchen.ermittleStrich(event.x.toInt(), event.y.toInt())
+
+        /* Wenn kein Strich ermittelt werden konnte, dann wieder rausgehen. */
+        if (strich == null)
+            return true;
 
         /*
          * Konnte kein Strich ermittelt werden, hat der Benutzer wahrscheinlich

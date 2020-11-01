@@ -63,10 +63,10 @@ data class Kaestchen(val rasterX: Int,
     }
 
     private val pixelX: Int
-        get() = rasterX * SpielfeldView.KAESTCHEN_SEITENLAENGE + SpielfeldView.PADDING
+        get() = rasterX * SpielfeldView.kaestchenSeitenlaenge + SpielfeldView.PADDING
 
     private val pixelY: Int
-        get() = rasterY * SpielfeldView.KAESTCHEN_SEITENLAENGE + SpielfeldView.PADDING
+        get() = rasterY * SpielfeldView.kaestchenSeitenlaenge + SpielfeldView.PADDING
 
     val stricheOhneBesitzer: List<Strich>
         get() {
@@ -86,34 +86,34 @@ data class Kaestchen(val rasterX: Int,
 
     private val rectStrichOben: Rect?
         get() = if (strichOben == null) null else Rect(
-            pixelX + SpielfeldView.KAESTCHEN_SEITENLAENGE / 4,
-            pixelY - SpielfeldView.KAESTCHEN_SEITENLAENGE / 4,
-            pixelX + (SpielfeldView.KAESTCHEN_SEITENLAENGE * 0.75).toInt(),
-            pixelY + SpielfeldView.KAESTCHEN_SEITENLAENGE / 4
+            pixelX + SpielfeldView.kaestchenSeitenlaenge / 4,
+            pixelY - SpielfeldView.kaestchenSeitenlaenge / 4,
+            pixelX + (SpielfeldView.kaestchenSeitenlaenge * 0.75).toInt(),
+            pixelY + SpielfeldView.kaestchenSeitenlaenge / 4
         )
 
     private val rectStrichUnten: Rect?
         get() = if (strichUnten == null) null else Rect(
-            pixelX + SpielfeldView.KAESTCHEN_SEITENLAENGE / 4,
-            pixelY + (SpielfeldView.KAESTCHEN_SEITENLAENGE * 0.75).toInt(),
-            pixelX + (SpielfeldView.KAESTCHEN_SEITENLAENGE * 0.75).toInt(),
-            pixelY + SpielfeldView.KAESTCHEN_SEITENLAENGE + SpielfeldView.KAESTCHEN_SEITENLAENGE / 4
+            pixelX + SpielfeldView.kaestchenSeitenlaenge / 4,
+            pixelY + (SpielfeldView.kaestchenSeitenlaenge * 0.75).toInt(),
+            pixelX + (SpielfeldView.kaestchenSeitenlaenge * 0.75).toInt(),
+            pixelY + SpielfeldView.kaestchenSeitenlaenge + SpielfeldView.kaestchenSeitenlaenge / 4
         )
 
     private val rectStrichLinks: Rect?
         get() = if (strichLinks == null) null else Rect(
-            pixelX - SpielfeldView.KAESTCHEN_SEITENLAENGE / 4,
-            pixelY + SpielfeldView.KAESTCHEN_SEITENLAENGE / 4,
-            pixelX + SpielfeldView.KAESTCHEN_SEITENLAENGE / 4,
-            pixelY + (SpielfeldView.KAESTCHEN_SEITENLAENGE * 0.75).toInt()
+            pixelX - SpielfeldView.kaestchenSeitenlaenge / 4,
+            pixelY + SpielfeldView.kaestchenSeitenlaenge / 4,
+            pixelX + SpielfeldView.kaestchenSeitenlaenge / 4,
+            pixelY + (SpielfeldView.kaestchenSeitenlaenge * 0.75).toInt()
         )
 
     private val rectStrichRechts: Rect?
         get() = if (strichRechts == null) null else Rect(
-            pixelX + (SpielfeldView.KAESTCHEN_SEITENLAENGE * 0.75).toInt(),
-            pixelY + SpielfeldView.KAESTCHEN_SEITENLAENGE / 4,
-            pixelX + SpielfeldView.KAESTCHEN_SEITENLAENGE + SpielfeldView.KAESTCHEN_SEITENLAENGE / 4,
-            pixelY + (SpielfeldView.KAESTCHEN_SEITENLAENGE * 0.75).toInt()
+            pixelX + (SpielfeldView.kaestchenSeitenlaenge * 0.75).toInt(),
+            pixelY + SpielfeldView.kaestchenSeitenlaenge / 4,
+            pixelX + SpielfeldView.kaestchenSeitenlaenge + SpielfeldView.kaestchenSeitenlaenge / 4,
+            pixelY + (SpielfeldView.kaestchenSeitenlaenge * 0.75).toInt()
         )
 
     /**
@@ -144,7 +144,7 @@ data class Kaestchen(val rasterX: Int,
 
             val symbol = besitzer!!.symbol
 
-            symbol.setBounds(0, 0, SpielfeldView.KAESTCHEN_SEITENLAENGE, SpielfeldView.KAESTCHEN_SEITENLAENGE)
+            symbol.setBounds(0, 0, SpielfeldView.kaestchenSeitenlaenge, SpielfeldView.kaestchenSeitenlaenge)
             canvas.translate(pixelX.toFloat(), pixelY.toFloat())
             symbol.draw(canvas)
             canvas.translate(-pixelX.toFloat(), -pixelY.toFloat())
@@ -157,7 +157,7 @@ data class Kaestchen(val rasterX: Int,
             canvas.drawLine(
                 pixelX.toFloat(),
                 pixelY.toFloat(),
-                pixelX + SpielfeldView.KAESTCHEN_SEITENLAENGE.toFloat(),
+                pixelX + SpielfeldView.kaestchenSeitenlaenge.toFloat(),
                 pixelY.toFloat(),
                 rahmenPaint
             )
@@ -172,9 +172,9 @@ data class Kaestchen(val rasterX: Int,
 
         canvas.drawLine(
             pixelX.toFloat(),
-            pixelY + SpielfeldView.KAESTCHEN_SEITENLAENGE.toFloat(),
-            pixelX + SpielfeldView.KAESTCHEN_SEITENLAENGE.toFloat(),
-            pixelY + SpielfeldView.KAESTCHEN_SEITENLAENGE.toFloat(),
+            pixelY + SpielfeldView.kaestchenSeitenlaenge.toFloat(),
+            pixelX + SpielfeldView.kaestchenSeitenlaenge.toFloat(),
+            pixelY + SpielfeldView.kaestchenSeitenlaenge.toFloat(),
             rahmenPaint
         )
 
@@ -186,7 +186,7 @@ data class Kaestchen(val rasterX: Int,
                 pixelX.toFloat(),
                 pixelY.toFloat(),
                 pixelX.toFloat(),
-                pixelY + SpielfeldView.KAESTCHEN_SEITENLAENGE.toFloat(),
+                pixelY + SpielfeldView.kaestchenSeitenlaenge.toFloat(),
                 rahmenPaint
             )
         }
@@ -199,10 +199,10 @@ data class Kaestchen(val rasterX: Int,
             rahmenPaint.color = Color.BLACK
 
         canvas.drawLine(
-            pixelX + SpielfeldView.KAESTCHEN_SEITENLAENGE.toFloat(),
+            pixelX + SpielfeldView.kaestchenSeitenlaenge.toFloat(),
             pixelY.toFloat(),
-            pixelX + SpielfeldView.KAESTCHEN_SEITENLAENGE.toFloat(),
-            pixelY + SpielfeldView.KAESTCHEN_SEITENLAENGE.toFloat(),
+            pixelX + SpielfeldView.kaestchenSeitenlaenge.toFloat(),
+            pixelY + SpielfeldView.kaestchenSeitenlaenge.toFloat(),
             rahmenPaint
         )
 
@@ -218,26 +218,26 @@ data class Kaestchen(val rasterX: Int,
         )
 
         canvas.drawRect(
-            pixelX + SpielfeldView.KAESTCHEN_SEITENLAENGE - 1.toFloat(),
+            pixelX + SpielfeldView.kaestchenSeitenlaenge - 1.toFloat(),
             pixelY - 1.toFloat(),
-            pixelX + SpielfeldView.KAESTCHEN_SEITENLAENGE + 1.toFloat(),
+            pixelX + SpielfeldView.kaestchenSeitenlaenge + 1.toFloat(),
             pixelY + 1.toFloat(),
             rahmenPaint
         )
 
         canvas.drawRect(
             pixelX - 1.toFloat(),
-            pixelY + SpielfeldView.KAESTCHEN_SEITENLAENGE - 1.toFloat(),
+            pixelY + SpielfeldView.kaestchenSeitenlaenge - 1.toFloat(),
             pixelX + 1.toFloat(),
-            pixelY + SpielfeldView.KAESTCHEN_SEITENLAENGE + 1.toFloat(),
+            pixelY + SpielfeldView.kaestchenSeitenlaenge + 1.toFloat(),
             rahmenPaint
         )
 
         canvas.drawRect(
-            pixelX + SpielfeldView.KAESTCHEN_SEITENLAENGE - 1.toFloat(),
-            pixelY + SpielfeldView.KAESTCHEN_SEITENLAENGE - 1.toFloat(),
-            pixelX + SpielfeldView.KAESTCHEN_SEITENLAENGE + 1.toFloat(),
-            pixelY + SpielfeldView.KAESTCHEN_SEITENLAENGE + 1.toFloat(),
+            pixelX + SpielfeldView.kaestchenSeitenlaenge - 1.toFloat(),
+            pixelY + SpielfeldView.kaestchenSeitenlaenge - 1.toFloat(),
+            pixelX + SpielfeldView.kaestchenSeitenlaenge + 1.toFloat(),
+            pixelY + SpielfeldView.kaestchenSeitenlaenge + 1.toFloat(),
             rahmenPaint
         )
     }

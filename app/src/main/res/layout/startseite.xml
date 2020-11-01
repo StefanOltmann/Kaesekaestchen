@@ -2,24 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/hintergrund_farbe"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:scrollbars="horizontal">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dip"
-        android:layout_marginBottom="5dip"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:src="@drawable/ic_icon" />
 
     <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_margin="16dp"
         android:stretchColumns="1">
 
         <TableRow>
@@ -28,8 +26,11 @@
 
             <Spinner
                 android:id="@+id/spieler_typ_1_spinner"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:textSize="@dimen/text_size"
                 android:entries="@array/spielerTypen" />
 
         </TableRow>
@@ -40,8 +41,11 @@
 
             <Spinner
                 android:id="@+id/spieler_typ_2_spinner"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:textSize="@dimen/text_size"
                 android:entries="@array/spielerTypen" />
 
         </TableRow>
@@ -50,31 +54,36 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:gravity="center_vertical|center_horizontal">
 
         <TextView
-            style="@style/SpielerNamen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size"
             android:text="@string/feld_groesse" />
 
         <Spinner
             android:id="@+id/feld_groesse_x"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:entries="@array/feldGroessen" />
+            android:layout_height="match_parent"
+            android:entries="@array/feldGroessen"
+            android:spinnerMode="dropdown"
+            android:textSize="@dimen/text_size" />
 
         <TextView
-            style="@style/SpielerNamen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size"
             android:text="x" />
 
         <Spinner
             android:id="@+id/feld_groesse_y"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:entries="@array/feldGroessen" />
+            android:layout_height="match_parent"
+            android:entries="@array/feldGroessen"
+            android:spinnerMode="dropdown"
+            android:textSize="@dimen/text_size" />
 
     </LinearLayout>
 
@@ -83,9 +92,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:drawableLeft="@drawable/ic_spielen"
         android:drawablePadding="10dp"
-        android:text="@string/spielen" />
+        android:text="@string/spielen"
+        android:textSize="@dimen/text_size" />
 
 </LinearLayout>
