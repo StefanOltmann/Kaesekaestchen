@@ -60,7 +60,6 @@ class SpielFragment : Fragment() {
         spielerManager.addSpieler(
             Spieler(
                 0, resources.getString(R.string.spieler_1_name),
-                ContextCompat.getDrawable(requireContext(), R.drawable.ic_spieler_symbol_kaese)!!,
                 ContextCompat.getColor(requireContext(), R.color.spieler_1_farbe),
                 spielerTyp1
             )
@@ -69,7 +68,6 @@ class SpielFragment : Fragment() {
         spielerManager.addSpieler(
             Spieler(
                 1, resources.getString(R.string.spieler_2_name),
-                ContextCompat.getDrawable(requireContext(), R.drawable.ic_spieler_symbol_maus)!!,
                 ContextCompat.getColor(requireContext(), R.color.spieler_2_farbe),
                 spielerTyp2
             )

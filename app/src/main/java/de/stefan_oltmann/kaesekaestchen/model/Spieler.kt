@@ -34,7 +34,6 @@ import android.graphics.drawable.Drawable
  */
 data class Spieler(val id: Int,
                    val name: String,
-                   val symbol: Drawable,
                    val farbe: Int,
                    val spielerTyp: SpielerTyp) {
 

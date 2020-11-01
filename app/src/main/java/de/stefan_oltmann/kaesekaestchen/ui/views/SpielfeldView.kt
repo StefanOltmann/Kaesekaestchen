@@ -29,10 +29,12 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import de.stefan_oltmann.kaesekaestchen.R
 import de.stefan_oltmann.kaesekaestchen.model.Kaestchen
@@ -277,7 +279,11 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
 
             fuellungPaint.color = it.farbe
 
-            val symbol = it.symbol
+            val symbol : Drawable =
+                if (it.id == 0)
+                    AppCompatResources.getDrawable(context!!, R.drawable.ic_spieler_symbol_kaese)!!
+                else
+                    AppCompatResources.getDrawable(context!!, R.drawable.ic_spieler_symbol_maus)!!
 
             symbol.setBounds(0, 0, kaestchenSeitenlaengePixel, kaestchenSeitenlaengePixel)
             canvas.translate(pixelX.toFloat(), pixelY.toFloat())
