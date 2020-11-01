@@ -125,6 +125,57 @@ class Spielfeld private constructor(
         return schliesseAlleMoeglichenKaestchen(spieler)
     }
 
+    fun ermittleGutenStrichFuerComputerZug(): Strich {
+
+        /*
+         * Wenn irgendwo ein Kästchen geschlossen werden kann, dann
+         * soll das natürlich auf jeden Fall passieren. Alles andere
+         * wäre ja wirklich sehr dumm.
+         */
+        findeLetztenOffenenStrichFuerKaestchen()?.let {
+            return it;
+        }
+
+        /*
+         * Falls kein Kästchen irgendwo geschlossen werden kann probieren
+         * wir jetzt zufällig Striche durch und achten darauf, dass wir
+         * dabei keine Punkte verschenken. Wenn wir aber nach 30 Versuchen
+         * nichts gefunden haben, muss es wohl so sein.
+         */
+
+        var zufallsStrich = findeZufaelligenStrich()
+
+        var loopCounter = 0
+
+        while (zufallsStrich.isKoennteUmliegendendesKaestchenSchliessen()) {
+
+            zufallsStrich = findeZufaelligenStrich()
+
+            if (++loopCounter >= 30)
+                break
+        }
+
+        return zufallsStrich
+    }
+
+    fun findeLetztenOffenenStrichFuerKaestchen(): Strich? {
+
+        for (kaestchen in offeneKaestchenUnmodifiable)
+            if (kaestchen.stricheOhneBesitzer.size == 1)
+                return kaestchen.stricheOhneBesitzer[0]
+
+        return null
+    }
+
+    fun findeZufaelligenStrich(): Strich {
+
+        val stricheOhneBesitzer = stricheOhneBesitzerUnmodifiable.toList()
+
+        val zufallsZahl = (0..stricheOhneBesitzer.size).random()
+
+        return stricheOhneBesitzer[zufallsZahl]
+    }
+
     object SpielfeldFactory {
 
         /**

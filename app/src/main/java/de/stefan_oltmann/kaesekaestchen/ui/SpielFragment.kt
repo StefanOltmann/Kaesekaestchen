@@ -13,7 +13,6 @@ import androidx.navigation.fragment.navArgs
 import de.stefan_oltmann.kaesekaestchen.R
 import de.stefan_oltmann.kaesekaestchen.databinding.FragmentSpielBinding
 import de.stefan_oltmann.kaesekaestchen.model.*
-import java.util.*
 import java.util.concurrent.locks.Condition
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
@@ -142,7 +141,7 @@ class SpielFragment : Fragment() {
                         /* Ignorieren. */
                     }
 
-                    eingabeStrich = fuehreKiGegnerZugAus()
+                    eingabeStrich = spielfeld.ermittleGutenStrichFuerComputerZug()
                 }
 
                 waehleStrich(eingabeStrich!!)
@@ -163,7 +162,7 @@ class SpielFragment : Fragment() {
              */
             if (isGameOver()) {
 
-                val gewinner = ermittleGewinner()
+                val gewinner = ermittleSpielerMitHoechsterPunktZahl()
 
                 val punkteStandMap = mutableMapOf<Int, Int>()
 
@@ -179,51 +178,6 @@ class SpielFragment : Fragment() {
                 NavHostFragment.findNavController(this@SpielFragment).navigate(action)
             }
         }
-    }
-
-    private fun fuehreKiGegnerZugAus(): Strich {
-
-        val strich = waehleLetztenOffenenStrichFuerKaestchen()
-
-        if (strich != null)
-            return strich
-
-        var zufallsStrich = waehleZufallsStrich()
-
-        var loopCounter = 0
-
-        while (zufallsStrich.isKoennteUmliegendendesKaestchenSchliessen()) {
-
-            zufallsStrich = waehleZufallsStrich()
-
-            /*
-             * Dies wird maximal 30 Mal versucht. Konnte dann immer noch
-             * keine gefunden werden, gibt es entweder keine mehr oder der
-             * Gegner darf auch mal Glück haben.
-             */
-            if (++loopCounter >= 30)
-                break
-        }
-
-        return zufallsStrich
-    }
-
-    private fun waehleLetztenOffenenStrichFuerKaestchen(): Strich? {
-
-        for (kaestchen in spielfeld.offeneKaestchenUnmodifiable)
-            if (kaestchen.stricheOhneBesitzer.size == 1)
-                return kaestchen.stricheOhneBesitzer[0]
-
-        return null
-    }
-
-    private fun waehleZufallsStrich(): Strich {
-
-        val stricheOhneBesitzer = spielfeld.stricheOhneBesitzerUnmodifiable.toList()
-
-        val zufallsZahl = Random().nextInt(stricheOhneBesitzer.size)
-
-        return stricheOhneBesitzer[zufallsZahl]
     }
 
     private fun waehleStrich(strich: Strich) {
@@ -252,7 +206,7 @@ class SpielFragment : Fragment() {
         return spielfeld.isAlleKaestchenHabenBesitzer()
     }
 
-    fun ermittleGewinner(): Spieler {
+    fun ermittleSpielerMitHoechsterPunktZahl(): Spieler {
 
         var gewinner: Spieler? = null
         var maxPunktZahl = 0
