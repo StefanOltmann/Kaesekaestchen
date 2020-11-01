@@ -106,13 +106,13 @@ class SpielFragment : Fragment() {
                 val spieler = spielerManager.getAktuellerSpieler()
 
                 /*
-                 * Anzeige welcher Spieler dran ist und wieviele Punkt dieser
-                 * schon hat.
+                 * Der Spieler der gerade nicht dran ist bekommt
+                 * eine halb-transparente Anzeige.
                  */
                 handler.post {
 
-                    binding.aktuellerSpielerSymbolImageView.setImageDrawable(spieler.symbol)
-                    binding.punkteAnzeigeTextView.text = ermittlePunktzahl(spieler).toString()
+                    binding.spielKaeseImageView.alpha = if (spieler.id == 1) 0.1f else 1.0f
+                    binding.spielMausImageView.alpha = if (spieler.id == 0) 0.1f else 1.0f
                 }
 
                 var eingabeStrich: Strich?
@@ -161,6 +161,9 @@ class SpielFragment : Fragment() {
              * "Game Score" kann angezeigt werden.
              */
             if (isGameOver()) {
+
+                /* Noch eine Sekunde warten, um das Ende zu sehen. */
+                Thread.sleep(1000)
 
                 val gewinner = ermittleSpielerMitHoechsterPunktZahl()
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
     </data>
@@ -17,7 +18,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:src="@drawable/ic_icon" />
+            app:srcCompat="@drawable/ic_icon" />
 
         <TableLayout
             android:layout_width="fill_parent"
@@ -31,7 +32,7 @@
 
                 <ImageView
                     android:id="@+id/spieler_1_image_view"
-                    android:src="@drawable/ic_spieler_symbol_kaese" />
+                    app:srcCompat="@drawable/ic_spieler_symbol_kaese" />
 
                 <Switch
                     android:id="@+id/spieler_1_ki_switch"
@@ -48,7 +49,7 @@
 
                 <ImageView
                     android:id="@+id/spieler_2_image_view"
-                    android:src="@drawable/ic_spieler_symbol_maus" />
+                    app:srcCompat="@drawable/ic_spieler_symbol_maus" />
 
                 <Switch
                     android:id="@+id/spieler_2_ki_switch"

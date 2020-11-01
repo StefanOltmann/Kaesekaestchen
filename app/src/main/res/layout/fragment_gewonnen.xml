@@ -21,7 +21,7 @@
             android:layout_marginEnd="32dp"
             android:layout_marginRight="32dp"
             android:layout_marginBottom="32dp"
-            android:src="@drawable/ic_pokal_kaese"
+            app:srcCompat="@drawable/ic_pokal_kaese"
             app:layout_constraintBottom_toTopOf="@+id/kaese_image_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +34,7 @@
             android:layout_marginStart="32dp"
             android:layout_marginLeft="32dp"
             android:layout_marginBottom="32dp"
-            android:src="@drawable/ic_spieler_symbol_kaese"
+            app:srcCompat="@drawable/ic_spieler_symbol_kaese"
             app:layout_constraintBottom_toTopOf="@+id/hauptmenue_button"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
-            android:src="@drawable/ic_spieler_symbol_maus"
+            app:srcCompat="@drawable/ic_spieler_symbol_maus"
             app:layout_constraintBottom_toTopOf="@+id/hauptmenue_button"
             app:layout_constraintEnd_toEndOf="@+id/pokal_image_view" />
 

@@ -11,7 +11,8 @@
         tools:layout="@layout/fragment_start" >
         <action
             android:id="@+id/action_nav_start_to_nav_spiel"
-            app:destination="@id/nav_spiel" />
+            app:destination="@id/nav_spiel"
+            app:enterAnim="@anim/nav_default_enter_anim" />
     </fragment>
 
     <fragment
@@ -33,6 +34,7 @@
         <action
             android:id="@+id/action_nav_spiel_to_gewonnenFragment"
             app:destination="@id/nav_gewonnen"
+            app:enterAnim="@anim/slide_in_bottom"
             app:popUpTo="@id/nav_spiel"
             app:popUpToInclusive="true" />
     </fragment>
