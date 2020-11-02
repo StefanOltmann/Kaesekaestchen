@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import de.stefan_oltmann.kaesekaestchen.databinding.FragmentStartBinding
 import de.stefan_oltmann.kaesekaestchen.model.FeldGroesse
@@ -22,6 +23,10 @@ class StartFragment : Fragment() {
         private const val GAME_SETTINGS_KEY_FELD_GROESSE = "feld_groesse"
     }
 
+    private val viewModel by lazy {
+        ViewModelProvider(this).get(StartViewModel::class.java)
+    }
+
     /**
      * Wenn eine App Einstellungen speichert, dann müssen die in einer
      * "shared preferences"-Map unter einem bestimmten Schlüssel abgelegt
@@ -30,9 +35,6 @@ class StartFragment : Fragment() {
     private lateinit var gameSettings : SharedPreferences
 
     private lateinit var binding: FragmentStartBinding
-
-    private var spielModus = SpielModus.EINZELSPIELER
-    private var feldGroesse = FeldGroesse.KLEIN;
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -46,7 +48,7 @@ class StartFragment : Fragment() {
         binding.einzelspielerImageButton.setOnClickListener {
 
             /* Den gewählen Modus merken. */
-            spielModus = SpielModus.EINZELSPIELER
+            viewModel.spielModus.value = SpielModus.EINZELSPIELER
 
             setzeSpielModusButtonOptik()
         }
@@ -54,7 +56,7 @@ class StartFragment : Fragment() {
         binding.mehrspielerImageButton.setOnClickListener {
 
             /* Den gewählen Modus merken. */
-            spielModus = SpielModus.MEHRSPIELER
+            viewModel.spielModus.value = SpielModus.MEHRSPIELER
 
             setzeSpielModusButtonOptik()
         }
@@ -70,7 +72,7 @@ class StartFragment : Fragment() {
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
-                feldGroesse = FeldGroesse.values()[seekBar.progress]
+                viewModel.feldGroesse.value = FeldGroesse.values()[seekBar.progress]
             }
         })
 
@@ -87,10 +89,10 @@ class StartFragment : Fragment() {
     private fun setzeSpielModusButtonOptik() {
 
         binding.einzelspielerImageButton.alpha =
-            if (spielModus == SpielModus.EINZELSPIELER) AUSGEWAEHLT_ALPHA else AUSGEGRAUT_ALPHA
+            if (viewModel.spielModus.value == SpielModus.EINZELSPIELER) AUSGEWAEHLT_ALPHA else AUSGEGRAUT_ALPHA
 
         binding.mehrspielerImageButton.alpha =
-            if (spielModus == SpielModus.MEHRSPIELER) AUSGEWAEHLT_ALPHA else AUSGEGRAUT_ALPHA
+            if (viewModel.spielModus.value == SpielModus.MEHRSPIELER) AUSGEWAEHLT_ALPHA else AUSGEGRAUT_ALPHA
     }
 
     private fun onSpielenClick() {
@@ -99,7 +101,7 @@ class StartFragment : Fragment() {
 
         val action =
             StartFragmentDirections.actionNavStartToNavSpiel(
-                spielModus.toString(), feldGroesse.toString())
+                viewModel.spielModus.value.toString(), viewModel.feldGroesse.value.toString())
 
         NavHostFragment.findNavController(this).navigate(action)
     }
@@ -116,16 +118,16 @@ class StartFragment : Fragment() {
     private fun restoreGameSettings() {
 
         gameSettings.getString(GAME_SETTINGS_KEY_SPIEL_MODUS, null)?.let {
-            spielModus = SpielModus.valueOf(it)
+            viewModel.spielModus.value = SpielModus.valueOf(it)
         }
 
         gameSettings.getString(GAME_SETTINGS_KEY_FELD_GROESSE, null)?.let {
-            feldGroesse = FeldGroesse.valueOf(it)
+            viewModel.feldGroesse.value = FeldGroesse.valueOf(it)
         }
 
         setzeSpielModusButtonOptik()
 
-        binding.feldGroesseSeekbar.progress = feldGroesse.ordinal
+        binding.feldGroesseSeekbar.progress = viewModel.feldGroesse.value!!.ordinal
     }
 
     /*
@@ -135,8 +137,8 @@ class StartFragment : Fragment() {
 
         val gameSettingsEditor = gameSettings.edit()
 
-        gameSettingsEditor.putString(GAME_SETTINGS_KEY_SPIEL_MODUS, spielModus.toString())
-        gameSettingsEditor.putString(GAME_SETTINGS_KEY_FELD_GROESSE, feldGroesse.toString())
+        gameSettingsEditor.putString(GAME_SETTINGS_KEY_SPIEL_MODUS, viewModel.spielModus.value.toString())
+        gameSettingsEditor.putString(GAME_SETTINGS_KEY_FELD_GROESSE, viewModel.feldGroesse.value.toString())
 
         gameSettingsEditor.apply()
     }
