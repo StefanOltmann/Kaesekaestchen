@@ -80,7 +80,7 @@ class StartFragment : Fragment() {
 
         restoreGameSettings()
 
-        return binding.root;
+        return binding.root
     }
 
     /*

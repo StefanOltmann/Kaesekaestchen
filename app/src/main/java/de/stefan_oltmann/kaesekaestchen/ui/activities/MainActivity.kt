@@ -45,8 +45,6 @@ import de.stefan_oltmann.kaesekaestchen.R
  */
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)

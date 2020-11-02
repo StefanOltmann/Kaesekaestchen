@@ -11,12 +11,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
 import de.stefan_oltmann.kaesekaestchen.controller.GameLoop
 import de.stefan_oltmann.kaesekaestchen.controller.GameLoopCallback
-import de.stefan_oltmann.kaesekaestchen.controller.SpielerManager
 import de.stefan_oltmann.kaesekaestchen.databinding.FragmentSpielBinding
 import de.stefan_oltmann.kaesekaestchen.model.*
-import java.util.concurrent.locks.Condition
-import java.util.concurrent.locks.ReentrantLock
-import kotlin.concurrent.withLock
 
 class SpielFragment : Fragment(), GameLoopCallback {
 
