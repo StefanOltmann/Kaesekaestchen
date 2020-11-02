@@ -22,9 +22,9 @@
  * You should have received a copy of the GNU General Public License
  * along with Kaesekaestchen. If not, see <http://www.gnu.org/licenses/>.
  */
-package de.stefan_oltmann.kaesekaestchen.model
+package de.stefan_oltmann.kaesekaestchen.controller
 
-import java.util.*
+import de.stefan_oltmann.kaesekaestchen.model.Spieler
 
 /**
  * Der SpielerManager bestimmt, welcher Spieler am Zug ist und wählt den

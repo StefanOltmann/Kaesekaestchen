@@ -37,6 +37,7 @@ import android.view.View.OnTouchListener
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import de.stefan_oltmann.kaesekaestchen.R
+import de.stefan_oltmann.kaesekaestchen.controller.GameLoop
 import de.stefan_oltmann.kaesekaestchen.model.Kaestchen
 import de.stefan_oltmann.kaesekaestchen.model.Spieler
 import de.stefan_oltmann.kaesekaestchen.model.Spielfeld
@@ -57,13 +58,7 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         var PADDING_PX = 10
     }
 
-    private var spielfeld: Spielfeld? = null
-
-    /*
-     * Lock & Condition wird zum Warten auf den Spieler genutzt.
-     */
-    private var lock: Lock? = null
-    private var condition: Condition? = null
+    private lateinit var gameLoop: GameLoop
 
     /*
      * Seitenlaenge eines Kästchens in Pixel
@@ -87,23 +82,11 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         rahmenPaint.strokeWidth = 5f
     }
 
-    /**
-     * Über die letzte Eingabe wird in Erfahrung gebracht, was der Nutzer
-     * möchte. Der Abruf dieses Wertes ist sozusagen im Spiel-Ablauf blocking.
-     */
-    @Volatile
-    var letzteEingabe: Strich? = null
-        private set
+    fun init(gameLoop: GameLoop) {
 
-    fun init(spielfeld: Spielfeld?, lock: Lock, condition: Condition) {
-        this.spielfeld = spielfeld
-        this.lock = lock
-        this.condition = condition
+        this.gameLoop = gameLoop
+
         setOnTouchListener(this)
-    }
-
-    fun resetLetzteEingabe() {
-        letzteEingabe = null
     }
 
     /**
@@ -113,36 +96,15 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
      */
     override fun onSizeChanged(breitePixel: Int, hoehePixel: Int, oldw: Int, oldh: Int) {
 
-        if (spielfeld == null)
-            return
-
-        val maxBreitePixel = (breitePixel - PADDING_PX * 2) / spielfeld!!.breiteInKaestchen
-        val maxHoehePixel = (hoehePixel - PADDING_PX * 2) / spielfeld!!.hoeheInKaestchen
+        val maxBreitePixel = (breitePixel - PADDING_PX * 2) / gameLoop.spielfeld.breiteInKaestchen
+        val maxHoehePixel = (hoehePixel - PADDING_PX * 2) / gameLoop.spielfeld.hoeheInKaestchen
 
         kaestchenSeitenlaengePixel = kotlin.math.min(maxBreitePixel, maxHoehePixel)
     }
 
     override fun onDraw(canvas: Canvas) {
 
-        /*
-         * Wurde das Spielfeld noch nicht initalisiert, dieses nicht zeichnen.
-         * Ansonsten würde das zu einer NullPointer-Exception führen. Dies wird
-         * auch benötigt, um korrekt im GUI-Editor dargestellt zu werden.
-         */
-        if (spielfeld == null) {
-
-            canvas.drawRect(
-                0f,
-                0f,
-                width.toFloat(),
-                height.toFloat(),
-                paint
-            )
-
-            return
-        }
-
-        for (kaestchen in spielfeld!!.kaestchenListe)
+        for (kaestchen in gameLoop.spielfeld.kaestchenListe)
             drawKaestchen(kaestchen, canvas)
     }
 
@@ -155,7 +117,7 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         if (event.action != MotionEvent.ACTION_DOWN)
             return true
 
-        if (letzteEingabe != null)
+        if (gameLoop.letzteEingabe != null)
             return true
 
         val errechnetRasterX = event.x.toInt() / kaestchenSeitenlaengePixel
@@ -165,10 +127,10 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
          * Wenn der Anwender irgendwo außerhalb des Spielfelds drückt soll
          * dies einfach ignoriert werden und nicht zu einem Fehler führen.
          */
-        if (!spielfeld!!.isImRaster(errechnetRasterX, errechnetRasterY))
+        if (!gameLoop.spielfeld.isImRaster(errechnetRasterX, errechnetRasterY))
             return true
 
-        val kaestchen = spielfeld!!.getKaestchen(errechnetRasterX, errechnetRasterY)
+        val kaestchen = gameLoop.spielfeld.getKaestchen(errechnetRasterX, errechnetRasterY)
 
         /*
          * Wenn sich an der berührten Position kein Kästchen befindet oder
@@ -179,37 +141,24 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
 
         val strich = ermittleStrich(kaestchen, event.x.toInt(), event.y.toInt())
 
-        /* Wenn kein Strich ermittelt werden konnte, dann wieder rausgehen. */
-        if (strich == null)
-            return true;
-
         /*
          * Konnte kein Strich ermittelt werden, hat der Benutzer wahrscheinlich
          * die Mitte des Kästchens getroffen. Es ist jedenfalls nicht klar,
          * welchen Strich er gemeint hat. Deshalb wird die Eingabe abgebrochen.
          */
+        if (strich == null)
+            return true
 
-        /*
-         * An dieser Stelle hat der Benutzer seine Eingabe erfolgreich getätigt.
-         * Wir schreiben seine Eingabe in eine Zwischenvariable die zur
-         * Kommunikation mit dem Gameloop-Thread verwendet wird und wecken
-         * diesen via "notifyAll" wieder auf. Der Gameloop-Thread wurde zuvor
-         * mit "await()" auf der Condition pausiert.
-         */
-        letzteEingabe = strich
-
-        lock!!.withLock {
-            condition!!.signalAll()
-        }
+        gameLoop.behandleNutzerEingabe(strich)
 
         return true
     }
 
     private fun calcPixelX(kaestchen: Kaestchen) =
-        kaestchen.rasterX * kaestchenSeitenlaengePixel + PADDING_PX;
+        kaestchen.rasterX * kaestchenSeitenlaengePixel + PADDING_PX
 
     private fun calcPixelY(kaestchen: Kaestchen) =
-        kaestchen.rasterY * kaestchenSeitenlaengePixel + PADDING_PX;
+        kaestchen.rasterY * kaestchenSeitenlaengePixel + PADDING_PX
 
     private fun calcRectStrichOben(kaestchen: Kaestchen): Rect? =
         if (kaestchen.strichOben == null) null else Rect(
@@ -250,22 +199,22 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
 
         calcRectStrichOben(kaestchen)?.let {
             if (it.contains(pixelX, pixelY))
-                return kaestchen.strichOben;
+                return kaestchen.strichOben
         }
 
         calcRectStrichUnten(kaestchen)?.let {
             if (it.contains(pixelX, pixelY))
-                return kaestchen.strichUnten;
+                return kaestchen.strichUnten
         }
 
         calcRectStrichLinks(kaestchen)?.let {
             if (it.contains(pixelX, pixelY))
-                return kaestchen.strichLinks;
+                return kaestchen.strichLinks
         }
 
         calcRectStrichRechts(kaestchen)?.let {
             if (it.contains(pixelX, pixelY))
-                return kaestchen.strichRechts;
+                return kaestchen.strichRechts
         }
 
         return null
@@ -279,8 +228,8 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
 
     private fun drawKaestchen(kaestchen: Kaestchen, canvas: Canvas) {
 
-        val pixelX = calcPixelX(kaestchen);
-        val pixelY = calcPixelY(kaestchen);
+        val pixelX = calcPixelX(kaestchen)
+        val pixelY = calcPixelY(kaestchen)
 
         kaestchen.besitzer?.let {
 
