@@ -48,9 +48,7 @@ class StartFragment : Fragment() {
             /* Den gewählen Modus merken. */
             spielModus = SpielModus.EINZELSPIELER
 
-            /* Den anderen Modus-Button ausblenden. */
-            binding.einzelspielerImageButton.alpha = AUSGEWAEHLT_ALPHA
-            binding.mehrspielerImageButton.alpha = AUSGEGRAUT_ALPHA
+            setzeSpielModusButtonOptik()
         }
 
         binding.mehrspielerImageButton.setOnClickListener {
@@ -58,17 +56,17 @@ class StartFragment : Fragment() {
             /* Den gewählen Modus merken. */
             spielModus = SpielModus.MEHRSPIELER
 
-            /* Den anderen Modus-Button ausblenden. */
-            binding.einzelspielerImageButton.alpha = AUSGEGRAUT_ALPHA
-            binding.mehrspielerImageButton.alpha = AUSGEWAEHLT_ALPHA
+            setzeSpielModusButtonOptik()
         }
 
         binding.feldGroesseSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
 
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                /* Wird nicht benötigt, muss aber überschrieben werden. */
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
+                /* Wird nicht benötigt, muss aber überschrieben werden. */
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
@@ -83,7 +81,19 @@ class StartFragment : Fragment() {
         return binding.root;
     }
 
-    fun onSpielenClick() {
+    /*
+     * Setzt den Buttons zur Auswahl des Spiel-Modus die passende Optik
+     */
+    private fun setzeSpielModusButtonOptik() {
+
+        binding.einzelspielerImageButton.alpha =
+            if (spielModus == SpielModus.EINZELSPIELER) AUSGEWAEHLT_ALPHA else AUSGEGRAUT_ALPHA
+
+        binding.mehrspielerImageButton.alpha =
+            if (spielModus == SpielModus.MEHRSPIELER) AUSGEWAEHLT_ALPHA else AUSGEGRAUT_ALPHA
+    }
+
+    private fun onSpielenClick() {
 
         saveGameSettings()
 
@@ -113,11 +123,7 @@ class StartFragment : Fragment() {
             feldGroesse = FeldGroesse.valueOf(it)
         }
 
-        binding.einzelspielerImageButton.alpha =
-            if (spielModus == SpielModus.EINZELSPIELER) AUSGEWAEHLT_ALPHA else AUSGEGRAUT_ALPHA
-
-        binding.mehrspielerImageButton.alpha =
-            if (spielModus == SpielModus.MEHRSPIELER) AUSGEWAEHLT_ALPHA else AUSGEGRAUT_ALPHA
+        setzeSpielModusButtonOptik()
 
         binding.feldGroesseSeekbar.progress = feldGroesse.ordinal
     }
