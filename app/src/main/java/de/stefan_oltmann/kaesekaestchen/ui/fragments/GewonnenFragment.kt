@@ -10,6 +10,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
 import de.stefan_oltmann.kaesekaestchen.R
 import de.stefan_oltmann.kaesekaestchen.databinding.FragmentGewonnenBinding
+import de.stefan_oltmann.kaesekaestchen.model.Spieler
 
 class GewonnenFragment : Fragment() {
 
@@ -25,12 +26,14 @@ class GewonnenFragment : Fragment() {
 
         binding.lifecycleOwner = this
 
+        val gewinner = Spieler.valueOf(args.gewinnerSpieler)
+
         with(binding) {
 
-            if (args.gewinnerId == 0)
+            if (gewinner == Spieler.KAESE)
                 pokalImageView.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_pokal_kaese))
 
-            if (args.gewinnerId == 1)
+            if (gewinner == Spieler.MAUS)
                 pokalImageView.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_pokal_maus))
 
             punktestandMausText.text = args.punktestandMaus.toString()

@@ -22,10 +22,13 @@
  * You should have received a copy of the GNU General Public License
  * along with Kaesekaestchen. If not, see <http://www.gnu.org/licenses/>.
  */
-package de.stefan_oltmann.kaesekaestchen.model
+package de.stefan_oltmann.kaesekaestchen.model;
 
-enum class Spieler {
+enum class FeldGroesse(val groesseX: Int,
+                       val groesseY: Int) {
 
-    KAESE,
-    MAUS;
+    SEHR_KLEIN(3, 4),
+    KLEIN(4, 5),
+    MITTEL(4, 6),
+    GROSS(6,9);
 }

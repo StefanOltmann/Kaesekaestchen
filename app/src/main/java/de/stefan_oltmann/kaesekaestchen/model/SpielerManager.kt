@@ -35,17 +35,12 @@ import java.util.*
 class SpielerManager {
 
     /** Liste aller Spieler.  */
-    private val spielerListe: MutableList<Spieler> = mutableListOf()
+    val spieler = Spieler.values().toList()
 
     /** Der Spieler, der gerade am Zug ist.  */
     private var aktuellerSpieler: Spieler? = null
 
-    fun addSpieler(spieler: Spieler) {
-        spielerListe.add(spieler)
-    }
-
-    val spieler: List<Spieler>
-        get() = Collections.unmodifiableList(spielerListe)
+    private var computerGegner: Spieler? = null
 
     fun getAktuellerSpieler(): Spieler {
 
@@ -55,16 +50,23 @@ class SpielerManager {
         return aktuellerSpieler as Spieler
     }
 
+    fun bestimmeZufaelligComputerGegner() {
+        computerGegner = Spieler.values()[(0..1).random()]
+    }
+
+    fun isComputerGegner(spieler: Spieler) =
+        spieler == computerGegner
+
     fun waehleNaechstenSpielerAus() {
 
-        val indexAktuellerSpieler = spielerListe.indexOf(aktuellerSpieler)
+        val indexAktuellerSpieler = spieler.indexOf(aktuellerSpieler)
 
         var indexNaechsterSpieler = indexAktuellerSpieler + 1
 
         /* Starte am Ende der Liste wieder vorne. */
-        if (indexNaechsterSpieler > spielerListe.size - 1)
+        if (indexNaechsterSpieler > spieler.size - 1)
             indexNaechsterSpieler = 0
 
-        aktuellerSpieler = spielerListe[indexNaechsterSpieler]
+        aktuellerSpieler = spieler[indexNaechsterSpieler]
     }
 }

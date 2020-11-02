@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="actionbar_farbe">#D3D3D3</color>
     <color name="kaestchen_rahmen_farbe">#F8F8F8</color>
-    <color name="spieler_1_farbe">#00F</color>
-    <color name="spieler_2_farbe">#F00</color>
+    <color name="spieler_kaese_farbe">#00F</color>
+    <color name="spieler_maus_farbe">#F00</color>
 </resources>

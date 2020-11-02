@@ -24,13 +24,8 @@
  */
 package de.stefan_oltmann.kaesekaestchen.model
 
-/**
- * Spieler können entweder Menschen oder ein Computer sein.
- *
- * @author Stefan Oltmann
- */
-enum class SpielerTyp {
+enum class SpielModus {
 
-    MENSCH,
-    COMPUTER;
+    EINZELSPIELER,
+    MEHRSPIELER;
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">"Dots'n'Boxes"</string>
-    <string name="feld_groesse">Field:</string>
+    <string name="feld_groesse">Field size:</string>
     <string name="spielen">Play</string>
     <string name="app_beenden">Quit</string>
     <string name="spieler">Player:</string>
@@ -13,4 +13,6 @@
     <string name="zurueck_zum_hauptmenue">main menu</string>
     <string name="spieler_typ_mensch">Human</string>
     <string name="spieler_typ_computer">KI player</string>
+    <string name="einzelspieler">Single Player</string>
+    <string name="mehrspieler">Multi Player</string>
 </resources>

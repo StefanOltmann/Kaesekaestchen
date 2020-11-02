@@ -4,13 +4,23 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
+import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
-import de.stefan_oltmann.kaesekaestchen.R
 import de.stefan_oltmann.kaesekaestchen.databinding.FragmentStartBinding
-import de.stefan_oltmann.kaesekaestchen.model.SpielerTyp
+import de.stefan_oltmann.kaesekaestchen.model.FeldGroesse
+import de.stefan_oltmann.kaesekaestchen.model.SpielModus
 
 class StartFragment : Fragment() {
+
+    companion object {
+
+        private const val AUSGEWAEHLT_ALPHA = 1.0f
+        private const val AUSGEGRAUT_ALPHA = 0.1f
+
+        private const val GAME_SETTINGS_KEY_SPIEL_MODUS = "spiel_modus"
+        private const val GAME_SETTINGS_KEY_FELD_GROESSE = "feld_groesse"
+    }
 
     /**
      * Wenn eine App Einstellungen speichert, dann müssen die in einer
@@ -21,6 +31,9 @@ class StartFragment : Fragment() {
 
     private lateinit var binding: FragmentStartBinding
 
+    private var spielModus = SpielModus.EINZELSPIELER
+    private var feldGroesse = FeldGroesse.KLEIN;
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -30,17 +43,40 @@ class StartFragment : Fragment() {
 
         binding.lifecycleOwner = this
 
+        binding.einzelspielerImageButton.setOnClickListener {
+
+            /* Den gewählen Modus merken. */
+            spielModus = SpielModus.EINZELSPIELER
+
+            /* Den anderen Modus-Button ausblenden. */
+            binding.einzelspielerImageButton.alpha = AUSGEWAEHLT_ALPHA
+            binding.mehrspielerImageButton.alpha = AUSGEGRAUT_ALPHA
+        }
+
+        binding.mehrspielerImageButton.setOnClickListener {
+
+            /* Den gewählen Modus merken. */
+            spielModus = SpielModus.MEHRSPIELER
+
+            /* Den anderen Modus-Button ausblenden. */
+            binding.einzelspielerImageButton.alpha = AUSGEGRAUT_ALPHA
+            binding.mehrspielerImageButton.alpha = AUSGEWAEHLT_ALPHA
+        }
+
+        binding.feldGroesseSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                feldGroesse = FeldGroesse.values()[seekBar.progress]
+            }
+        })
+
         binding.spielenButton.setOnClickListener { onSpielenClick() }
-
-        binding.spieler1KiSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            buttonView.text = getText(
-                if (isChecked) R.string.spieler_typ_computer else R.string.spieler_typ_mensch)
-        }
-
-        binding.spieler2KiSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            buttonView.text = getText(
-                if (isChecked) R.string.spieler_typ_computer else R.string.spieler_typ_mensch)
-        }
 
         restoreGameSettings()
 
@@ -51,31 +87,9 @@ class StartFragment : Fragment() {
 
         saveGameSettings()
 
-        val spielerTyp1 = if (binding.spieler1KiSwitch.isChecked) SpielerTyp.COMPUTER else SpielerTyp.MENSCH
-        val spielerTyp2 = if (binding.spieler2KiSwitch.isChecked) SpielerTyp.COMPUTER else SpielerTyp.MENSCH
-
-        val feldGroesseX = (binding.feldGroesseXSpinner.selectedItem as String).toInt()
-        val feldGroesseY = (binding.feldGroesseYSpinner.selectedItem as String).toInt()
-
-        navigateToSpielFragment(spielerTyp1, spielerTyp2, feldGroesseX, feldGroesseY)
-    }
-
-    /*
-     * Baut einen {@link Intent} zusammen auf Basis der ausgewählten Daten
-     * und startet die {@link SpielActivity} damit.
-     */
-    private fun navigateToSpielFragment(
-        spielerTyp1: SpielerTyp,
-        spielerTyp2: SpielerTyp,
-        feldGroesseX: Int,
-        feldGroesseY: Int) {
-
         val action =
             StartFragmentDirections.actionNavStartToNavSpiel(
-                spielerTyp1 == SpielerTyp.COMPUTER,
-                spielerTyp2 == SpielerTyp.COMPUTER,
-                feldGroesseX, feldGroesseY
-            )
+                spielModus.toString(), feldGroesse.toString())
 
         NavHostFragment.findNavController(this).navigate(action)
     }
@@ -91,23 +105,32 @@ class StartFragment : Fragment() {
      */
     private fun restoreGameSettings() {
 
-        binding.spieler1KiSwitch.isChecked = gameSettings.getBoolean("spieler_typ_1_ki", false)
-        binding.spieler2KiSwitch.isChecked = gameSettings.getBoolean("spieler_typ_2_ki", true)
-        binding.feldGroesseXSpinner.setSelection(gameSettings.getInt("feld_groesse_x", 6))
-        binding.feldGroesseYSpinner.setSelection(gameSettings.getInt("feld_groesse_y", 6))
+        gameSettings.getString(GAME_SETTINGS_KEY_SPIEL_MODUS, null)?.let {
+            spielModus = SpielModus.valueOf(it)
+        }
+
+        gameSettings.getString(GAME_SETTINGS_KEY_FELD_GROESSE, null)?.let {
+            feldGroesse = FeldGroesse.valueOf(it)
+        }
+
+        binding.einzelspielerImageButton.alpha =
+            if (spielModus == SpielModus.EINZELSPIELER) AUSGEWAEHLT_ALPHA else AUSGEGRAUT_ALPHA
+
+        binding.mehrspielerImageButton.alpha =
+            if (spielModus == SpielModus.MEHRSPIELER) AUSGEWAEHLT_ALPHA else AUSGEGRAUT_ALPHA
+
+        binding.feldGroesseSeekbar.progress = feldGroesse.ordinal
     }
 
     /*
-     * Speichert die aktuellen Einstellugen in der View in die Game-Settings
+     * Speichert die aktuellen Einstellugen in die Game-Settings
      */
     private fun saveGameSettings() {
 
         val gameSettingsEditor = gameSettings.edit()
 
-        gameSettingsEditor.putBoolean("spieler_typ_1_ki", binding.spieler1KiSwitch.isChecked)
-        gameSettingsEditor.putBoolean("spieler_typ_2_ki", binding.spieler2KiSwitch.isChecked)
-        gameSettingsEditor.putInt("feld_groesse_x", binding.feldGroesseXSpinner.selectedItemPosition)
-        gameSettingsEditor.putInt("feld_groesse_y", binding.feldGroesseYSpinner.selectedItemPosition)
+        gameSettingsEditor.putString(GAME_SETTINGS_KEY_SPIEL_MODUS, spielModus.toString())
+        gameSettingsEditor.putString(GAME_SETTINGS_KEY_FELD_GROESSE, feldGroesse.toString())
 
         gameSettingsEditor.apply()
     }

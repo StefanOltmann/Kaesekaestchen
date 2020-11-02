@@ -19,6 +19,12 @@ import kotlin.concurrent.withLock
 
 class SpielFragment : Fragment() {
 
+    companion object {
+
+        private const val AUSGEWAEHLT_ALPHA = 1.0f
+        private const val AUSGEGRAUT_ALPHA = 0.1f
+    }
+
     private val args: SpielFragmentArgs by navArgs()
 
     private val lock = ReentrantLock()
@@ -48,30 +54,15 @@ class SpielFragment : Fragment() {
 
         binding.lifecycleOwner = this
 
-        val spielerTyp1 = if (args.spieler1Ki) SpielerTyp.COMPUTER else SpielerTyp.MENSCH
-        val spielerTyp2 = if (args.spieler2Ki) SpielerTyp.COMPUTER else SpielerTyp.MENSCH
-        val feldGroesseX = args.feldGroesseX
-        val feldGroesseY = args.feldGroesseY
+        val spielModus = SpielModus.valueOf(args.spielModus)
+        val feldGroesse = FeldGroesse.valueOf(args.feldGroesse)
 
-        spielfeld = Spielfeld.SpielfeldFactory.generiere(feldGroesseX, feldGroesseY)
+        if (spielModus == SpielModus.EINZELSPIELER)
+            spielerManager.bestimmeZufaelligComputerGegner()
+
+        spielfeld = Spielfeld.SpielfeldFactory.generiere(feldGroesse)
 
         binding.spielfeldView.init(spielfeld, lock, condition)
-
-        spielerManager.addSpieler(
-            Spieler(
-                0, resources.getString(R.string.spieler_1_name),
-                ContextCompat.getColor(requireContext(), R.color.spieler_1_farbe),
-                spielerTyp1
-            )
-        )
-
-        spielerManager.addSpieler(
-            Spieler(
-                1, resources.getString(R.string.spieler_2_name),
-                ContextCompat.getColor(requireContext(), R.color.spieler_2_farbe),
-                spielerTyp2
-            )
-        )
 
         startGameLoop()
 
@@ -109,13 +100,13 @@ class SpielFragment : Fragment() {
                  */
                 handler.post {
 
-                    binding.spielKaeseImageView.alpha = if (spieler.id == 1) 0.1f else 1.0f
-                    binding.spielMausImageView.alpha = if (spieler.id == 0) 0.1f else 1.0f
+                    binding.spielKaeseImageView.alpha = if (spieler == Spieler.MAUS) AUSGEGRAUT_ALPHA else AUSGEWAEHLT_ALPHA
+                    binding.spielMausImageView.alpha = if (spieler == Spieler.KAESE) AUSGEGRAUT_ALPHA else AUSGEWAEHLT_ALPHA
                 }
 
                 var eingabeStrich: Strich?
 
-                if (!spieler.isComputerGegner) {
+                if (!spielerManager.isComputerGegner(spieler)) {
 
                     binding.spielfeldView.resetLetzteEingabe()
 
@@ -165,15 +156,10 @@ class SpielFragment : Fragment() {
 
                 val gewinner = ermittleSpielerMitHoechsterPunktZahl()
 
-                val punkteStandMap = mutableMapOf<Int, Int>()
-
-                for (spieler in spielerManager.spieler)
-                    punkteStandMap.put(spieler.id, ermittlePunktzahl(spieler))
-
                 val action = SpielFragmentDirections.actionNavSpielToGewonnenFragment(
-                    gewinnerId = gewinner.id,
-                    punktestandKaese = punkteStandMap[0]!!,
-                    punktestandMaus = punkteStandMap[1]!!
+                    gewinnerSpieler = gewinner.toString(),
+                    punktestandKaese = spielfeld.ermittlePunktzahl(Spieler.KAESE),
+                    punktestandMaus = spielfeld.ermittlePunktzahl(Spieler.MAUS)
                 )
 
                 NavHostFragment.findNavController(this@SpielFragment).navigate(action)
@@ -214,7 +200,7 @@ class SpielFragment : Fragment() {
 
         for (spieler in spielerManager.spieler) {
 
-            val punktZahl = ermittlePunktzahl(spieler)
+            val punktZahl = spielfeld.ermittlePunktzahl(spieler)
 
             if (punktZahl > maxPunktZahl) {
                 gewinner = spieler
@@ -223,16 +209,5 @@ class SpielFragment : Fragment() {
         }
 
         return gewinner!!
-    }
-
-    fun ermittlePunktzahl(spieler: Spieler): Int {
-
-        var punkte = 0
-
-        for (kaestchen in spielfeld.kaestchenListe)
-            if (kaestchen.besitzer == spieler)
-                punkte++
-
-        return punkte
     }
 }

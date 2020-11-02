@@ -2,7 +2,9 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.MaterialComponents.Light">
-        <item name="colorPrimary">@color/actionbar_farbe</item>
+        <item name="colorPrimary">@android:color/darker_gray</item>
+        <item name="colorPrimaryDark">@android:color/black</item>
+        <item name="colorAccent">@android:color/darker_gray</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>

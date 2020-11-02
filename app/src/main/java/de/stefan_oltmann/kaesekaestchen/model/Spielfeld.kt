@@ -179,12 +179,26 @@ class Spielfeld private constructor(
         return stricheOhneBesitzer[zufallsZahl]
     }
 
+    fun ermittlePunktzahl(spieler: Spieler): Int {
+
+        var punkte = 0
+
+        for (kaestchen in kaestchenListe)
+            if (kaestchen.besitzer == spieler)
+                punkte++
+
+        return punkte
+    }
+
     object SpielfeldFactory {
 
         /**
          * Factory Method zur Erzeugung eines Spielfeldes
          */
-        fun generiere(anzahlH: Int, anzahlV: Int): Spielfeld {
+        fun generiere(feldGroesse: FeldGroesse): Spielfeld {
+
+            val anzahlH = feldGroesse.groesseX
+            val anzahlV = feldGroesse.groesseY
 
             val spielfeld = Spielfeld(anzahlH, anzahlV)
 

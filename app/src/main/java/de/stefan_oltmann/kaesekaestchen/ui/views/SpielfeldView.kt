@@ -38,6 +38,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import de.stefan_oltmann.kaesekaestchen.R
 import de.stefan_oltmann.kaesekaestchen.model.Kaestchen
+import de.stefan_oltmann.kaesekaestchen.model.Spieler
 import de.stefan_oltmann.kaesekaestchen.model.Spielfeld
 import de.stefan_oltmann.kaesekaestchen.model.Strich
 import java.util.concurrent.locks.Condition
@@ -270,6 +271,12 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         return null
     }
 
+    private fun getFarbeFuerSpieler(spieler: Spieler) =
+        if (spieler == Spieler.KAESE)
+            ContextCompat.getColor(context, R.color.spieler_kaese_farbe)
+        else
+            ContextCompat.getColor(context, R.color.spieler_maus_farbe)
+
     private fun drawKaestchen(kaestchen: Kaestchen, canvas: Canvas) {
 
         val pixelX = calcPixelX(kaestchen);
@@ -277,10 +284,10 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
 
         kaestchen.besitzer?.let {
 
-            fuellungPaint.color = it.farbe
+            fuellungPaint.color = getFarbeFuerSpieler(it)
 
             val symbol : Drawable =
-                if (it.id == 0)
+                if (it == Spieler.KAESE)
                     AppCompatResources.getDrawable(context!!, R.drawable.ic_spieler_symbol_kaese)!!
                 else
                     AppCompatResources.getDrawable(context!!, R.drawable.ic_spieler_symbol_maus)!!
@@ -305,7 +312,7 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         }
 
         if (kaestchen.strichUnten != null && kaestchen.strichUnten!!.besitzer != null)
-            rahmenPaint.color = kaestchen.strichUnten!!.besitzer!!.farbe
+            rahmenPaint.color = getFarbeFuerSpieler(kaestchen.strichUnten!!.besitzer!!)
         else if (kaestchen.strichUnten != null)
             rahmenPaint.color = defaultRahmenColor
         else
@@ -333,7 +340,7 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         }
 
         if (kaestchen.strichRechts != null && kaestchen.strichRechts!!.besitzer != null)
-            rahmenPaint.color = kaestchen.strichRechts!!.besitzer!!.farbe
+            rahmenPaint.color = getFarbeFuerSpieler(kaestchen.strichRechts!!.besitzer!!)
         else if (kaestchen.strichRechts != null)
             rahmenPaint.color = defaultRahmenColor
         else
