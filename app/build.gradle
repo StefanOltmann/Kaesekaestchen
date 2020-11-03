@@ -14,8 +14,8 @@ android {
         applicationId "de.stefan_oltmann.kaesekaestchen"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 11
-        versionName "0.6.3"
+        versionCode 12
+        versionName "0.7"
 
         vectorDrawables.useSupportLibrary = true
     }
@@ -62,14 +62,12 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
 
     // Navigation
-    implementation "androidx.navigation:navigation-fragment:$navigationVersion"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
-    implementation "androidx.navigation:navigation-ui:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
 
     // Lifecycle
     implementation "androidx.lifecycle:lifecycle-extensions:$archLifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$archLifecycleVersion"
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "androidx.legacy:legacy-support-v4:$legacySupportVersion"
     kapt "androidx.lifecycle:lifecycle-compiler:$archLifecycleVersion"
 }
