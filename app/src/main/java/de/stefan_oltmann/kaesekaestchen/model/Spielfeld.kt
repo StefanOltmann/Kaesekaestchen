@@ -32,10 +32,10 @@ class Spielfeld private constructor() {
     private lateinit var spielfeldGroesse: SpielfeldGroesse
 
     val breiteInKaestchen
-        get() = spielfeldGroesse.groesseX
+        get() = spielfeldGroesse.breiteInKaestchen
 
     val hoeheInKaestchen
-        get() = spielfeldGroesse.groesseX
+        get() = spielfeldGroesse.hoeheInKaestchen
 
     private lateinit var kaestchenArray: Array<Array<Kaestchen?>>
 
@@ -60,8 +60,8 @@ class Spielfeld private constructor() {
 
         this.spielfeldGroesse = spielfeldGroesse
 
-        val breiteInKaestchen = spielfeldGroesse.groesseX
-        val hoeheInKaestchen = spielfeldGroesse.groesseY
+        val breiteInKaestchen = spielfeldGroesse.breiteInKaestchen
+        val hoeheInKaestchen = spielfeldGroesse.hoeheInKaestchen
 
         kaestchenArray = Array(breiteInKaestchen) { arrayOfNulls<Kaestchen?>(hoeheInKaestchen) }
 
@@ -138,7 +138,7 @@ class Spielfeld private constructor() {
     }
 
     fun isImRaster(rasterX: Int, rasterY: Int) =
-        rasterX < spielfeldGroesse.groesseX && rasterY < spielfeldGroesse.groesseY
+        rasterX < spielfeldGroesse.breiteInKaestchen && rasterY < spielfeldGroesse.hoeheInKaestchen
 
     /**
      * Schließt alle Kästchen, die geschlossen werden können.

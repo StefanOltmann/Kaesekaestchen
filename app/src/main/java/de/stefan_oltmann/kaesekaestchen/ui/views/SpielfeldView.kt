@@ -25,10 +25,7 @@
 package de.stefan_oltmann.kaesekaestchen.ui.views
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Rect
+import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.MotionEvent
@@ -41,6 +38,7 @@ import de.stefan_oltmann.kaesekaestchen.controller.SpielLogik
 import de.stefan_oltmann.kaesekaestchen.model.Kaestchen
 import de.stefan_oltmann.kaesekaestchen.model.Spieler
 import de.stefan_oltmann.kaesekaestchen.model.Strich
+import kotlin.math.roundToInt
 
 /**
  * Diese Klasse zeichnet das Spielfeld und nimmt Interaktionen des Benutzers
@@ -59,7 +57,13 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
     /*
      * Seitenlaenge eines Kästchens in Pixel
      */
-    private var kaestchenSeitenlaengePixel = 50
+    private var kaestchenSeitenlaengePixel = 50.0f
+
+    /*
+     * Ein Offset, um das Spielfeld zentriert zu haben
+     */
+    private var offsetPixelX = 0.0f
+    private var offsetPixelY = 0.0f
 
     private val defaultRahmenColor by lazy {
         ContextCompat.getColor(context!!, R.color.kaestchen_rahmen_farbe)
@@ -85,16 +89,22 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
     }
 
     /**
-     * Wird die Bildschirmauflösung verändert oder initial bekanntgegen, wird
+     * Wird die Viewgröße verändert oder initial bekanntgegen, wird
      * diese Methode aufgerufen. Wir benutzen das um zu ermitteln, wie groß ein
-     * Kästchen in Abhängigkeit von der Auflösung des Displays sein muss.
+     * Kästchen in Abhängigkeit von der Größe des Displays sein muss.
      */
     override fun onSizeChanged(breitePixel: Int, hoehePixel: Int, oldw: Int, oldh: Int) {
 
-        val maxBreitePixel = (breitePixel - PADDING_PX * 2) / spielLogik.spielfeld.breiteInKaestchen
-        val maxHoehePixel = (hoehePixel - PADDING_PX * 2) / spielLogik.spielfeld.hoeheInKaestchen
+        val breitePixelMitPadding = (breitePixel - PADDING_PX * 2).toFloat()
+        val hoehePixelMitPadding = (hoehePixel - PADDING_PX * 2).toFloat()
+
+        val maxBreitePixel : Float = breitePixelMitPadding / spielLogik.spielfeld.breiteInKaestchen
+        val maxHoehePixel : Float = hoehePixelMitPadding / spielLogik.spielfeld.hoeheInKaestchen
 
         kaestchenSeitenlaengePixel = kotlin.math.min(maxBreitePixel, maxHoehePixel)
+
+        offsetPixelX = (breitePixelMitPadding - spielLogik.spielfeld.breiteInKaestchen * kaestchenSeitenlaengePixel) / 2.0f
+        offsetPixelY = (hoehePixelMitPadding - spielLogik.spielfeld.hoeheInKaestchen * kaestchenSeitenlaengePixel) / 2.0f
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -112,8 +122,8 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         if (event.action != MotionEvent.ACTION_DOWN)
             return true
 
-        val errechnetRasterX = event.x.toInt() / kaestchenSeitenlaengePixel
-        val errechnetRasterY = event.y.toInt() / kaestchenSeitenlaengePixel
+        val errechnetRasterX = (event.x / kaestchenSeitenlaengePixel).roundToInt()
+        val errechnetRasterY = (event.y / kaestchenSeitenlaengePixel).roundToInt()
 
         /*
          * Wenn der Anwender irgendwo außerhalb des Spielfelds drückt soll
@@ -131,7 +141,7 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         if (kaestchen.besitzer != null)
             return true
 
-        val strich = ermittleStrichAnPosition(kaestchen, event.x.toInt(), event.y.toInt())
+        val strich = ermittleStrichAnPosition(kaestchen, event.x, event.y)
 
         /*
          * Konnte kein Strich ermittelt werden, hat der Benutzer wahrscheinlich
@@ -147,43 +157,43 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
     }
 
     private fun calcPixelX(kaestchen: Kaestchen) =
-        kaestchen.rasterX * kaestchenSeitenlaengePixel + PADDING_PX
+        kaestchen.rasterX * kaestchenSeitenlaengePixel + PADDING_PX + offsetPixelX
 
     private fun calcPixelY(kaestchen: Kaestchen) =
-        kaestchen.rasterY * kaestchenSeitenlaengePixel + PADDING_PX
+        kaestchen.rasterY * kaestchenSeitenlaengePixel + PADDING_PX + offsetPixelY
 
-    private fun calcRectStrichOben(kaestchen: Kaestchen): Rect? =
-        if (kaestchen.strichOben == null) null else Rect(
+    private fun calcRectStrichOben(kaestchen: Kaestchen): RectF? =
+        if (kaestchen.strichOben == null) null else RectF(
             calcPixelX(kaestchen) + kaestchenSeitenlaengePixel / 4,
             calcPixelY(kaestchen) - kaestchenSeitenlaengePixel / 4,
-            calcPixelX(kaestchen) + (kaestchenSeitenlaengePixel * 0.75).toInt(),
+            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.75f,
             calcPixelY(kaestchen) + kaestchenSeitenlaengePixel / 4)
 
-    private fun calcRectStrichUnten(kaestchen: Kaestchen): Rect? =
-        if (kaestchen.strichUnten == null) null else Rect(
+    private fun calcRectStrichUnten(kaestchen: Kaestchen): RectF? =
+        if (kaestchen.strichUnten == null) null else RectF(
             calcPixelX(kaestchen) + kaestchenSeitenlaengePixel / 4,
-            calcPixelY(kaestchen) + (kaestchenSeitenlaengePixel * 0.75).toInt(),
-            calcPixelX(kaestchen) + (kaestchenSeitenlaengePixel * 0.75).toInt(),
+            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.75f,
+            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.75f,
             calcPixelY(kaestchen) + kaestchenSeitenlaengePixel + kaestchenSeitenlaengePixel / 4)
 
-    private fun calcRectStrichLinks(kaestchen: Kaestchen): Rect? =
-        if (kaestchen.strichLinks == null) null else Rect(
+    private fun calcRectStrichLinks(kaestchen: Kaestchen): RectF? =
+        if (kaestchen.strichLinks == null) null else RectF(
             calcPixelX(kaestchen) - kaestchenSeitenlaengePixel / 4,
             calcPixelY(kaestchen) + kaestchenSeitenlaengePixel / 4,
             calcPixelX(kaestchen) + kaestchenSeitenlaengePixel / 4,
-            calcPixelY(kaestchen) + (kaestchenSeitenlaengePixel * 0.75).toInt())
+            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.75f)
 
-    private fun calcRectStrichRechts(kaestchen: Kaestchen): Rect? =
-        if (kaestchen.strichRechts == null) null else Rect(
-            calcPixelX(kaestchen) + (kaestchenSeitenlaengePixel * 0.75).toInt(),
+    private fun calcRectStrichRechts(kaestchen: Kaestchen): RectF? =
+        if (kaestchen.strichRechts == null) null else RectF(
+            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.75f,
             calcPixelY(kaestchen) + kaestchenSeitenlaengePixel / 4,
             calcPixelX(kaestchen) + kaestchenSeitenlaengePixel + kaestchenSeitenlaengePixel / 4,
-            calcPixelY(kaestchen) + (kaestchenSeitenlaengePixel * 0.75).toInt())
+            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.75f)
 
     /**
      * Diese Methode bestimmt, auf welchen Strich des Kästchen gedrückt wurde.
      */
-    private fun ermittleStrichAnPosition(kaestchen: Kaestchen, pixelX: Int, pixelY: Int): Strich? {
+    private fun ermittleStrichAnPosition(kaestchen: Kaestchen, pixelX: Float, pixelY: Float): Strich? {
 
         calcRectStrichOben(kaestchen)?.let {
             if (it.contains(pixelX, pixelY))
@@ -229,10 +239,10 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
                 else
                     AppCompatResources.getDrawable(context!!, R.drawable.ic_spieler_symbol_maus)!!
 
-            symbol.setBounds(0, 0, kaestchenSeitenlaengePixel, kaestchenSeitenlaengePixel)
-            canvas.translate(pixelX.toFloat(), pixelY.toFloat())
+            symbol.setBounds(0, 0, kaestchenSeitenlaengePixel.roundToInt(), kaestchenSeitenlaengePixel.roundToInt())
+            canvas.translate(pixelX, pixelY)
             symbol.draw(canvas)
-            canvas.translate(-pixelX.toFloat(), -pixelY.toFloat())
+            canvas.translate(-pixelX, -pixelY)
         }
 
         if (kaestchen.strichOben == null) {
