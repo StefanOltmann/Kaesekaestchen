@@ -36,6 +36,8 @@ class SpielLogik private constructor(val spielfeld: Spielfeld) {
     private val aktuellerSpieler
         get() = spielerManager.aktuellerSpieler
 
+    private var zugWirdGeradeAusgefuehrt : Boolean = false
+
     constructor(spielfeld: Spielfeld, spielModus: SpielModus): this(spielfeld) {
 
         if (spielModus == SpielModus.EINZELSPIELER)
@@ -59,12 +61,28 @@ class SpielLogik private constructor(val spielfeld: Spielfeld) {
             return
 
         /*
-         * Führe die Aktion für den Spieler durch
+         * Diese Abfrage soll verhindern, dass ein Anwender,
+         * der während des KI-Zugs wild rumklickt diesen stören kann.
          */
-        waehleStrichFuerAktuellenSpielerUndCheckBeendet(strich)
+        if (zugWirdGeradeAusgefuehrt)
+            return
 
-        if (spielerManager.isComputerGegner(aktuellerSpieler))
-            fuehreKiZugDurch()
+        try {
+
+            zugWirdGeradeAusgefuehrt = true
+
+            /*
+             * Führe die Aktion für den Spieler durch
+             */
+            waehleStrichFuerAktuellenSpielerUndCheckBeendet(strich)
+
+            if (spielerManager.isComputerGegner(aktuellerSpieler))
+                fuehreKiZugDurch()
+
+        } finally {
+
+            zugWirdGeradeAusgefuehrt = false
+        }
     }
 
     private fun fuehreKiZugDurch() {
