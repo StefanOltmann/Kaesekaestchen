@@ -153,6 +153,7 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
          * die Mitte des Kästchens getroffen. Es ist jedenfalls nicht klar,
          * welchen Strich er gemeint hat. Deshalb wird die Eingabe abgebrochen.
          */
+        @Suppress("FoldInitializerAndIfToElvis")
         if (strich == null)
             return true
 
@@ -263,12 +264,7 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
             )
         }
 
-        if (kaestchen.strichUnten != null && kaestchen.strichUnten!!.besitzer != null)
-            rahmenPaint.color = getFarbeFuerSpieler(kaestchen.strichUnten!!.besitzer!!)
-        else if (kaestchen.strichUnten != null)
-            rahmenPaint.color = defaultRahmenColor
-        else
-            rahmenPaint.color = Color.BLACK
+        rahmenPaint.color = ermittleStrichFarbe(kaestchen.strichUnten)
 
         canvas.drawLine(
             pixelX,
@@ -291,12 +287,7 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
             )
         }
 
-        if (kaestchen.strichRechts != null && kaestchen.strichRechts!!.besitzer != null)
-            rahmenPaint.color = getFarbeFuerSpieler(kaestchen.strichRechts!!.besitzer!!)
-        else if (kaestchen.strichRechts != null)
-            rahmenPaint.color = defaultRahmenColor
-        else
-            rahmenPaint.color = Color.BLACK
+        rahmenPaint.color = ermittleStrichFarbe(kaestchen.strichRechts)
 
         canvas.drawLine(
             pixelX + kaestchenSeitenlaengePixel,
@@ -307,6 +298,7 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         )
 
         /* Eckpunkte zeichnen */
+
         rahmenPaint.color = Color.BLACK
 
         canvas.drawRect(
@@ -340,6 +332,18 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
             pixelY + kaestchenSeitenlaengePixel + 1.0f,
             rahmenPaint
         )
+    }
+
+    private fun ermittleStrichFarbe(strich: Strich?) : Int {
+
+        return if (strich != null && strich == spielLogik.spielfeld.zuletztGesetzterStrich)
+            Color.CYAN
+        else if (strich?.besitzer != null)
+            getFarbeFuerSpieler(strich.besitzer!!)
+        else if (strich != null)
+            defaultRahmenColor
+        else
+            Color.BLACK
     }
 
     fun aktualisiereAnzeige() {

@@ -56,6 +56,12 @@ class Spielfeld private constructor() {
 
     private val stricheOhneBesitzer: MutableSet<Strich> = mutableSetOf()
 
+    /*
+     * Der zuletzt gesetze Strich soll eine andere Farbe haben, damit der
+     * Spieler besser erkennen kann, wo zuletzt einer dazugekommen ist.
+     */
+    var zuletztGesetzterStrich: Strich? = null
+
     constructor(spielfeldGroesse: SpielfeldGroesse) : this() {
 
         this.spielfeldGroesse = spielfeldGroesse
@@ -180,6 +186,8 @@ class Spielfeld private constructor() {
         strich.besitzer = spieler
 
         stricheOhneBesitzer.remove(strich)
+
+        zuletztGesetzterStrich = strich
 
         return schliesseAlleMoeglichenKaestchen(spieler)
     }
