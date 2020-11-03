@@ -26,21 +26,17 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_icon" />
 
-
         <TextView
             android:id="@+id/feld_groesse_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginLeft="32dp"
-            android:layout_marginTop="39dp"
-            android:layout_marginBottom="32dp"
             android:text="@string/feld_groesse"
             android:textSize="@dimen/text_size"
             app:layout_constraintBottom_toTopOf="@+id/spielen_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/einzelspieler_text" />
-
 
         <Button
             android:id="@+id/spielen_button"
@@ -120,7 +116,6 @@
             app:layout_constraintEnd_toEndOf="@+id/mehrspieler_image_button"
             app:layout_constraintStart_toStartOf="@+id/mehrspieler_image_button"
             app:layout_constraintTop_toBottomOf="@+id/mehrspieler_image_button" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
