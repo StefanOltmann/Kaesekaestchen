@@ -4,15 +4,7 @@
     <string name="feld_groesse">Feldgröße:</string>
     <string name="spielen">Spielen</string>
     <string name="app_beenden">Beenden</string>
-    <string name="spieler">Spieler:</string>
-    <string name="spieler_1_name">Käse</string>
-    <string name="spieler_2_name">Maus</string>
-    <string name="game_score">Spielergebnis</string>
-    <string name="gewinner">Gewinner</string>
-    <string name="play_again">Nochmal!</string>
     <string name="zurueck_zum_hauptmenue">Hauptmenü</string>
-    <string name="spieler_typ_mensch">Mensch</string>
-    <string name="spieler_typ_computer">KI-Gegner</string>
     <string name="einzelspieler">Einzelspieler</string>
     <string name="mehrspieler">Mehrspieler</string>
 </resources>
