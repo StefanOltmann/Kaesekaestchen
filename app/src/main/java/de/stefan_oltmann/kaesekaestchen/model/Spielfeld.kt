@@ -25,19 +25,17 @@
 package de.stefan_oltmann.kaesekaestchen.model
 
 /**
- * Das Spielfeld.
- *
- * @author Stefan Oltmann
+ * Das Spielfeld. Es besteht aus {@link Kaestchen}.
  */
 class Spielfeld private constructor() {
 
-    private lateinit var feldGroesse: FeldGroesse
+    private lateinit var spielfeldGroesse: SpielfeldGroesse
 
     val breiteInKaestchen
-        get() = feldGroesse.groesseX
+        get() = spielfeldGroesse.groesseX
 
     val hoeheInKaestchen
-        get() = feldGroesse.groesseX
+        get() = spielfeldGroesse.groesseX
 
     private lateinit var kaestchenArray: Array<Array<Kaestchen?>>
 
@@ -46,7 +44,7 @@ class Spielfeld private constructor() {
      */
     private val _kaestchenListe: MutableList<Kaestchen> = mutableListOf()
 
-    val kaestchenListe : List<Kaestchen>
+    val kaestchenListe: List<Kaestchen>
         get() = _kaestchenListe
 
     /**
@@ -58,12 +56,12 @@ class Spielfeld private constructor() {
 
     private val stricheOhneBesitzer: MutableSet<Strich> = mutableSetOf()
 
-    constructor(feldGroesse: FeldGroesse): this() {
+    constructor(spielfeldGroesse: SpielfeldGroesse) : this() {
 
-        this.feldGroesse = feldGroesse
+        this.spielfeldGroesse = spielfeldGroesse
 
-        val breiteInKaestchen = feldGroesse.groesseX
-        val hoeheInKaestchen = feldGroesse.groesseY
+        val breiteInKaestchen = spielfeldGroesse.groesseX
+        val hoeheInKaestchen = spielfeldGroesse.groesseY
 
         kaestchenArray = Array(breiteInKaestchen) { arrayOfNulls<Kaestchen?>(hoeheInKaestchen) }
 
@@ -117,7 +115,7 @@ class Spielfeld private constructor() {
             var kaestchenUnten: Kaestchen? = null
 
             if (rasterY < hoeheInKaestchen - 1)
-                kaestchenUnten = kaestchenArray[rasterX][rasterY +1]
+                kaestchenUnten = kaestchenArray[rasterX][rasterY + 1]
 
             if (kaestchenUnten != null) {
 
@@ -134,13 +132,13 @@ class Spielfeld private constructor() {
 
         /* Außerhalb des Rasters gibts kein Kästchen. */
         if (!isImRaster(rasterX, rasterY))
-            throw IllegalArgumentException("Das Kästchen liegt außerhalb des Rasters: $rasterX >= $feldGroesse.groesseX || $rasterY >= $feldGroesse.groesseY")
+            throw IllegalArgumentException("Das Kästchen liegt außerhalb des Rasters: $rasterX >= $spielfeldGroesse.groesseX || $rasterY >= $spielfeldGroesse.groesseY")
 
         return kaestchenArray[rasterX][rasterY]!!
     }
 
     fun isImRaster(rasterX: Int, rasterY: Int) =
-        rasterX < feldGroesse.groesseX && rasterY < feldGroesse.groesseY
+        rasterX < spielfeldGroesse.groesseX && rasterY < spielfeldGroesse.groesseY
 
     /**
      * Schließt alle Kästchen, die geschlossen werden können.

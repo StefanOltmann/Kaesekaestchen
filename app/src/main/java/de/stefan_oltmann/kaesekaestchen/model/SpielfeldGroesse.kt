@@ -24,11 +24,12 @@
  */
 package de.stefan_oltmann.kaesekaestchen.model
 
-enum class FeldGroesse(val groesseX: Int,
-                       val groesseY: Int) {
+enum class SpielfeldGroesse(
+    val groesseX: Int,
+    val groesseY: Int) {
 
     SEHR_KLEIN(3, 4),
     KLEIN(4, 5),
     MITTEL(4, 6),
-    GROSS(6,9);
+    GROSS(6, 9);
 }

@@ -25,10 +25,10 @@
 package de.stefan_oltmann.kaesekaestchen.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -71,12 +71,16 @@ class ScoreBoardFragment : Fragment() {
         binding.executePendingBindings()
 
         binding.hauptmenueButton.setOnClickListener {
-
-            val action = ScoreBoardFragmentDirections.actionNavGewonnenToNavStart()
-
-            findNavController().navigate(action)
+            navigateToStartFragment()
         }
 
         return binding.root
+    }
+
+    private fun navigateToStartFragment() {
+
+        val action = ScoreBoardFragmentDirections.actionNavGewonnenToNavStart()
+
+        findNavController().navigate(action)
     }
 }

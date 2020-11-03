@@ -25,12 +25,11 @@
 package de.stefan_oltmann.kaesekaestchen.model
 
 /**
- * Ein Kästchen auf dem Spielfeld.
- *
- * @author Stefan Oltmann
+ * Ein Kästchen auf dem @{link Spielfeld}.
  */
-data class Kaestchen(val rasterX: Int,
-                     val rasterY: Int) {
+data class Kaestchen(
+    val rasterX: Int,
+    val rasterY: Int) {
 
     /**
      * Konnte ein Spieler ein Kästchen schließen, wird er der Besitzer des

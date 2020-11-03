@@ -25,19 +25,20 @@
 package de.stefan_oltmann.kaesekaestchen.ui.fragments
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import de.stefan_oltmann.kaesekaestchen.controller.SpielLogik
 import de.stefan_oltmann.kaesekaestchen.controller.SpielLogikCallback
 import de.stefan_oltmann.kaesekaestchen.databinding.FragmentSpielBinding
-import de.stefan_oltmann.kaesekaestchen.model.*
+import de.stefan_oltmann.kaesekaestchen.model.SpielfeldGroesse
+import de.stefan_oltmann.kaesekaestchen.model.SpielModus
+import de.stefan_oltmann.kaesekaestchen.model.Spieler
+import de.stefan_oltmann.kaesekaestchen.model.Spielfeld
 
 class SpielFragment : Fragment(), SpielLogikCallback {
 
@@ -51,14 +52,13 @@ class SpielFragment : Fragment(), SpielLogikCallback {
 
     private val viewModel by viewModels<SpielViewModel>()
 
-    private val handler = Handler(Looper.myLooper()!!)
-
     private lateinit var binding: FragmentSpielBinding
 
     private val spielLogik: SpielLogik?
         get() = viewModel.spielLogik.value
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
         /* Den Gameloop benötigen wurd nur einmal. */
@@ -72,7 +72,7 @@ class SpielFragment : Fragment(), SpielLogikCallback {
          */
 
         val spielModus = SpielModus.valueOf(args.spielModus)
-        val feldGroesse = FeldGroesse.valueOf(args.feldGroesse)
+        val feldGroesse = SpielfeldGroesse.valueOf(args.feldGroesse)
 
         val spielfeld = Spielfeld(feldGroesse)
 
@@ -92,6 +92,7 @@ class SpielFragment : Fragment(), SpielLogikCallback {
     }
 
     override fun onStart() {
+
         super.onStart()
 
         binding.spielfeldView.setGameLoop(spielLogik!!)
@@ -105,10 +106,14 @@ class SpielFragment : Fragment(), SpielLogikCallback {
          * Der Spieler der gerade nicht dran ist bekommt
          * eine halb-transparente Anzeige.
          */
-        handler.post {
 
-            binding.spielKaeseImageView.alpha = if (spieler == Spieler.MAUS) AUSGEGRAUT_ALPHA else AUSGEWAEHLT_ALPHA
-            binding.spielMausImageView.alpha = if (spieler == Spieler.KAESE) AUSGEGRAUT_ALPHA else AUSGEWAEHLT_ALPHA
+        requireActivity().runOnUiThread {
+
+            binding.spielKaeseImageView.alpha =
+                if (spieler == Spieler.MAUS) AUSGEGRAUT_ALPHA else AUSGEWAEHLT_ALPHA
+
+            binding.spielMausImageView.alpha =
+                if (spieler == Spieler.KAESE) AUSGEGRAUT_ALPHA else AUSGEWAEHLT_ALPHA
         }
     }
 
@@ -117,8 +122,7 @@ class SpielFragment : Fragment(), SpielLogikCallback {
         val action = SpielFragmentDirections.actionNavSpielToGewonnenFragment(
             gewinnerSpieler = gewinner.toString(),
             punktestandKaese = punktestandKaese,
-            punktestandMaus = punktestandMaus
-        )
+            punktestandMaus = punktestandMaus)
 
         findNavController().navigate(action)
     }

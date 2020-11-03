@@ -24,6 +24,10 @@
  */
 package de.stefan_oltmann.kaesekaestchen.model
 
+/**
+ * In einer alten Version war dies eine richtige Klasse, weil zunächst
+ * beliebig viele Spieler unterstützt werden sollten.
+ */
 enum class Spieler {
 
     KAESE,

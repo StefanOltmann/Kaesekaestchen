@@ -24,9 +24,14 @@
  */
 package de.stefan_oltmann.kaesekaestchen.controller
 
-import de.stefan_oltmann.kaesekaestchen.model.*
-import java.lang.IllegalStateException
+import de.stefan_oltmann.kaesekaestchen.model.SpielModus
+import de.stefan_oltmann.kaesekaestchen.model.Spieler
+import de.stefan_oltmann.kaesekaestchen.model.Spielfeld
+import de.stefan_oltmann.kaesekaestchen.model.Strich
 
+/**
+ * Diese Klasse ist für Behandlung des Spielablaufs zuständig.
+ */
 class SpielLogik private constructor(val spielfeld: Spielfeld) {
 
     private lateinit var callback: SpielLogikCallback
@@ -36,9 +41,9 @@ class SpielLogik private constructor(val spielfeld: Spielfeld) {
     private val aktuellerSpieler
         get() = spielerManager.aktuellerSpieler
 
-    private var zugWirdGeradeAusgefuehrt : Boolean = false
+    private var zugWirdGeradeAusgefuehrt: Boolean = false
 
-    constructor(spielfeld: Spielfeld, spielModus: SpielModus): this(spielfeld) {
+    constructor(spielfeld: Spielfeld, spielModus: SpielModus) : this(spielfeld) {
 
         if (spielModus == SpielModus.EINZELSPIELER)
             spielerManager.bestimmeZufaelligComputerGegner()

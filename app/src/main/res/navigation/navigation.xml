@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/nav_start"
         android:name="de.stefan_oltmann.kaesekaestchen.ui.fragments.StartFragment"
-        tools:layout="@layout/fragment_start" >
+        tools:layout="@layout/fragment_start">
         <action
             android:id="@+id/action_nav_start_to_nav_spiel"
             app:destination="@id/nav_spiel"
@@ -18,7 +18,7 @@
     <fragment
         android:id="@+id/nav_spiel"
         android:name="de.stefan_oltmann.kaesekaestchen.ui.fragments.SpielFragment"
-        tools:layout="@layout/fragment_spiel" >
+        tools:layout="@layout/fragment_spiel">
         <action
             android:id="@+id/action_nav_spiel_to_gewonnenFragment"
             app:destination="@id/nav_gewonnen"
@@ -36,7 +36,7 @@
     <fragment
         android:id="@+id/nav_gewonnen"
         android:name="de.stefan_oltmann.kaesekaestchen.ui.fragments.ScoreBoardFragment"
-        tools:layout="@layout/fragment_scoreboard" >
+        tools:layout="@layout/fragment_scoreboard">
         <action
             android:id="@+id/action_nav_gewonnen_to_nav_start"
             app:destination="@id/nav_start"

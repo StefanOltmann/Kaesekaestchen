@@ -27,13 +27,15 @@ package de.stefan_oltmann.kaesekaestchen.ui.fragments
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import de.stefan_oltmann.kaesekaestchen.databinding.FragmentStartBinding
-import de.stefan_oltmann.kaesekaestchen.model.FeldGroesse
+import de.stefan_oltmann.kaesekaestchen.model.SpielfeldGroesse
 import de.stefan_oltmann.kaesekaestchen.model.SpielModus
 
 class StartFragment : Fragment() {
@@ -54,7 +56,7 @@ class StartFragment : Fragment() {
      * "shared preferences"-Map unter einem bestimmten Schlüssel abgelegt
      * werden. In diesem Fall speichern wir die Spiel-Einstellungen.
      */
-    private lateinit var gameSettings : SharedPreferences
+    private lateinit var gameSettings: SharedPreferences
 
     private lateinit var binding: FragmentStartBinding
 
@@ -84,7 +86,8 @@ class StartFragment : Fragment() {
             setzeSpielModusButtonOptik()
         }
 
-        binding.feldGroesseSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        binding.feldGroesseSeekbar.setOnSeekBarChangeListener(
+            object : SeekBar.OnSeekBarChangeListener {
 
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 /* Wird nicht benötigt, muss aber überschrieben werden. */
@@ -95,11 +98,11 @@ class StartFragment : Fragment() {
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
-                viewModel.feldGroesse.value = FeldGroesse.values()[seekBar.progress]
+                viewModel.feldGroesse.value = SpielfeldGroesse.values()[seekBar.progress]
             }
         })
 
-        binding.spielenButton.setOnClickListener { onSpielenClick() }
+        binding.spielenButton.setOnClickListener { navigateToSpielenFragment() }
 
         restoreGameSettings()
 
@@ -118,18 +121,23 @@ class StartFragment : Fragment() {
             if (viewModel.spielModus.value == SpielModus.MEHRSPIELER) AUSGEWAEHLT_ALPHA else AUSGEGRAUT_ALPHA
     }
 
-    private fun onSpielenClick() {
+    private fun navigateToSpielenFragment() {
 
         saveGameSettings()
 
-        val action =
-            StartFragmentDirections.actionNavStartToNavSpiel(
-                viewModel.spielModus.value.toString(), viewModel.feldGroesse.value.toString())
+        val action = StartFragmentDirections.actionNavStartToNavSpiel(
+                spielModus = viewModel.spielModus.value.toString(),
+                feldGroesse = viewModel.feldGroesse.value.toString())
 
         findNavController().navigate(action)
     }
 
+    /*
+     * Wenn die App kurz pausiert wird vorsichtshalber die Einstellungen merken,
+     * damit sie nach einem potentiellen Kill der App nicht weg sind.
+     */
     override fun onPause() {
+
         super.onPause()
 
         saveGameSettings()
@@ -145,7 +153,7 @@ class StartFragment : Fragment() {
         }
 
         gameSettings.getString(GAME_SETTINGS_KEY_FELD_GROESSE, null)?.let {
-            viewModel.feldGroesse.value = FeldGroesse.valueOf(it)
+            viewModel.feldGroesse.value = SpielfeldGroesse.valueOf(it)
         }
 
         setzeSpielModusButtonOptik()
@@ -160,8 +168,11 @@ class StartFragment : Fragment() {
 
         val gameSettingsEditor = gameSettings.edit()
 
-        gameSettingsEditor.putString(GAME_SETTINGS_KEY_SPIEL_MODUS, viewModel.spielModus.value.toString())
-        gameSettingsEditor.putString(GAME_SETTINGS_KEY_FELD_GROESSE, viewModel.feldGroesse.value.toString())
+        gameSettingsEditor.putString(
+            GAME_SETTINGS_KEY_SPIEL_MODUS, viewModel.spielModus.value.toString())
+
+        gameSettingsEditor.putString(
+            GAME_SETTINGS_KEY_FELD_GROESSE, viewModel.feldGroesse.value.toString())
 
         gameSettingsEditor.apply()
     }

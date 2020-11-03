@@ -131,7 +131,7 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         if (kaestchen.besitzer != null)
             return true
 
-        val strich = ermittleStrich(kaestchen, event.x.toInt(), event.y.toInt())
+        val strich = ermittleStrichAnPosition(kaestchen, event.x.toInt(), event.y.toInt())
 
         /*
          * Konnte kein Strich ermittelt werden, hat der Benutzer wahrscheinlich
@@ -157,37 +157,33 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
             calcPixelX(kaestchen) + kaestchenSeitenlaengePixel / 4,
             calcPixelY(kaestchen) - kaestchenSeitenlaengePixel / 4,
             calcPixelX(kaestchen) + (kaestchenSeitenlaengePixel * 0.75).toInt(),
-            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel / 4
-        )
+            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel / 4)
 
     private fun calcRectStrichUnten(kaestchen: Kaestchen): Rect? =
         if (kaestchen.strichUnten == null) null else Rect(
-            calcPixelX(kaestchen)  + kaestchenSeitenlaengePixel / 4,
+            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel / 4,
             calcPixelY(kaestchen) + (kaestchenSeitenlaengePixel * 0.75).toInt(),
-            calcPixelX(kaestchen)  + (kaestchenSeitenlaengePixel * 0.75).toInt(),
-            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel + kaestchenSeitenlaengePixel / 4
-        )
+            calcPixelX(kaestchen) + (kaestchenSeitenlaengePixel * 0.75).toInt(),
+            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel + kaestchenSeitenlaengePixel / 4)
 
     private fun calcRectStrichLinks(kaestchen: Kaestchen): Rect? =
         if (kaestchen.strichLinks == null) null else Rect(
-            calcPixelX(kaestchen)  - kaestchenSeitenlaengePixel / 4,
+            calcPixelX(kaestchen) - kaestchenSeitenlaengePixel / 4,
             calcPixelY(kaestchen) + kaestchenSeitenlaengePixel / 4,
-            calcPixelX(kaestchen)  + kaestchenSeitenlaengePixel / 4,
-            calcPixelY(kaestchen) + (kaestchenSeitenlaengePixel * 0.75).toInt()
-        )
+            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel / 4,
+            calcPixelY(kaestchen) + (kaestchenSeitenlaengePixel * 0.75).toInt())
 
     private fun calcRectStrichRechts(kaestchen: Kaestchen): Rect? =
         if (kaestchen.strichRechts == null) null else Rect(
-            calcPixelX(kaestchen)  + (kaestchenSeitenlaengePixel * 0.75).toInt(),
+            calcPixelX(kaestchen) + (kaestchenSeitenlaengePixel * 0.75).toInt(),
             calcPixelY(kaestchen) + kaestchenSeitenlaengePixel / 4,
-            calcPixelX(kaestchen)  + kaestchenSeitenlaengePixel + kaestchenSeitenlaengePixel / 4,
-            calcPixelY(kaestchen) + (kaestchenSeitenlaengePixel * 0.75).toInt()
-        )
+            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel + kaestchenSeitenlaengePixel / 4,
+            calcPixelY(kaestchen) + (kaestchenSeitenlaengePixel * 0.75).toInt())
 
     /**
      * Diese Methode bestimmt, auf welchen Strich des Kästchen gedrückt wurde.
      */
-    private fun ermittleStrich(kaestchen: Kaestchen, pixelX: Int, pixelY: Int): Strich? {
+    private fun ermittleStrichAnPosition(kaestchen: Kaestchen, pixelX: Int, pixelY: Int): Strich? {
 
         calcRectStrichOben(kaestchen)?.let {
             if (it.contains(pixelX, pixelY))
@@ -227,7 +223,7 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
 
             fuellungPaint.color = getFarbeFuerSpieler(it)
 
-            val symbol : Drawable =
+            val symbol: Drawable =
                 if (it == Spieler.KAESE)
                     AppCompatResources.getDrawable(context!!, R.drawable.ic_spieler_symbol_kaese)!!
                 else

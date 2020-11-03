@@ -27,13 +27,12 @@ package de.stefan_oltmann.kaesekaestchen.model
 /**
  * Das Spielprinzip besteht daraus, Striche zu setzen um Kästchen zu schließen.
  * Diese Klasse repräsentiert einen solchen Strich.
- *
- * @author Stefan Oltmann
  */
-data class Strich(private val kaestchenOben: Kaestchen?,
-                  private val kaestchenUnten: Kaestchen?,
-                  private val kaestchenLinks: Kaestchen?,
-                  private val kaestchenRechts: Kaestchen?) {
+data class Strich(
+    private val kaestchenOben: Kaestchen?,
+    private val kaestchenUnten: Kaestchen?,
+    private val kaestchenLinks: Kaestchen?,
+    private val kaestchenRechts: Kaestchen?) {
 
     /* Auflistung zum Durch-iterieren */
     private val kaestchenListe: MutableList<Kaestchen> = mutableListOf()

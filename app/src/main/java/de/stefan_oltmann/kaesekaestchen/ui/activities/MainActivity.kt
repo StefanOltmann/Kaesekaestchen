@@ -36,12 +36,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import de.stefan_oltmann.kaesekaestchen.R
 
-/**
- * Diese Activity wird bei Starten der App angezeigt. Hier wird ausgewählt, wer
- * die beiden Mitspieler sind.
- *
- * @author Stefan Oltmann
- */
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

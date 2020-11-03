@@ -24,6 +24,10 @@
  */
 package de.stefan_oltmann.kaesekaestchen.model
 
+/**
+ * Die App untersützt einen Spieler gegen die KI
+ * und zwei Spieler gegeneinander.
+ */
 enum class SpielModus {
 
     EINZELSPIELER,

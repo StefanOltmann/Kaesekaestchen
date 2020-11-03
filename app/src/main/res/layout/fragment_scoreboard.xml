@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="de.stefan_oltmann.kaesekaestchen.ui.fragments.ScoreBoardViewModel"/>
+            type="de.stefan_oltmann.kaesekaestchen.ui.fragments.ScoreBoardViewModel" />
 
     </data>
 
