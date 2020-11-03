@@ -29,8 +29,6 @@ import de.stefan_oltmann.kaesekaestchen.model.Spieler
 /**
  * Der SpielerManager bestimmt, welcher Spieler am Zug ist und wählt den
  * nächsten Spieler aus. Er kennt alle Mitspieler.
- *
- * @author Stefan Oltmann
  */
 class SpielerManager {
 
