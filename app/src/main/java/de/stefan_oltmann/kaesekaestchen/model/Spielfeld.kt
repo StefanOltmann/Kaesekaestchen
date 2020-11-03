@@ -31,12 +31,25 @@ import java.util.*
  *
  * @author Stefan Oltmann
  */
-class Spielfeld private constructor(
-    val breiteInKaestchen: Int,
-    val hoeheInKaestchen: Int) {
+class Spielfeld private constructor() {
 
-    private val kaestchenArray: Array<Array<Kaestchen?>> =
-        Array(breiteInKaestchen) { arrayOfNulls<Kaestchen?>(hoeheInKaestchen) }
+    private lateinit var feldGroesse: FeldGroesse
+
+    val breiteInKaestchen
+        get() = feldGroesse.groesseX
+
+    val hoeheInKaestchen
+        get() = feldGroesse.groesseX
+
+    private lateinit var kaestchenArray: Array<Array<Kaestchen?>>
+
+    /*
+     * Die Liste aller Kästchen
+     */
+    private val kaestchenListe: MutableList<Kaestchen> = mutableListOf()
+
+    val kaestchenListeUnmodifiable
+        get() = Collections.unmodifiableList(kaestchenListe)
 
     /**
      * Aus Performance-Gründen wird eine zweite Liste geführt, damit die
@@ -45,46 +58,91 @@ class Spielfeld private constructor(
      */
     private val offeneKaestchen: MutableList<Kaestchen> = mutableListOf()
 
-    val offeneKaestchenUnmodifiable: List<Kaestchen>
-        get() = Collections.unmodifiableList(offeneKaestchen)
-
     private val stricheOhneBesitzer: MutableSet<Strich> = mutableSetOf()
 
-    val stricheOhneBesitzerUnmodifiable: Set<Strich>
-        get() = Collections.unmodifiableSet(stricheOhneBesitzer)
+    constructor(feldGroesse: FeldGroesse): this() {
 
-    val kaestchenListe: List<Kaestchen>
-        get() {
+        this.feldGroesse = feldGroesse
 
-            val liste: MutableList<Kaestchen> = mutableListOf()
+        val breiteInKaestchen = feldGroesse.groesseX
+        val hoeheInKaestchen = feldGroesse.groesseY
 
-            for (rasterX in 0 until breiteInKaestchen)
-                for (rasterY in 0 until hoeheInKaestchen)
-                    liste.add(kaestchenArray[rasterX][rasterY]!!)
+        kaestchenArray = Array(breiteInKaestchen) { arrayOfNulls<Kaestchen?>(hoeheInKaestchen) }
 
-            return liste.toList()
+        /*
+         * Erstmal alle Kästchen erzeugen und in das Array sowie
+         * die Listen einfügen.
+         */
+        for (rasterX in 0 until breiteInKaestchen) {
+            for (rasterY in 0 until hoeheInKaestchen) {
+
+                val kaestchen = Kaestchen(rasterX, rasterY)
+
+                kaestchenArray[kaestchen.rasterX][kaestchen.rasterY] = kaestchen
+
+                kaestchenListe.add(kaestchen)
+                offeneKaestchen.add(kaestchen)
+            }
         }
 
-    private fun addKaestchen(kaestchen: Kaestchen) {
-        kaestchenArray[kaestchen.rasterX][kaestchen.rasterY] = kaestchen
-        offeneKaestchen.add(kaestchen)
-    }
+        /**
+         * Jetzt die Beziehungen zueinander herstellen um
+         * gemeinsame Striche der Kästchen zu ermitteln.
+         */
+        for (kaestchen in kaestchenListe) {
 
-    private fun addStrich(strich: Strich) {
-        stricheOhneBesitzer.add(strich)
-    }
+            val rasterX = kaestchen.rasterX
+            val rasterY = kaestchen.rasterY
 
-    fun isImRaster(rasterX: Int, rasterY: Int) =
-        rasterX < breiteInKaestchen && rasterY < hoeheInKaestchen
+            /*
+             * Nach rechts
+             */
+
+            var kaestchenRechts: Kaestchen? = null
+
+            if (rasterX < breiteInKaestchen - 1)
+                kaestchenRechts = kaestchenArray[rasterX + 1][rasterY]
+
+            if (kaestchenRechts != null) {
+
+                val strichRechts = Strich(null, null, kaestchen, kaestchenRechts)
+
+                kaestchen.strichRechts = strichRechts
+                kaestchenRechts.strichLinks = strichRechts
+                stricheOhneBesitzer.add(strichRechts)
+            }
+
+            /*
+             * Nach unten
+             */
+
+            var kaestchenUnten: Kaestchen? = null
+
+            if (rasterY < hoeheInKaestchen - 1)
+                kaestchenUnten = kaestchenArray[rasterX][rasterY +1]
+
+            if (kaestchenUnten != null) {
+
+                val strichUnten = Strich(kaestchen, kaestchenUnten, null, null)
+
+                kaestchen.strichUnten = strichUnten
+                kaestchenUnten.strichOben = strichUnten
+                stricheOhneBesitzer.add(strichUnten)
+            }
+        }
+    }
 
     fun getKaestchen(rasterX: Int, rasterY: Int): Kaestchen {
 
         /* Außerhalb des Rasters gibts kein Kästchen. */
         if (!isImRaster(rasterX, rasterY))
-            throw IllegalArgumentException("Das Kästchen liegt außerhalb des Rasters: $rasterX >= $breiteInKaestchen || $rasterY >= $hoeheInKaestchen")
+            throw IllegalArgumentException("Das Kästchen liegt außerhalb des Rasters: $rasterX >= $feldGroesse.groesseX || $rasterY >= $feldGroesse.groesseY")
 
         return kaestchenArray[rasterX][rasterY]!!
     }
+
+    fun isImRaster(rasterX: Int, rasterY: Int) =
+        rasterX < feldGroesse.groesseX && rasterY < feldGroesse.groesseY
 
     /**
      * Schließt alle Kästchen, die geschlossen werden können.
@@ -136,7 +194,7 @@ class Spielfeld private constructor(
          * wäre ja wirklich sehr dumm.
          */
         findeLetztenOffenenStrichFuerKaestchen()?.let {
-            return it;
+            return it
         }
 
         /*
@@ -161,18 +219,21 @@ class Spielfeld private constructor(
         return zufallsStrich
     }
 
-    fun findeLetztenOffenenStrichFuerKaestchen(): Strich? {
+    private fun findeLetztenOffenenStrichFuerKaestchen(): Strich? {
 
-        for (kaestchen in offeneKaestchenUnmodifiable)
+        for (kaestchen in offeneKaestchen)
             if (kaestchen.stricheOhneBesitzer.size == 1)
                 return kaestchen.stricheOhneBesitzer[0]
 
         return null
     }
 
-    fun findeZufaelligenStrich(): Strich {
+    private fun findeZufaelligenStrich(): Strich {
 
-        val stricheOhneBesitzer = stricheOhneBesitzerUnmodifiable.toList()
+        if (stricheOhneBesitzer.isEmpty())
+            throw IllegalStateException("Es gibt keine freien Striche mehr.")
+
+        val stricheOhneBesitzer = stricheOhneBesitzer.toList()
 
         val zufallsZahl = (0..stricheOhneBesitzer.size.minus(1)).random()
 
@@ -188,57 +249,5 @@ class Spielfeld private constructor(
                 punkte++
 
         return punkte
-    }
-
-    object SpielfeldFactory {
-
-        /**
-         * Factory Method zur Erzeugung eines Spielfeldes
-         */
-        fun generiere(feldGroesse: FeldGroesse): Spielfeld {
-
-            val anzahlH = feldGroesse.groesseX
-            val anzahlV = feldGroesse.groesseY
-
-            val spielfeld = Spielfeld(anzahlH, anzahlV)
-
-            for (rasterX in 0 until anzahlH)
-                for (rasterY in 0 until anzahlV)
-                    spielfeld.addKaestchen(Kaestchen(rasterX, rasterY))
-
-            for (rasterX in 0 until anzahlH) {
-                for (rasterY in 0 until anzahlV) {
-
-                    val kaestchen = spielfeld.getKaestchen(rasterX, rasterY)
-
-                    var kaestchenUnten: Kaestchen? = null
-                    var kaestchenRechts: Kaestchen? = null
-
-                    if (rasterY < anzahlV - 1) kaestchenUnten =
-                        spielfeld.getKaestchen(rasterX, rasterY + 1)
-
-                    if (rasterX < anzahlH - 1) kaestchenRechts =
-                        spielfeld.getKaestchen(rasterX + 1, rasterY)
-
-                    val strichUnten = Strich(kaestchen, kaestchenUnten, null, null)
-
-                    val strichRechts = Strich(null, null, kaestchen, kaestchenRechts)
-
-                    if (kaestchenRechts != null) {
-                        kaestchen.strichRechts = strichRechts
-                        kaestchenRechts.strichLinks = strichRechts
-                        spielfeld.addStrich(strichRechts)
-                    }
-
-                    if (kaestchenUnten != null) {
-                        kaestchen.strichUnten = strichUnten
-                        kaestchenUnten.strichOben = strichUnten
-                        spielfeld.addStrich(strichUnten)
-                    }
-                }
-            }
-
-            return spielfeld
-        }
     }
 }

@@ -79,7 +79,7 @@ class GameLoop(val callback: GameLoopCallback) {
         if (spielModus == SpielModus.EINZELSPIELER)
             spielerManager.bestimmeZufaelligComputerGegner()
 
-        spielfeld = Spielfeld.SpielfeldFactory.generiere(feldGroesse)
+        spielfeld = Spielfeld(feldGroesse)
 
         val thread = Thread(GameLoopRunnable())
 

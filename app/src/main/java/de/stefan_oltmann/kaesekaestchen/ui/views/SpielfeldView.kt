@@ -40,11 +40,7 @@ import de.stefan_oltmann.kaesekaestchen.R
 import de.stefan_oltmann.kaesekaestchen.controller.GameLoop
 import de.stefan_oltmann.kaesekaestchen.model.Kaestchen
 import de.stefan_oltmann.kaesekaestchen.model.Spieler
-import de.stefan_oltmann.kaesekaestchen.model.Spielfeld
 import de.stefan_oltmann.kaesekaestchen.model.Strich
-import java.util.concurrent.locks.Condition
-import java.util.concurrent.locks.Lock
-import kotlin.concurrent.withLock
 
 /**
  * Diese Klasse zeichnet das Spielfeld und nimmt Interaktionen des Benutzers
@@ -69,7 +65,6 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         ContextCompat.getColor(context!!, R.color.kaestchen_rahmen_farbe)
     }
 
-    private val paint = Paint()
     private val rahmenPaint = Paint()
     private val fuellungPaint = Paint()
 
@@ -104,7 +99,7 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
 
     override fun onDraw(canvas: Canvas) {
 
-        for (kaestchen in gameLoop.spielfeld.kaestchenListe)
+        for (kaestchen in gameLoop.spielfeld.kaestchenListeUnmodifiable)
             drawKaestchen(kaestchen, canvas)
     }
 
@@ -195,7 +190,7 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
     /**
      * Diese Methode bestimmt, auf welchen Strich des Kästchen gedrückt wurde.
      */
-    fun ermittleStrich(kaestchen: Kaestchen, pixelX: Int, pixelY: Int): Strich? {
+    private fun ermittleStrich(kaestchen: Kaestchen, pixelX: Int, pixelY: Int): Strich? {
 
         calcRectStrichOben(kaestchen)?.let {
             if (it.contains(pixelX, pixelY))
