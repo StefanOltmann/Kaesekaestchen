@@ -49,7 +49,7 @@ import kotlin.math.roundToInt
 class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, attrs), OnTouchListener {
 
     companion object {
-        var PADDING_PX = 10
+        var PADDING_PX = 10f
     }
 
     private lateinit var spielLogik: SpielLogik
@@ -95,8 +95,8 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
      */
     override fun onSizeChanged(breitePixel: Int, hoehePixel: Int, oldw: Int, oldh: Int) {
 
-        val breitePixelMitPadding = (breitePixel - PADDING_PX * 2).toFloat()
-        val hoehePixelMitPadding = (hoehePixel - PADDING_PX * 2).toFloat()
+        val breitePixelMitPadding = breitePixel.toFloat() - PADDING_PX * 2
+        val hoehePixelMitPadding = hoehePixel.toFloat() - PADDING_PX * 2
 
         val maxBreitePixel : Float = breitePixelMitPadding / spielLogik.spielfeld.breiteInKaestchen
         val maxHoehePixel : Float = hoehePixelMitPadding / spielLogik.spielfeld.hoeheInKaestchen
@@ -122,8 +122,13 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         if (event.action != MotionEvent.ACTION_DOWN)
             return true
 
-        val errechnetRasterX = (event.x / kaestchenSeitenlaengePixel).roundToInt()
-        val errechnetRasterY = (event.y / kaestchenSeitenlaengePixel).roundToInt()
+        /*
+         * Für die Bestimmung des Kästchens muss hier bewusst durch toInt()
+         * die Nachkomma-Stelle abgeschnitten werden. Eine Rundung über
+         * roundToInt() würde das falsche Kästchen ausgeben.
+         */
+        val errechnetRasterX = (event.x / kaestchenSeitenlaengePixel).toInt()
+        val errechnetRasterY = (event.y / kaestchenSeitenlaengePixel).toInt()
 
         /*
          * Wenn der Anwender irgendwo außerhalb des Spielfelds drückt soll
@@ -164,30 +169,30 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
 
     private fun calcRectStrichOben(kaestchen: Kaestchen): RectF? =
         if (kaestchen.strichOben == null) null else RectF(
-            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel / 4,
-            calcPixelY(kaestchen) - kaestchenSeitenlaengePixel / 4,
+            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.25f,
+            calcPixelY(kaestchen) - kaestchenSeitenlaengePixel * 0.25f,
             calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.75f,
-            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel / 4)
+            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.25f)
 
     private fun calcRectStrichUnten(kaestchen: Kaestchen): RectF? =
         if (kaestchen.strichUnten == null) null else RectF(
-            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel / 4,
+            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.25f,
             calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.75f,
             calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.75f,
-            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel + kaestchenSeitenlaengePixel / 4)
+            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 1.25f)
 
     private fun calcRectStrichLinks(kaestchen: Kaestchen): RectF? =
         if (kaestchen.strichLinks == null) null else RectF(
-            calcPixelX(kaestchen) - kaestchenSeitenlaengePixel / 4,
-            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel / 4,
-            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel / 4,
+            calcPixelX(kaestchen) - kaestchenSeitenlaengePixel * 0.25f,
+            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.25f,
+            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.25f,
             calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.75f)
 
     private fun calcRectStrichRechts(kaestchen: Kaestchen): RectF? =
         if (kaestchen.strichRechts == null) null else RectF(
             calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.75f,
-            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel / 4,
-            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel + kaestchenSeitenlaengePixel / 4,
+            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.25f,
+            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 1.25f,
             calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.75f)
 
     /**
@@ -250,10 +255,10 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
             rahmenPaint.color = Color.BLACK
 
             canvas.drawLine(
-                pixelX.toFloat(),
-                pixelY.toFloat(),
-                pixelX + kaestchenSeitenlaengePixel.toFloat(),
-                pixelY.toFloat(),
+                pixelX,
+                pixelY,
+                pixelX + kaestchenSeitenlaengePixel,
+                pixelY,
                 rahmenPaint
             )
         }
@@ -266,10 +271,10 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
             rahmenPaint.color = Color.BLACK
 
         canvas.drawLine(
-            pixelX.toFloat(),
-            pixelY + kaestchenSeitenlaengePixel.toFloat(),
-            pixelX + kaestchenSeitenlaengePixel.toFloat(),
-            pixelY + kaestchenSeitenlaengePixel.toFloat(),
+            pixelX,
+            pixelY + kaestchenSeitenlaengePixel,
+            pixelX + kaestchenSeitenlaengePixel,
+            pixelY + kaestchenSeitenlaengePixel,
             rahmenPaint
         )
 
@@ -278,10 +283,10 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
             rahmenPaint.color = Color.BLACK
 
             canvas.drawLine(
-                pixelX.toFloat(),
-                pixelY.toFloat(),
-                pixelX.toFloat(),
-                pixelY + kaestchenSeitenlaengePixel.toFloat(),
+                pixelX,
+                pixelY,
+                pixelX,
+                pixelY + kaestchenSeitenlaengePixel,
                 rahmenPaint
             )
         }
@@ -294,10 +299,10 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
             rahmenPaint.color = Color.BLACK
 
         canvas.drawLine(
-            pixelX + kaestchenSeitenlaengePixel.toFloat(),
-            pixelY.toFloat(),
-            pixelX + kaestchenSeitenlaengePixel.toFloat(),
-            pixelY + kaestchenSeitenlaengePixel.toFloat(),
+            pixelX + kaestchenSeitenlaengePixel,
+            pixelY,
+            pixelX + kaestchenSeitenlaengePixel,
+            pixelY + kaestchenSeitenlaengePixel,
             rahmenPaint
         )
 
@@ -305,34 +310,34 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         rahmenPaint.color = Color.BLACK
 
         canvas.drawRect(
-            pixelX - 1.toFloat(),
-            pixelY - 1.toFloat(),
-            pixelX + 1.toFloat(),
-            pixelY + 1.toFloat(),
+            pixelX - 1.0f,
+            pixelY - 1.0f,
+            pixelX + 1.0f,
+            pixelY + 1.0f,
             rahmenPaint
         )
 
         canvas.drawRect(
-            pixelX + kaestchenSeitenlaengePixel - 1.toFloat(),
-            pixelY - 1.toFloat(),
-            pixelX + kaestchenSeitenlaengePixel + 1.toFloat(),
-            pixelY + 1.toFloat(),
+            pixelX + kaestchenSeitenlaengePixel - 1.0f,
+            pixelY - 1.0f,
+            pixelX + kaestchenSeitenlaengePixel + 1.0f,
+            pixelY + 1.0f,
             rahmenPaint
         )
 
         canvas.drawRect(
-            pixelX - 1.toFloat(),
-            pixelY + kaestchenSeitenlaengePixel - 1.toFloat(),
-            pixelX + 1.toFloat(),
-            pixelY + kaestchenSeitenlaengePixel + 1.toFloat(),
+            pixelX - 1.0f,
+            pixelY + kaestchenSeitenlaengePixel - 1.0f,
+            pixelX + 1.0f,
+            pixelY + kaestchenSeitenlaengePixel + 1.0f,
             rahmenPaint
         )
 
         canvas.drawRect(
-            pixelX + kaestchenSeitenlaengePixel - 1.toFloat(),
-            pixelY + kaestchenSeitenlaengePixel - 1.toFloat(),
-            pixelX + kaestchenSeitenlaengePixel + 1.toFloat(),
-            pixelY + kaestchenSeitenlaengePixel + 1.toFloat(),
+            pixelX + kaestchenSeitenlaengePixel - 1.0f,
+            pixelY + kaestchenSeitenlaengePixel - 1.0f,
+            pixelX + kaestchenSeitenlaengePixel + 1.0f,
+            pixelY + kaestchenSeitenlaengePixel + 1.0f,
             rahmenPaint
         )
     }
