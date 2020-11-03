@@ -28,6 +28,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -58,11 +59,15 @@ class ScoreBoardFragment : Fragment() {
 
         /* Die Werte aus den Argumenten in das ViewModel übernehmen. */
 
-        viewModel.pokalDrawableResId.value =
+        /*
+         * Achtung: Das Setzen der Drawable über das Binding scheint nicht abwärtskompatibel zu sein.
+         * Auf alten Geräten gibt es hier dann eine verpixelte Grafik. Daher dieser Weg.
+         */
+        binding.pokalImageView.setImageDrawable(
             if (gewinner == Spieler.KAESE)
-                R.drawable.ic_pokal_kaese
+                AppCompatResources.getDrawable(requireContext(), R.drawable.ic_pokal_kaese)
             else
-                R.drawable.ic_pokal_maus
+                AppCompatResources.getDrawable(requireContext(), R.drawable.ic_pokal_maus))
 
         viewModel.punktestandKaese.value = args.punktestandKaese.toString()
         viewModel.punktestandMaus.value = args.punktestandMaus.toString()

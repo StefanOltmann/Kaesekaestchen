@@ -5,8 +5,6 @@
 
     <data>
 
-        <import type="androidx.core.content.ContextCompat" />
-
         <variable
             name="viewModel"
             type="de.stefan_oltmann.kaesekaestchen.ui.fragments.ScoreBoardViewModel" />
@@ -28,7 +26,6 @@
             android:layout_marginEnd="32dp"
             android:layout_marginRight="32dp"
             android:layout_marginBottom="32dp"
-            android:src="@{ContextCompat.getDrawable(context, viewModel.pokalDrawableResId)}"
             app:layout_constraintBottom_toTopOf="@+id/kaese_image_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
