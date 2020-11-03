@@ -105,7 +105,6 @@
             android:layout_marginRight="32dp"
             android:layout_marginBottom="32dp"
             android:text="@string/zurueck_zum_hauptmenue"
-            android:onClick="navigateToStart()"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
