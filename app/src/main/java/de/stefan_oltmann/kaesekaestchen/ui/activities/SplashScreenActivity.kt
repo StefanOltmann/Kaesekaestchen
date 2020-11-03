@@ -5,7 +5,7 @@
  * Copyright (C) Stefan Oltmann
  *
  * Contact : dotsandboxes@stefan-oltmann.de
- * Homepage: http://www.stefan-oltmann.de/
+ * Homepage: https://github.com/StefanOltmann/Kaesekaestchen
  *
  * This file is part of Kaesekaestchen.
  *
