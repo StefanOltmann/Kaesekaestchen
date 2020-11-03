@@ -43,13 +43,14 @@ import kotlin.math.roundToInt
 /**
  * Diese Klasse zeichnet das Spielfeld und nimmt Interaktionen des Benutzers
  * entgegen.
- *
- * @author Stefan Oltmann
  */
 class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, attrs), OnTouchListener {
 
     companion object {
-        var PADDING_PX = 10f
+        const val PADDING_PX = 10f
+        const val SYMBOL_PADDING_PX = 12
+        const val ECKPUNKT_RADIUS_PX = 4f
+        const val STRICH_DICKE_PX = 8f
     }
 
     private lateinit var spielLogik: SpielLogik
@@ -65,12 +66,19 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
     private var offsetPixelX = 0.0f
     private var offsetPixelY = 0.0f
 
-    private val defaultRahmenColor by lazy {
-        ContextCompat.getColor(context!!, R.color.kaestchen_rahmen_farbe)
+    private val rahmenFarbe by lazy {
+        ContextCompat.getColor(context!!, R.color.rahmen_farbe)
+    }
+
+    private val strichOhneBesitzerFarbe by lazy {
+        ContextCompat.getColor(context!!, R.color.strich_ohne_besitzer_farbe)
+    }
+
+    private val zuletztGesetzterStrichFarbe by lazy {
+        ContextCompat.getColor(context!!, R.color.zuletzt_gesetzter_strich_farbe)
     }
 
     private val rahmenPaint = Paint()
-    private val fuellungPaint = Paint()
 
     /**
      * Konstruktor zum Erstellen des Kästchen. Es muss die Position/ID des
@@ -78,7 +86,7 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
      */
     init {
         rahmenPaint.style = Paint.Style.STROKE
-        rahmenPaint.strokeWidth = 5f
+        rahmenPaint.strokeWidth = STRICH_DICKE_PX
     }
 
     fun setGameLoop(spielLogik: SpielLogik) {
@@ -224,20 +232,14 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         return null
     }
 
-    private fun getFarbeFuerSpieler(spieler: Spieler) =
-        if (spieler == Spieler.KAESE)
-            ContextCompat.getColor(context, R.color.spieler_kaese_farbe)
-        else
-            ContextCompat.getColor(context, R.color.spieler_maus_farbe)
-
     private fun drawKaestchen(kaestchen: Kaestchen, canvas: Canvas) {
 
         val pixelX = calcPixelX(kaestchen)
         val pixelY = calcPixelY(kaestchen)
 
-        kaestchen.besitzer?.let {
+        /* Symbol einzeichnen */
 
-            fuellungPaint.color = getFarbeFuerSpieler(it)
+        kaestchen.besitzer?.let {
 
             val symbol: Drawable =
                 if (it == Spieler.KAESE)
@@ -245,15 +247,23 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
                 else
                     AppCompatResources.getDrawable(context!!, R.drawable.ic_spieler_symbol_maus)!!
 
-            symbol.setBounds(0, 0, kaestchenSeitenlaengePixel.roundToInt(), kaestchenSeitenlaengePixel.roundToInt())
-            canvas.translate(pixelX, pixelY)
+            symbol.setBounds(0, 0,
+                kaestchenSeitenlaengePixel.roundToInt() - SYMBOL_PADDING_PX * 2,
+                kaestchenSeitenlaengePixel.roundToInt() - SYMBOL_PADDING_PX * 2)
+
+            val pixelXmitPadding = pixelX + SYMBOL_PADDING_PX
+            val pixelYmitPadding = pixelY + SYMBOL_PADDING_PX
+
+            canvas.translate(pixelXmitPadding, pixelYmitPadding)
             symbol.draw(canvas)
-            canvas.translate(-pixelX, -pixelY)
+            canvas.translate(-pixelXmitPadding, -pixelYmitPadding)
         }
+
+        /* Striche zeichnen */
 
         if (kaestchen.strichOben == null) {
 
-            rahmenPaint.color = Color.BLACK
+            rahmenPaint.color = rahmenFarbe
 
             canvas.drawLine(
                 pixelX,
@@ -276,7 +286,7 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
 
         if (kaestchen.strichLinks == null) {
 
-            rahmenPaint.color = Color.BLACK
+            rahmenPaint.color = rahmenFarbe
 
             canvas.drawLine(
                 pixelX,
@@ -297,39 +307,43 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
             rahmenPaint
         )
 
-        /* Eckpunkte zeichnen */
+        /*
+         * Eckpunkte zeichnen
+         *
+         * Bewusst nicht drawCircle(), weil es in eckig einfach besser aussieht.
+         */
 
-        rahmenPaint.color = Color.BLACK
+        rahmenPaint.color = rahmenFarbe
 
         canvas.drawRect(
-            pixelX - 1.0f,
-            pixelY - 1.0f,
-            pixelX + 1.0f,
-            pixelY + 1.0f,
+            pixelX - ECKPUNKT_RADIUS_PX,
+            pixelY - ECKPUNKT_RADIUS_PX,
+            pixelX + ECKPUNKT_RADIUS_PX,
+            pixelY + ECKPUNKT_RADIUS_PX,
             rahmenPaint
         )
 
         canvas.drawRect(
-            pixelX + kaestchenSeitenlaengePixel - 1.0f,
-            pixelY - 1.0f,
-            pixelX + kaestchenSeitenlaengePixel + 1.0f,
-            pixelY + 1.0f,
+            pixelX + kaestchenSeitenlaengePixel - ECKPUNKT_RADIUS_PX,
+            pixelY - ECKPUNKT_RADIUS_PX,
+            pixelX + kaestchenSeitenlaengePixel + ECKPUNKT_RADIUS_PX,
+            pixelY + ECKPUNKT_RADIUS_PX,
             rahmenPaint
         )
 
         canvas.drawRect(
-            pixelX - 1.0f,
-            pixelY + kaestchenSeitenlaengePixel - 1.0f,
-            pixelX + 1.0f,
-            pixelY + kaestchenSeitenlaengePixel + 1.0f,
+            pixelX - ECKPUNKT_RADIUS_PX,
+            pixelY + kaestchenSeitenlaengePixel - ECKPUNKT_RADIUS_PX,
+            pixelX + ECKPUNKT_RADIUS_PX,
+            pixelY + kaestchenSeitenlaengePixel + ECKPUNKT_RADIUS_PX,
             rahmenPaint
         )
 
         canvas.drawRect(
-            pixelX + kaestchenSeitenlaengePixel - 1.0f,
-            pixelY + kaestchenSeitenlaengePixel - 1.0f,
-            pixelX + kaestchenSeitenlaengePixel + 1.0f,
-            pixelY + kaestchenSeitenlaengePixel + 1.0f,
+            pixelX + kaestchenSeitenlaengePixel - ECKPUNKT_RADIUS_PX,
+            pixelY + kaestchenSeitenlaengePixel - ECKPUNKT_RADIUS_PX,
+            pixelX + kaestchenSeitenlaengePixel + ECKPUNKT_RADIUS_PX,
+            pixelY + kaestchenSeitenlaengePixel + ECKPUNKT_RADIUS_PX,
             rahmenPaint
         )
     }
@@ -337,13 +351,13 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
     private fun ermittleStrichFarbe(strich: Strich?) : Int {
 
         return if (strich != null && strich == spielLogik.spielfeld.zuletztGesetzterStrich)
-            Color.CYAN
+            zuletztGesetzterStrichFarbe
         else if (strich?.besitzer != null)
-            getFarbeFuerSpieler(strich.besitzer!!)
+            rahmenFarbe
         else if (strich != null)
-            defaultRahmenColor
+            strichOhneBesitzerFarbe
         else
-            Color.BLACK
+            rahmenFarbe
     }
 
     fun aktualisiereAnzeige() {

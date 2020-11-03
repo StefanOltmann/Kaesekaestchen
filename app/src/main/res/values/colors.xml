@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="kaestchen_rahmen_farbe">#F8F8F8</color>
-    <color name="spieler_kaese_farbe">#00F</color>
-    <color name="spieler_maus_farbe">#F00</color>
+    <color name="rahmen_farbe">#333333</color>
+    <color name="strich_ohne_besitzer_farbe">#F8F8F8</color>
+    <color name="zuletzt_gesetzter_strich_farbe">#CC0000</color>
 </resources>
