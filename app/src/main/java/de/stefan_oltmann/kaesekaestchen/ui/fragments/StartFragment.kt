@@ -41,6 +41,7 @@ class StartFragment : Fragment() {
 
         binding = FragmentStartBinding.inflate(inflater, container, false)
 
+        /* Ein Binding sollte den LifeCycle immer kennen. */
         binding.lifecycleOwner = this
 
         binding.einzelspielerImageButton.setOnClickListener {

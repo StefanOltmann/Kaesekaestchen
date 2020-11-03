@@ -8,7 +8,6 @@ import de.stefan_oltmann.kaesekaestchen.model.Spielfeld
 class SpielViewModel : ViewModel() {
 
     val spielfeld = MutableLiveData<Spielfeld>()
-
     val spielLogik = MutableLiveData<SpielLogik>()
 
 }

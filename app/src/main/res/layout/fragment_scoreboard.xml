@@ -4,6 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="androidx.core.content.ContextCompat" />
+
+        <variable
+            name="viewModel"
+            type="de.stefan_oltmann.kaesekaestchen.ui.fragments.ScoreBoardViewModel"/>
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,7 +28,7 @@
             android:layout_marginEnd="32dp"
             android:layout_marginRight="32dp"
             android:layout_marginBottom="32dp"
-            app:srcCompat="@drawable/ic_pokal_kaese"
+            android:src="@{ContextCompat.getDrawable(context, viewModel.pokalDrawableResId)}"
             app:layout_constraintBottom_toTopOf="@+id/kaese_image_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -44,12 +51,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginLeft="32dp"
-            android:text="0"
+            android:text="@{viewModel.punktestandKaese}"
             android:textSize="@dimen/text_size"
             app:layout_constraintBottom_toBottomOf="@+id/kaese_image_view"
             app:layout_constraintStart_toEndOf="@+id/kaese_image_view"
             app:layout_constraintTop_toTopOf="@+id/kaese_image_view"
-            tools:text="99" />
+            tools:text="999" />
 
         <ImageView
             android:id="@+id/maus_image_view"
@@ -66,12 +73,12 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
             android:layout_marginRight="32dp"
-            android:text="0"
+            android:text="@{viewModel.punktestandMaus}"
             android:textSize="@dimen/text_size"
             app:layout_constraintBottom_toBottomOf="@+id/maus_image_view"
             app:layout_constraintEnd_toStartOf="@+id/maus_image_view"
             app:layout_constraintTop_toTopOf="@+id/maus_image_view"
-            tools:text="99" />
+            tools:text="999" />
 
         <TextView
             android:id="@+id/vs_text_view"
@@ -98,6 +105,7 @@
             android:layout_marginRight="32dp"
             android:layout_marginBottom="32dp"
             android:text="@string/zurueck_zum_hauptmenue"
+            android:onClick="navigateToStart()"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

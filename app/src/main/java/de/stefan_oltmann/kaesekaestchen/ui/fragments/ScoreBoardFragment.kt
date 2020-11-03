@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -17,27 +16,35 @@ class ScoreBoardFragment : Fragment() {
 
     private val args: ScoreBoardFragmentArgs by navArgs()
 
+    private val viewModel by viewModels<ScoreBoardViewModel>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
 
         val binding = FragmentScoreboardBinding.inflate(inflater, container, false)
 
+        /* Ein Binding sollte den LifeCycle immer kennen. */
         binding.lifecycleOwner = this
+
+        /* Dem Binding das ViewModel zuweisen. */
+        binding.viewModel = viewModel
 
         val gewinner = Spieler.valueOf(args.gewinnerSpieler)
 
-        with(binding) {
+        /* Die Werte aus den Argumenten in das ViewModel übernehmen. */
 
+        viewModel.pokalDrawableResId.value =
             if (gewinner == Spieler.KAESE)
-                pokalImageView.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_pokal_kaese))
+                R.drawable.ic_pokal_kaese
+            else
+                R.drawable.ic_pokal_maus
 
-            if (gewinner == Spieler.MAUS)
-                pokalImageView.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_pokal_maus))
+        viewModel.punktestandKaese.value = args.punktestandKaese.toString()
+        viewModel.punktestandMaus.value = args.punktestandMaus.toString()
 
-            punktestandMausText.text = args.punktestandMaus.toString()
-            punktestandKaeseText.text = args.punktestandKaese.toString()
-        }
+        /* Das Binding auffordern sich auf Basis des aktuellen ViewModels zu aktualisieren. */
+        binding.executePendingBindings()
 
         binding.hauptmenueButton.setOnClickListener {
 
