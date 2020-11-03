@@ -24,7 +24,6 @@
  */
 package de.stefan_oltmann.kaesekaestchen.ui.fragments
 
-import android.graphics.drawable.Drawable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
