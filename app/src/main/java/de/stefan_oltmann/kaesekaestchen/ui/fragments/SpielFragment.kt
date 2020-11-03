@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import de.stefan_oltmann.kaesekaestchen.controller.GameLoop
 import de.stefan_oltmann.kaesekaestchen.controller.GameLoopCallback
@@ -76,7 +77,7 @@ class SpielFragment : Fragment(), GameLoopCallback {
             punktestandMaus = punktestandMaus
         )
 
-        NavHostFragment.findNavController(this@SpielFragment).navigate(action)
+        findNavController().navigate(action)
     }
 
     override fun aktualisiereSpielfeldViewAnzeige() {

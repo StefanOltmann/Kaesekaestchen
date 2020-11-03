@@ -9,4 +9,5 @@ class StartViewModel : ViewModel() {
 
     val spielModus = MutableLiveData(SpielModus.EINZELSPIELER)
     val feldGroesse =  MutableLiveData(FeldGroesse.KLEIN)
+
 }

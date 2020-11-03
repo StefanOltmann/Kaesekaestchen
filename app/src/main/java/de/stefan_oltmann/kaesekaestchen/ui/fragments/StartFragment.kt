@@ -6,8 +6,10 @@ import android.os.Bundle
 import android.view.*
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import de.stefan_oltmann.kaesekaestchen.databinding.FragmentStartBinding
 import de.stefan_oltmann.kaesekaestchen.model.FeldGroesse
 import de.stefan_oltmann.kaesekaestchen.model.SpielModus
@@ -23,9 +25,7 @@ class StartFragment : Fragment() {
         private const val GAME_SETTINGS_KEY_FELD_GROESSE = "feld_groesse"
     }
 
-    private val viewModel by lazy {
-        ViewModelProvider(this).get(StartViewModel::class.java)
-    }
+    private val viewModel by viewModels<StartViewModel>()
 
     /**
      * Wenn eine App Einstellungen speichert, dann müssen die in einer
@@ -103,7 +103,7 @@ class StartFragment : Fragment() {
             StartFragmentDirections.actionNavStartToNavSpiel(
                 viewModel.spielModus.value.toString(), viewModel.feldGroesse.value.toString())
 
-        NavHostFragment.findNavController(this).navigate(action)
+        findNavController().navigate(action)
     }
 
     override fun onPause() {

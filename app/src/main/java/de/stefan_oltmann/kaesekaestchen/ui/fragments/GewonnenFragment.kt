@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import de.stefan_oltmann.kaesekaestchen.R
 import de.stefan_oltmann.kaesekaestchen.databinding.FragmentGewonnenBinding
@@ -44,7 +45,7 @@ class GewonnenFragment : Fragment() {
 
             val action = GewonnenFragmentDirections.actionNavGewonnenToNavStart()
 
-            NavHostFragment.findNavController(this).navigate(action)
+            findNavController().navigate(action)
         }
 
         return binding.root
