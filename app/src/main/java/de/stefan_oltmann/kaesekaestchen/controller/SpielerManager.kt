@@ -57,9 +57,10 @@ class SpielerManager {
 
     fun waehleNaechstenSpielerAus() {
 
-        if (_aktuellerSpieler == Spieler.KAESE)
-            _aktuellerSpieler = Spieler.MAUS
-        else
-            _aktuellerSpieler = Spieler.KAESE
+        _aktuellerSpieler =
+            if (_aktuellerSpieler == Spieler.KAESE)
+                Spieler.MAUS
+            else
+                Spieler.KAESE
     }
 }
