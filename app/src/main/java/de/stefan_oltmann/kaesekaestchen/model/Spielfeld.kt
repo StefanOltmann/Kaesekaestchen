@@ -24,8 +24,6 @@
  */
 package de.stefan_oltmann.kaesekaestchen.model
 
-import java.util.*
-
 /**
  * Das Spielfeld.
  *
@@ -46,10 +44,10 @@ class Spielfeld private constructor() {
     /*
      * Die Liste aller Kästchen
      */
-    private val kaestchenListe: MutableList<Kaestchen> = mutableListOf()
+    private val _kaestchenListe: MutableList<Kaestchen> = mutableListOf()
 
-    val kaestchenListeUnmodifiable
-        get() = Collections.unmodifiableList(kaestchenListe)
+    val kaestchenListe : List<Kaestchen>
+        get() = _kaestchenListe
 
     /**
      * Aus Performance-Gründen wird eine zweite Liste geführt, damit die
@@ -80,7 +78,7 @@ class Spielfeld private constructor() {
 
                 kaestchenArray[kaestchen.rasterX][kaestchen.rasterY] = kaestchen
 
-                kaestchenListe.add(kaestchen)
+                _kaestchenListe.add(kaestchen)
                 offeneKaestchen.add(kaestchen)
             }
         }
@@ -89,7 +87,7 @@ class Spielfeld private constructor() {
          * Jetzt die Beziehungen zueinander herstellen um
          * gemeinsame Striche der Kästchen zu ermitteln.
          */
-        for (kaestchen in kaestchenListe) {
+        for (kaestchen in _kaestchenListe) {
 
             val rasterX = kaestchen.rasterX
             val rasterY = kaestchen.rasterY
@@ -244,7 +242,7 @@ class Spielfeld private constructor() {
 
         var punkte = 0
 
-        for (kaestchen in kaestchenListe)
+        for (kaestchen in _kaestchenListe)
             if (kaestchen.besitzer == spieler)
                 punkte++
 

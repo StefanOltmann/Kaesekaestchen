@@ -37,7 +37,7 @@ import android.view.View.OnTouchListener
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import de.stefan_oltmann.kaesekaestchen.R
-import de.stefan_oltmann.kaesekaestchen.controller.GameLoop
+import de.stefan_oltmann.kaesekaestchen.controller.SpielLogik
 import de.stefan_oltmann.kaesekaestchen.model.Kaestchen
 import de.stefan_oltmann.kaesekaestchen.model.Spieler
 import de.stefan_oltmann.kaesekaestchen.model.Strich
@@ -54,7 +54,7 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         var PADDING_PX = 10
     }
 
-    private lateinit var gameLoop: GameLoop
+    private lateinit var spielLogik: SpielLogik
 
     /*
      * Seitenlaenge eines Kästchens in Pixel
@@ -77,9 +77,9 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         rahmenPaint.strokeWidth = 5f
     }
 
-    fun init(gameLoop: GameLoop) {
+    fun setGameLoop(spielLogik: SpielLogik) {
 
-        this.gameLoop = gameLoop
+        this.spielLogik = spielLogik
 
         setOnTouchListener(this)
     }
@@ -91,15 +91,15 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
      */
     override fun onSizeChanged(breitePixel: Int, hoehePixel: Int, oldw: Int, oldh: Int) {
 
-        val maxBreitePixel = (breitePixel - PADDING_PX * 2) / gameLoop.spielfeld.breiteInKaestchen
-        val maxHoehePixel = (hoehePixel - PADDING_PX * 2) / gameLoop.spielfeld.hoeheInKaestchen
+        val maxBreitePixel = (breitePixel - PADDING_PX * 2) / spielLogik.spielfeld.breiteInKaestchen
+        val maxHoehePixel = (hoehePixel - PADDING_PX * 2) / spielLogik.spielfeld.hoeheInKaestchen
 
         kaestchenSeitenlaengePixel = kotlin.math.min(maxBreitePixel, maxHoehePixel)
     }
 
     override fun onDraw(canvas: Canvas) {
 
-        for (kaestchen in gameLoop.spielfeld.kaestchenListeUnmodifiable)
+        for (kaestchen in spielLogik.spielfeld.kaestchenListe)
             drawKaestchen(kaestchen, canvas)
     }
 
@@ -112,9 +112,6 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         if (event.action != MotionEvent.ACTION_DOWN)
             return true
 
-        if (gameLoop.letzteEingabe != null)
-            return true
-
         val errechnetRasterX = event.x.toInt() / kaestchenSeitenlaengePixel
         val errechnetRasterY = event.y.toInt() / kaestchenSeitenlaengePixel
 
@@ -122,10 +119,10 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
          * Wenn der Anwender irgendwo außerhalb des Spielfelds drückt soll
          * dies einfach ignoriert werden und nicht zu einem Fehler führen.
          */
-        if (!gameLoop.spielfeld.isImRaster(errechnetRasterX, errechnetRasterY))
+        if (!spielLogik.spielfeld.isImRaster(errechnetRasterX, errechnetRasterY))
             return true
 
-        val kaestchen = gameLoop.spielfeld.getKaestchen(errechnetRasterX, errechnetRasterY)
+        val kaestchen = spielLogik.spielfeld.getKaestchen(errechnetRasterX, errechnetRasterY)
 
         /*
          * Wenn sich an der berührten Position kein Kästchen befindet oder
@@ -144,7 +141,7 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         if (strich == null)
             return true
 
-        gameLoop.behandleNutzerEingabe(strich)
+        spielLogik.behandleSpielerEingabe(strich)
 
         return true
     }

@@ -6,24 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.navigation.fragment.NavHostFragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import de.stefan_oltmann.kaesekaestchen.R
-import de.stefan_oltmann.kaesekaestchen.databinding.FragmentGewonnenBinding
+import de.stefan_oltmann.kaesekaestchen.databinding.FragmentScoreboardBinding
 import de.stefan_oltmann.kaesekaestchen.model.Spieler
 
-class GewonnenFragment : Fragment() {
+class ScoreBoardFragment : Fragment() {
 
-    private val args: GewonnenFragmentArgs by navArgs()
-
-    private lateinit var binding: FragmentGewonnenBinding
+    private val args: ScoreBoardFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
 
-        binding = FragmentGewonnenBinding.inflate(inflater, container, false)
+        val binding = FragmentScoreboardBinding.inflate(inflater, container, false)
 
         binding.lifecycleOwner = this
 
@@ -43,7 +41,7 @@ class GewonnenFragment : Fragment() {
 
         binding.hauptmenueButton.setOnClickListener {
 
-            val action = GewonnenFragmentDirections.actionNavGewonnenToNavStart()
+            val action = ScoreBoardFragmentDirections.actionNavGewonnenToNavStart()
 
             findNavController().navigate(action)
         }

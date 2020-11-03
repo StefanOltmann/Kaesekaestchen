@@ -7,15 +7,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.NavHostFragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import de.stefan_oltmann.kaesekaestchen.controller.GameLoop
-import de.stefan_oltmann.kaesekaestchen.controller.GameLoopCallback
+import de.stefan_oltmann.kaesekaestchen.controller.SpielLogik
+import de.stefan_oltmann.kaesekaestchen.controller.SpielLogikCallback
 import de.stefan_oltmann.kaesekaestchen.databinding.FragmentSpielBinding
 import de.stefan_oltmann.kaesekaestchen.model.*
 
-class SpielFragment : Fragment(), GameLoopCallback {
+class SpielFragment : Fragment(), SpielLogikCallback {
 
     companion object {
 
@@ -25,11 +25,36 @@ class SpielFragment : Fragment(), GameLoopCallback {
 
     private val args: SpielFragmentArgs by navArgs()
 
+    private val viewModel by viewModels<SpielViewModel>()
+
     private val handler = Handler(Looper.myLooper()!!)
 
     private lateinit var binding: FragmentSpielBinding
 
-    private lateinit var gameLoop : GameLoop
+    private val spielLogik: SpielLogik?
+        get() = viewModel.spielLogik.value
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        /* Den Gameloop benötigen wurd nur einmal. */
+        if (spielLogik != null)
+            return
+
+        /*
+         * Hier wird auf Basis der Parameter das Spielfeld
+         * sowie der SpielLogik erzeugt und beides im ViewModel
+         * gesichert, damit es überleben kann.
+         */
+
+        val spielModus = SpielModus.valueOf(args.spielModus)
+        val feldGroesse = FeldGroesse.valueOf(args.feldGroesse)
+
+        val spielfeld = Spielfeld(feldGroesse)
+
+        viewModel.spielfeld.value = spielfeld
+        viewModel.spielLogik.value = SpielLogik(spielfeld, spielModus)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,21 +64,15 @@ class SpielFragment : Fragment(), GameLoopCallback {
 
         binding.lifecycleOwner = this
 
-        gameLoop = GameLoop(this)
-
-        binding.spielfeldView.init(gameLoop)
-
-        val spielModus = SpielModus.valueOf(args.spielModus)
-        val feldGroesse = FeldGroesse.valueOf(args.feldGroesse)
-
-        gameLoop.start(spielModus, feldGroesse)
-
         return binding.root
     }
 
-    override fun onStop() {
-        gameLoop.stop()
-        super.onStop()
+    override fun onStart() {
+        super.onStart()
+
+        binding.spielfeldView.setGameLoop(spielLogik!!)
+
+        spielLogik?.start(this)
     }
 
     override fun onSpielerIstAnDerReihe(spieler: Spieler) {

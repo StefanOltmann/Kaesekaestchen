@@ -35,8 +35,8 @@
 
     <fragment
         android:id="@+id/nav_gewonnen"
-        android:name="de.stefan_oltmann.kaesekaestchen.ui.fragments.GewonnenFragment"
-        tools:layout="@layout/fragment_gewonnen" >
+        android:name="de.stefan_oltmann.kaesekaestchen.ui.fragments.ScoreBoardFragment"
+        tools:layout="@layout/fragment_scoreboard" >
         <action
             android:id="@+id/action_nav_gewonnen_to_nav_start"
             app:destination="@id/nav_start"

@@ -7,8 +7,6 @@ import android.view.*
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import de.stefan_oltmann.kaesekaestchen.databinding.FragmentStartBinding
 import de.stefan_oltmann.kaesekaestchen.model.FeldGroesse

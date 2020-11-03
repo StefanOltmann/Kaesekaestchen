@@ -26,7 +26,7 @@ package de.stefan_oltmann.kaesekaestchen.controller
 
 import de.stefan_oltmann.kaesekaestchen.model.Spieler
 
-interface GameLoopCallback {
+interface SpielLogikCallback {
 
     fun onSpielerIstAnDerReihe(spieler: Spieler)
 

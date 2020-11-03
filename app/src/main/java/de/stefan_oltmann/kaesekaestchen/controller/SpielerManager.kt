@@ -38,18 +38,18 @@ class SpielerManager {
     val spieler = Spieler.values().toList()
 
     /** Der Spieler, der gerade am Zug ist.  */
-    private var aktuellerSpieler: Spieler? = null
+    private var _aktuellerSpieler: Spieler = Spieler.KAESE
+
+    val aktuellerSpieler: Spieler
+        get() = _aktuellerSpieler
 
     private var computerGegner: Spieler? = null
 
-    fun getAktuellerSpieler(): Spieler {
-
-        if (aktuellerSpieler == null)
-            throw RuntimeException("Vor Abfrage des Spielers muss 'neuerZug' mindestens einmal aufgerufen worden sein!")
-
-        return aktuellerSpieler as Spieler
-    }
-
+    /*
+     * Der Computergegner wird zufällig bestimmt, damit
+     * sowohl das Symbol als auch der beginnende Spieler
+     * durchgewechselt wird.
+     */
     fun bestimmeZufaelligComputerGegner() {
         computerGegner = Spieler.values()[(0..1).random()]
     }
@@ -59,14 +59,9 @@ class SpielerManager {
 
     fun waehleNaechstenSpielerAus() {
 
-        val indexAktuellerSpieler = spieler.indexOf(aktuellerSpieler)
-
-        var indexNaechsterSpieler = indexAktuellerSpieler + 1
-
-        /* Starte am Ende der Liste wieder vorne. */
-        if (indexNaechsterSpieler > spieler.size - 1)
-            indexNaechsterSpieler = 0
-
-        aktuellerSpieler = spieler[indexNaechsterSpieler]
+        if (_aktuellerSpieler == Spieler.KAESE)
+            _aktuellerSpieler = Spieler.MAUS
+        else
+            _aktuellerSpieler = Spieler.KAESE
     }
 }
