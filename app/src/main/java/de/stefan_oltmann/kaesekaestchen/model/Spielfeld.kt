@@ -175,6 +175,8 @@ class Spielfeld private constructor() {
 
     fun isAlleKaestchenHabenBesitzer() = offeneKaestchen.isEmpty()
 
+    fun isEsGibtFreieStriche() = stricheOhneBesitzer.isNotEmpty()
+
     fun waehleStrich(strich: Strich, spieler: Spieler): Boolean {
 
         strich.besitzer = spieler
@@ -228,7 +230,7 @@ class Spielfeld private constructor() {
 
     private fun findeZufaelligenStrich(): Strich {
 
-        if (stricheOhneBesitzer.isEmpty())
+        if (!isEsGibtFreieStriche())
             throw IllegalStateException("Es gibt keine freien Striche mehr.")
 
         val stricheOhneBesitzer = stricheOhneBesitzer.toList()

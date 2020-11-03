@@ -107,6 +107,13 @@ class SpielLogik private constructor(val spielfeld: Spielfeld) {
                     /* Ignorieren. */
                 }
 
+                /*
+                 * FIXME Das sollte nicht vorkommen können, aber hin und wieder tritt
+                 *  durch irgendeinen Umstand dieses Problem auf. Dies ist erstmal ein Workaround.
+                 */
+                if (!spielfeld.isEsGibtFreieStriche())
+                    break
+
                 val kiZugStrich = spielfeld.ermittleGutenStrichFuerComputerZug()
 
                 waehleStrichFuerAktuellenSpielerUndCheckBeendet(kiZugStrich)
