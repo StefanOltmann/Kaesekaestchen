@@ -54,6 +54,7 @@ dependencies {
 
     // Rückwärtskompatiblität
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
+    implementation "androidx.legacy:legacy-support-v4:$legacySupportVersion"
 
     // Material Design
     implementation "com.google.android.material:material:$materialVersion"
@@ -68,6 +69,5 @@ dependencies {
     // Lifecycle
     implementation "androidx.lifecycle:lifecycle-extensions:$archLifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$archLifecycleVersion"
-    implementation "androidx.legacy:legacy-support-v4:$legacySupportVersion"
     kapt "androidx.lifecycle:lifecycle-compiler:$archLifecycleVersion"
 }
