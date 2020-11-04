@@ -135,8 +135,12 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
          * die Nachkomma-Stelle abgeschnitten werden. Eine Rundung über
          * roundToInt() würde das falsche Kästchen ausgeben.
          */
-        val errechnetRasterX = (event.x / kaestchenSeitenlaengePixel).toInt()
-        val errechnetRasterY = (event.y / kaestchenSeitenlaengePixel).toInt()
+
+        val eventX = event.x - PADDING_PX - offsetPixelX
+        val eventY = event.y - PADDING_PX - offsetPixelY
+
+        val errechnetRasterX = (eventX / kaestchenSeitenlaengePixel).toInt()
+        val errechnetRasterY = (eventY / kaestchenSeitenlaengePixel).toInt()
 
         /*
          * Wenn der Anwender irgendwo außerhalb des Spielfelds drückt soll
