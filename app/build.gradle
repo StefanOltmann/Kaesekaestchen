@@ -14,8 +14,8 @@ android {
         applicationId "de.stefan_oltmann.kaesekaestchen"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 16
-        versionName "0.7.4"
+        versionCode 17
+        versionName "0.7.5"
 
         // Es werden ausschließlich Vektor-Grafiken genutzt
         vectorDrawables.useSupportLibrary = true
