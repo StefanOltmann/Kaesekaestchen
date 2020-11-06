@@ -42,12 +42,6 @@ import de.stefan_oltmann.kaesekaestchen.model.Spielfeld
 
 class SpielFragment : Fragment(), SpielLogikCallback {
 
-    companion object {
-
-        private const val AUSGEWAEHLT_ALPHA = 1.0f
-        private const val AUSGEGRAUT_ALPHA = 0.1f
-    }
-
     private val args: SpielFragmentArgs by navArgs()
 
     private val viewModel by viewModels<SpielViewModel>()
@@ -86,6 +80,8 @@ class SpielFragment : Fragment(), SpielLogikCallback {
 
         binding = FragmentSpielBinding.inflate(inflater, container, false)
 
+        binding.viewModel = viewModel
+
         binding.lifecycleOwner = this
 
         return binding.root
@@ -101,20 +97,7 @@ class SpielFragment : Fragment(), SpielLogikCallback {
     }
 
     override fun onSpielerIstAnDerReihe(spieler: Spieler) {
-
-        /*
-         * Der Spieler der gerade nicht dran ist bekommt
-         * eine halb-transparente Anzeige.
-         */
-
-        requireActivity().runOnUiThread {
-
-            binding.spielKaeseImageView.alpha =
-                if (spieler == Spieler.MAUS) AUSGEGRAUT_ALPHA else AUSGEWAEHLT_ALPHA
-
-            binding.spielMausImageView.alpha =
-                if (spieler == Spieler.KAESE) AUSGEGRAUT_ALPHA else AUSGEWAEHLT_ALPHA
-        }
+        viewModel.aktuellerSpieler.value = spieler
     }
 
     override fun onSpielBeendet(gewinner: Spieler, punktestandKaese: Int, punktestandMaus: Int) {

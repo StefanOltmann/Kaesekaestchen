@@ -25,14 +25,32 @@
 package de.stefan_oltmann.kaesekaestchen.ui.fragments
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import de.stefan_oltmann.kaesekaestchen.controller.SpielLogik
+import de.stefan_oltmann.kaesekaestchen.model.Spieler
 import de.stefan_oltmann.kaesekaestchen.model.Spielfeld
 
 class SpielViewModel : ViewModel() {
 
+    companion object {
+
+        private const val AUSGEWAEHLT_ALPHA = 1.0f
+        private const val AUSGEGRAUT_ALPHA = 0.1f
+    }
+
     val spielfeld = MutableLiveData<Spielfeld>()
     val spielLogik = MutableLiveData<SpielLogik>()
+
+    val aktuellerSpieler = MutableLiveData<Spieler>()
+
+    val spielKaeseImageViewAlpha = Transformations.map(aktuellerSpieler) {
+        if (it == Spieler.KAESE) AUSGEGRAUT_ALPHA else AUSGEWAEHLT_ALPHA
+    }
+
+    val spielMausImageViewAlpha = Transformations.map(aktuellerSpieler) {
+        if (it == Spieler.MAUS) AUSGEGRAUT_ALPHA else AUSGEWAEHLT_ALPHA
+    }
 
     /**
      * Wenn das ViewModel vernichtet wird müssen wir die
