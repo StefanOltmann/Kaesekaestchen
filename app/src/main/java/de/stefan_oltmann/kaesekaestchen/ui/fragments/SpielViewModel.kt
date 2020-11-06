@@ -34,4 +34,12 @@ class SpielViewModel : ViewModel() {
     val spielfeld = MutableLiveData<Spielfeld>()
     val spielLogik = MutableLiveData<SpielLogik>()
 
+    /**
+     * Wenn das ViewModel vernichtet wird müssen wir die
+     * Logik darüber informieren, damit der Courotines Job
+     * sauber entfernt werden kann.
+     */
+    override fun onCleared() {
+        spielLogik.value?.onCleared()
+    }
 }

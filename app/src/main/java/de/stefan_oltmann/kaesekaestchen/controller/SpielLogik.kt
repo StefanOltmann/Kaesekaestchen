@@ -28,6 +28,7 @@ import de.stefan_oltmann.kaesekaestchen.model.SpielModus
 import de.stefan_oltmann.kaesekaestchen.model.Spieler
 import de.stefan_oltmann.kaesekaestchen.model.Spielfeld
 import de.stefan_oltmann.kaesekaestchen.model.Strich
+import kotlinx.coroutines.*
 
 /**
  * Diese Klasse ist für Behandlung des Spielablaufs zuständig.
@@ -35,6 +36,11 @@ import de.stefan_oltmann.kaesekaestchen.model.Strich
 class SpielLogik private constructor(val spielfeld: Spielfeld) {
 
     private lateinit var callback: SpielLogikCallback
+
+    /* Job um Hintergrund-Aktionen durchzuführen. */
+    private var coroutinesJob = Job()
+
+    private val uiScope = CoroutineScope(Dispatchers.Main +  coroutinesJob)
 
     private val spielerManager = SpielerManager()
 
@@ -57,6 +63,14 @@ class SpielLogik private constructor(val spielfeld: Spielfeld) {
 
         if (spielerManager.isComputerGegner(aktuellerSpieler))
             fuehreKiZugDurch()
+    }
+
+    /*
+     * Wenn das ViewModel vernichtet wird, soll auch der Job
+     * abgebrochen werden, bevor es ansonsten dadurch zu Fehlern kommt.
+     */
+    fun onCleared() {
+        coroutinesJob.cancel()
     }
 
     fun behandleSpielerEingabe(strich: Strich) {
@@ -101,20 +115,17 @@ class SpielLogik private constructor(val spielfeld: Spielfeld) {
          * zwischendrin schlafen gelegt und der Anwender die Aktionen der KI
          * mitverfolgen kann während parallel die UI aktualisiert wird.
          */
-        Thread {
+        uiScope.launch {
 
             while (!isSpielBeendet() && spielerManager.isComputerGegner(aktuellerSpieler)) {
 
-                try {
-                    /* Der Nutzer soll die Aktion der KI sehen. */
-                    Thread.sleep(500)
-                } catch (ignore: InterruptedException) {
-                    /* Ignorieren. */
-                }
+                /* Der Spieler soll die Aktion der KI sehen. */
+                delay(500)
 
                 /*
                  * FIXME Das sollte nicht vorkommen können, aber hin und wieder tritt
-                 *  durch irgendeinen Umstand dieses Problem auf. Dies ist erstmal ein Workaround.
+                 * durch irgendeinen Umstand dieses Problem auf.
+                 * Dies ist erstmal ein Workaround.
                  */
                 if (!spielfeld.isEsGibtFreieStriche())
                     break
@@ -123,7 +134,7 @@ class SpielLogik private constructor(val spielfeld: Spielfeld) {
 
                 waehleStrichFuerAktuellenSpielerUndCheckBeendet(kiZugStrich)
             }
-        }.start()
+        }
     }
 
     private fun waehleStrichFuerAktuellenSpielerUndCheckBeendet(strich: Strich) {
@@ -156,10 +167,13 @@ class SpielLogik private constructor(val spielfeld: Spielfeld) {
         if (!isSpielBeendet())
             return
 
-        Thread {
+        uiScope.launch {
 
-            /* Noch eine Sekunde warten, um die Endsituation zu sehen */
-            Thread.sleep(1000)
+            /*
+             * Noch eine Sekunde warten, damit der Spieler sich in Ruhe
+             * die Endsituation anschauen kann.
+             */
+            delay(1000)
 
             val gewinner = ermittleSpielerMitHoechsterPunktZahl()
 
@@ -168,8 +182,7 @@ class SpielLogik private constructor(val spielfeld: Spielfeld) {
                 spielfeld.ermittlePunktzahl(Spieler.KAESE),
                 spielfeld.ermittlePunktzahl(Spieler.MAUS)
             )
-
-        }.start()
+        }
     }
 
     /*
