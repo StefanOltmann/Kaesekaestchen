@@ -69,6 +69,7 @@ class StartFragment : Fragment() {
         /* Ein Binding sollte den LifeCycle immer kennen. */
         binding.lifecycleOwner = this
 
+        // TODO Dies hier über ein bidirektionales Binding lösen
         binding.feldGroesseSeekbar.setOnSeekBarChangeListener(
             object : SeekBar.OnSeekBarChangeListener {
 
@@ -126,8 +127,6 @@ class StartFragment : Fragment() {
         gameSettings.getString(GAME_SETTINGS_KEY_FELD_GROESSE, null)?.let {
             viewModel.feldGroesse.value = SpielfeldGroesse.valueOf(it)
         }
-
-        binding.feldGroesseSeekbar.progress = viewModel.feldGroesse.value!!.ordinal
     }
 
     /*

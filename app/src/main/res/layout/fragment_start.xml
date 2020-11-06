@@ -103,7 +103,7 @@
             android:layout_marginEnd="@dimen/border_margin"
             android:layout_marginRight="@dimen/border_margin"
             android:max="3"
-            android:progress="3"
+            android:progress="@{viewModel.feldGroesseSeekBarProgress}"
             app:layout_constraintBottom_toBottomOf="@+id/feld_groesse_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/feld_groesse_text"

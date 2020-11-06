@@ -27,8 +27,9 @@ package de.stefan_oltmann.kaesekaestchen.ui.fragments
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import de.stefan_oltmann.kaesekaestchen.model.SpielfeldGroesse
 import de.stefan_oltmann.kaesekaestchen.model.SpielModus
+import de.stefan_oltmann.kaesekaestchen.model.SpielfeldGroesse
+
 
 class StartViewModel : ViewModel() {
 
@@ -51,5 +52,9 @@ class StartViewModel : ViewModel() {
 
     val mehrspielerImageButtonAlpha = Transformations.map(spielModus) {
         if (it == SpielModus.MEHRSPIELER) AUSGEWAEHLT_ALPHA else AUSGEGRAUT_ALPHA
+    }
+
+    val feldGroesseSeekBarProgress = Transformations.map(feldGroesse) {
+        feldGroesse.value!!.ordinal
     }
 }
