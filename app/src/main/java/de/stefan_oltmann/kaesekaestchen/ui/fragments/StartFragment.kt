@@ -42,9 +42,6 @@ class StartFragment : Fragment() {
 
     companion object {
 
-        private const val AUSGEWAEHLT_ALPHA = 1.0f
-        private const val AUSGEGRAUT_ALPHA = 0.1f
-
         private const val GAME_SETTINGS_KEY_SPIEL_MODUS = "spiel_modus"
         private const val GAME_SETTINGS_KEY_FELD_GROESSE = "feld_groesse"
     }
@@ -67,24 +64,10 @@ class StartFragment : Fragment() {
 
         binding = FragmentStartBinding.inflate(inflater, container, false)
 
+        binding.viewModel = viewModel;
+
         /* Ein Binding sollte den LifeCycle immer kennen. */
         binding.lifecycleOwner = this
-
-        binding.einzelspielerImageButton.setOnClickListener {
-
-            /* Den gewählen Modus merken. */
-            viewModel.spielModus.value = SpielModus.EINZELSPIELER
-
-            setzeSpielModusButtonOptik()
-        }
-
-        binding.mehrspielerImageButton.setOnClickListener {
-
-            /* Den gewählen Modus merken. */
-            viewModel.spielModus.value = SpielModus.MEHRSPIELER
-
-            setzeSpielModusButtonOptik()
-        }
 
         binding.feldGroesseSeekbar.setOnSeekBarChangeListener(
             object : SeekBar.OnSeekBarChangeListener {
@@ -107,18 +90,6 @@ class StartFragment : Fragment() {
         restoreGameSettings()
 
         return binding.root
-    }
-
-    /*
-     * Setzt den Buttons zur Auswahl des Spiel-Modus die passende Optik
-     */
-    private fun setzeSpielModusButtonOptik() {
-
-        binding.einzelspielerImageButton.alpha =
-            if (viewModel.spielModus.value == SpielModus.EINZELSPIELER) AUSGEWAEHLT_ALPHA else AUSGEGRAUT_ALPHA
-
-        binding.mehrspielerImageButton.alpha =
-            if (viewModel.spielModus.value == SpielModus.MEHRSPIELER) AUSGEWAEHLT_ALPHA else AUSGEGRAUT_ALPHA
     }
 
     private fun navigateToSpielenFragment() {
@@ -155,8 +126,6 @@ class StartFragment : Fragment() {
         gameSettings.getString(GAME_SETTINGS_KEY_FELD_GROESSE, null)?.let {
             viewModel.feldGroesse.value = SpielfeldGroesse.valueOf(it)
         }
-
-        setzeSpielModusButtonOptik()
 
         binding.feldGroesseSeekbar.progress = viewModel.feldGroesse.value!!.ordinal
     }
