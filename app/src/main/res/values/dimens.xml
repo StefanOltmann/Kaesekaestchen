@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="border_margin">32dp</dimen>
+    <dimen name="button_height">64dp</dimen>
     <dimen name="text_size">24sp</dimen>
 </resources>
