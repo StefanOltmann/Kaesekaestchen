@@ -35,11 +35,11 @@
             android:id="@+id/kaese_image_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/border_margin"
+            android:layout_marginLeft="@dimen/border_margin"
             android:layout_marginBottom="@dimen/border_margin"
             app:layout_constraintBottom_toTopOf="@+id/hauptmenue_button"
-            app:layout_constraintEnd_toStartOf="@+id/punktestand_kaese_text"
-            app:layout_constraintStart_toStartOf="@+id/hauptmenue_button"
-            app:layout_constraintTop_toBottomOf="@+id/pokal_image_view"
+            app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/ic_spieler_symbol_kaese" />
 
         <TextView
@@ -48,22 +48,21 @@
             android:layout_height="wrap_content"
             android:text="@{viewModel.punktestandKaese}"
             android:textSize="@dimen/text_size"
-            app:layout_constraintBottom_toTopOf="@+id/hauptmenue_button"
+            app:layout_constraintBottom_toBottomOf="@+id/vs_text_view"
             app:layout_constraintEnd_toStartOf="@+id/vs_text_view"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/kaese_image_view"
-            app:layout_constraintTop_toBottomOf="@+id/pokal_image_view"
+            app:layout_constraintTop_toTopOf="@+id/vs_text_view"
             tools:text="99" />
 
         <ImageView
             android:id="@+id/maus_image_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/border_margin"
+            android:layout_marginRight="@dimen/border_margin"
+            android:layout_marginBottom="@dimen/border_margin"
             app:layout_constraintBottom_toTopOf="@+id/hauptmenue_button"
-            app:layout_constraintEnd_toEndOf="@+id/hauptmenue_button"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/punktestand_maus_text"
-            app:layout_constraintTop_toBottomOf="@+id/pokal_image_view"
+            app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_spieler_symbol_maus" />
 
         <TextView
@@ -72,22 +71,22 @@
             android:layout_height="wrap_content"
             android:text="@{viewModel.punktestandMaus}"
             android:textSize="@dimen/text_size"
-            app:layout_constraintBottom_toTopOf="@+id/hauptmenue_button"
+            app:layout_constraintBottom_toBottomOf="@+id/vs_text_view"
             app:layout_constraintEnd_toStartOf="@+id/maus_image_view"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/vs_text_view"
-            app:layout_constraintTop_toBottomOf="@+id/pokal_image_view"
+            app:layout_constraintTop_toTopOf="@+id/vs_text_view"
             tools:text="99" />
 
         <TextView
             android:id="@+id/vs_text_view"
-            android:layout_width="44dp"
+            android:layout_width="wrap_content"
             android:layout_height="48dp"
+            android:layout_marginTop="@dimen/border_margin"
+            android:layout_marginBottom="@dimen/border_margin"
             android:text="VS"
             android:textSize="36sp"
             app:layout_constraintBottom_toTopOf="@+id/hauptmenue_button"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pokal_image_view" />
 
