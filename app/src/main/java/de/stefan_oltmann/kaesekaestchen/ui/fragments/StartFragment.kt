@@ -64,7 +64,7 @@ class StartFragment : Fragment() {
 
         binding = FragmentStartBinding.inflate(inflater, container, false)
 
-        binding.viewModel = viewModel;
+        binding.viewModel = viewModel
 
         /* Ein Binding sollte den LifeCycle immer kennen. */
         binding.lifecycleOwner = this
