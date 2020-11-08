@@ -11,7 +11,7 @@
         <action
             android:id="@+id/action_nav_start_to_nav_spiel"
             app:destination="@id/nav_spiel"
-            app:enterAnim="@anim/nav_default_enter_anim" />
+            app:enterAnim="@anim/slide_in_right" />
     </fragment>
 
     <fragment
@@ -21,7 +21,7 @@
         <action
             android:id="@+id/action_nav_spiel_to_gewonnenFragment"
             app:destination="@id/nav_gewonnen"
-            app:enterAnim="@anim/slide_in_bottom"
+            app:enterAnim="@anim/slide_in_right"
             app:popUpTo="@id/nav_spiel"
             app:popUpToInclusive="true" />
         <argument
@@ -39,6 +39,7 @@
         <action
             android:id="@+id/action_nav_gewonnen_to_nav_start"
             app:destination="@id/nav_start"
+            app:enterAnim="@anim/slide_in_right"
             app:popUpTo="@id/nav_gewonnen"
             app:popUpToInclusive="true" />
         <argument
