@@ -24,6 +24,7 @@
  */
 package de.stefan_oltmann.kaesekaestchen.model
 
+@Suppress("MagicNumber")
 enum class SpielfeldGroesse(
     val breiteInKaestchen: Int,
     val hoeheInKaestchen: Int
