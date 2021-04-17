@@ -1,21 +1,20 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 android {
 
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
 
         applicationId "de.stefan_oltmann.kaesekaestchen"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 17
-        versionName "0.7.5"
+        versionCode 18
+        versionName "0.7.6"
 
         // Es werden ausschließlich Vektor-Grafiken genutzt
         vectorDrawables.useSupportLibrary = true
