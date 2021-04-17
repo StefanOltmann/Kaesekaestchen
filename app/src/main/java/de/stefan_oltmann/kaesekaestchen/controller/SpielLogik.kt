@@ -28,7 +28,11 @@ import de.stefan_oltmann.kaesekaestchen.model.SpielModus
 import de.stefan_oltmann.kaesekaestchen.model.Spieler
 import de.stefan_oltmann.kaesekaestchen.model.Spielfeld
 import de.stefan_oltmann.kaesekaestchen.model.Strich
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * Diese Klasse ist für Behandlung des Spielablaufs zuständig.
@@ -40,7 +44,7 @@ class SpielLogik private constructor(val spielfeld: Spielfeld) {
     /* Job um Hintergrund-Aktionen durchzuführen. */
     private var coroutinesJob = Job()
 
-    private val uiScope = CoroutineScope(Dispatchers.Main +  coroutinesJob)
+    private val uiScope = CoroutineScope(Dispatchers.Main + coroutinesJob)
 
     private val spielerManager = SpielerManager()
 

@@ -26,7 +26,8 @@ package de.stefan_oltmann.kaesekaestchen.model
 
 enum class SpielfeldGroesse(
     val breiteInKaestchen: Int,
-    val hoeheInKaestchen: Int) {
+    val hoeheInKaestchen: Int
+) {
 
     SEHR_KLEIN(3, 4),
     KLEIN(4, 5),

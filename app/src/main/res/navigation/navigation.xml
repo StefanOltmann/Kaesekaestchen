@@ -1,56 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@+id/nav_start">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        app:startDestination="@+id/nav_start">
 
     <fragment
-        android:id="@+id/nav_start"
-        android:name="de.stefan_oltmann.kaesekaestchen.ui.fragments.StartFragment"
-        tools:layout="@layout/fragment_start">
+            android:id="@+id/nav_start"
+            android:name="de.stefan_oltmann.kaesekaestchen.ui.fragments.StartFragment"
+            tools:layout="@layout/fragment_start">
         <action
-            android:id="@+id/action_nav_start_to_nav_spiel"
-            app:destination="@id/nav_spiel"
-            app:enterAnim="@anim/slide_in_right" />
+                android:id="@+id/action_nav_start_to_nav_spiel"
+                app:destination="@id/nav_spiel"
+                app:enterAnim="@anim/slide_in_right" />
     </fragment>
 
     <fragment
-        android:id="@+id/nav_spiel"
-        android:name="de.stefan_oltmann.kaesekaestchen.ui.fragments.SpielFragment"
-        tools:layout="@layout/fragment_spiel">
+            android:id="@+id/nav_spiel"
+            android:name="de.stefan_oltmann.kaesekaestchen.ui.fragments.SpielFragment"
+            tools:layout="@layout/fragment_spiel">
         <action
-            android:id="@+id/action_nav_spiel_to_gewonnenFragment"
-            app:destination="@id/nav_gewonnen"
-            app:enterAnim="@anim/slide_in_right"
-            app:popUpTo="@id/nav_spiel"
-            app:popUpToInclusive="true" />
+                android:id="@+id/action_nav_spiel_to_gewonnenFragment"
+                app:destination="@id/nav_gewonnen"
+                app:enterAnim="@anim/slide_in_right"
+                app:popUpTo="@id/nav_spiel"
+                app:popUpToInclusive="true" />
         <argument
-            android:name="spiel_modus"
-            app:argType="string" />
+                android:name="spiel_modus"
+                app:argType="string" />
         <argument
-            android:name="feld_groesse"
-            app:argType="string" />
+                android:name="feld_groesse"
+                app:argType="string" />
     </fragment>
 
     <fragment
-        android:id="@+id/nav_gewonnen"
-        android:name="de.stefan_oltmann.kaesekaestchen.ui.fragments.ScoreBoardFragment"
-        tools:layout="@layout/fragment_scoreboard">
+            android:id="@+id/nav_gewonnen"
+            android:name="de.stefan_oltmann.kaesekaestchen.ui.fragments.ScoreBoardFragment"
+            tools:layout="@layout/fragment_scoreboard">
         <action
-            android:id="@+id/action_nav_gewonnen_to_nav_start"
-            app:destination="@id/nav_start"
-            app:enterAnim="@anim/slide_in_right"
-            app:popUpTo="@id/nav_gewonnen"
-            app:popUpToInclusive="true" />
+                android:id="@+id/action_nav_gewonnen_to_nav_start"
+                app:destination="@id/nav_start"
+                app:enterAnim="@anim/slide_in_right"
+                app:popUpTo="@id/nav_gewonnen"
+                app:popUpToInclusive="true" />
         <argument
-            android:name="gewinner_spieler"
-            app:argType="string" />
+                android:name="gewinner_spieler"
+                app:argType="string" />
         <argument
-            android:name="punktestand_kaese"
-            app:argType="integer" />
+                android:name="punktestand_kaese"
+                app:argType="integer" />
         <argument
-            android:name="punktestand_maus"
-            app:argType="integer" />
+                android:name="punktestand_maus"
+                app:argType="integer" />
     </fragment>
 
 </navigation>

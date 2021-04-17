@@ -35,8 +35,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import de.stefan_oltmann.kaesekaestchen.databinding.FragmentStartBinding
-import de.stefan_oltmann.kaesekaestchen.model.SpielfeldGroesse
 import de.stefan_oltmann.kaesekaestchen.model.SpielModus
+import de.stefan_oltmann.kaesekaestchen.model.SpielfeldGroesse
 
 class StartFragment : Fragment() {
 
@@ -58,7 +58,8 @@ class StartFragment : Fragment() {
     private lateinit var binding: FragmentStartBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
 
         gameSettings = requireContext().getSharedPreferences("game_settings", Context.MODE_PRIVATE)
 
@@ -73,18 +74,18 @@ class StartFragment : Fragment() {
         binding.feldGroesseSeekbar.setOnSeekBarChangeListener(
             object : SeekBar.OnSeekBarChangeListener {
 
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                /* Wird nicht benötigt, muss aber überschrieben werden. */
-            }
+                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                    /* Wird nicht benötigt, muss aber überschrieben werden. */
+                }
 
-            override fun onStartTrackingTouch(seekBar: SeekBar) {
-                /* Wird nicht benötigt, muss aber überschrieben werden. */
-            }
+                override fun onStartTrackingTouch(seekBar: SeekBar) {
+                    /* Wird nicht benötigt, muss aber überschrieben werden. */
+                }
 
-            override fun onStopTrackingTouch(seekBar: SeekBar) {
-                viewModel.feldGroesse.value = SpielfeldGroesse.values()[seekBar.progress]
-            }
-        })
+                override fun onStopTrackingTouch(seekBar: SeekBar) {
+                    viewModel.feldGroesse.value = SpielfeldGroesse.values()[seekBar.progress]
+                }
+            })
 
         binding.spielenButton.setOnClickListener { navigateToSpielenFragment() }
 
@@ -98,8 +99,9 @@ class StartFragment : Fragment() {
         saveGameSettings()
 
         val action = StartFragmentDirections.actionNavStartToNavSpiel(
-                spielModus = viewModel.spielModus.value.toString(),
-                feldGroesse = viewModel.feldGroesse.value.toString())
+            spielModus = viewModel.spielModus.value.toString(),
+            feldGroesse = viewModel.feldGroesse.value.toString()
+        )
 
         findNavController().navigate(action)
     }
@@ -137,10 +139,12 @@ class StartFragment : Fragment() {
         val gameSettingsEditor = gameSettings.edit()
 
         gameSettingsEditor.putString(
-            GAME_SETTINGS_KEY_SPIEL_MODUS, viewModel.spielModus.value.toString())
+            GAME_SETTINGS_KEY_SPIEL_MODUS, viewModel.spielModus.value.toString()
+        )
 
         gameSettingsEditor.putString(
-            GAME_SETTINGS_KEY_FELD_GROESSE, viewModel.feldGroesse.value.toString())
+            GAME_SETTINGS_KEY_FELD_GROESSE, viewModel.feldGroesse.value.toString()
+        )
 
         gameSettingsEditor.apply()
     }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android"
-    android:opacity="opaque">
+        android:opacity="opaque">
 
     <item android:drawable="@android:color/background_light" />
 
@@ -11,9 +11,9 @@
     </item-->
 
     <item
-        android:gravity="center"
-        android:width="256dp"
-        android:height="256dp"
-        android:drawable="@drawable/ic_icon" />
+            android:gravity="center"
+            android:width="256dp"
+            android:height="256dp"
+            android:drawable="@drawable/ic_icon" />
 
 </layer-list>

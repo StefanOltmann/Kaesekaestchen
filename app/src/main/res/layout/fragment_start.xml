@@ -1,133 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <import type="de.stefan_oltmann.kaesekaestchen.model.SpielModus" />
 
         <variable
-            name="viewModel"
-            type="de.stefan_oltmann.kaesekaestchen.ui.fragments.StartViewModel" />
+                name="viewModel"
+                type="de.stefan_oltmann.kaesekaestchen.ui.fragments.StartViewModel" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.fragments.StartFragment">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.fragments.StartFragment">
 
         <ImageView
-            android:id="@+id/icon_image"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="@dimen/border_margin"
-            android:layout_marginLeft="@dimen/border_margin"
-            android:layout_marginTop="@dimen/border_margin"
-            android:layout_marginEnd="@dimen/border_margin"
-            android:layout_marginRight="@dimen/border_margin"
-            android:layout_marginBottom="@dimen/border_margin"
-            app:layout_constraintBottom_toTopOf="@+id/einzelspieler_image_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_icon" />
+                android:id="@+id/icon_image"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/border_margin"
+                android:layout_marginLeft="@dimen/border_margin"
+                android:layout_marginTop="@dimen/border_margin"
+                android:layout_marginEnd="@dimen/border_margin"
+                android:layout_marginRight="@dimen/border_margin"
+                android:layout_marginBottom="@dimen/border_margin"
+                app:layout_constraintBottom_toTopOf="@+id/einzelspieler_image_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_icon" />
 
         <TextView
-            android:id="@+id/feld_groesse_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/border_margin"
-            android:layout_marginLeft="@dimen/border_margin"
-            android:text="@string/feld_groesse"
-            android:textSize="@dimen/text_size"
-            app:layout_constraintBottom_toTopOf="@+id/spielen_button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/einzelspieler_text" />
+                android:id="@+id/feld_groesse_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/border_margin"
+                android:layout_marginLeft="@dimen/border_margin"
+                android:text="@string/feld_groesse"
+                android:textSize="@dimen/text_size"
+                app:layout_constraintBottom_toTopOf="@+id/spielen_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/einzelspieler_text" />
 
         <Button
-            android:id="@+id/spielen_button"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/button_height"
-            android:layout_marginStart="@dimen/border_margin"
-            android:layout_marginLeft="@dimen/border_margin"
-            android:layout_marginEnd="@dimen/border_margin"
-            android:layout_marginRight="@dimen/border_margin"
-            android:layout_marginBottom="@dimen/border_margin"
-            android:drawableLeft="@drawable/ic_spielen"
-            android:drawablePadding="16dp"
-            android:text="@string/spielen"
-            android:textSize="@dimen/text_size"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+                android:id="@+id/spielen_button"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginStart="@dimen/border_margin"
+                android:layout_marginLeft="@dimen/border_margin"
+                android:layout_marginEnd="@dimen/border_margin"
+                android:layout_marginRight="@dimen/border_margin"
+                android:layout_marginBottom="@dimen/border_margin"
+                android:drawableLeft="@drawable/ic_spielen"
+                android:drawablePadding="16dp"
+                android:text="@string/spielen"
+                android:textSize="@dimen/text_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
         <ImageButton
-            android:id="@+id/einzelspieler_image_button"
-            android:layout_width="128dp"
-            android:layout_height="128dp"
-            android:background="@android:color/transparent"
-            android:scaleType="fitCenter"
-            android:alpha="@{viewModel.einzelspielerImageButtonAlpha}"
-            android:onClick="@{() -> viewModel.setSpielModus(SpielModus.EINZELSPIELER)}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/mehrspieler_image_button"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_person_24" />
+                android:id="@+id/einzelspieler_image_button"
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:alpha="@{viewModel.einzelspielerImageButtonAlpha}"
+                android:onClick="@{() -> viewModel.setSpielModus(SpielModus.EINZELSPIELER)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/mehrspieler_image_button"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_person_24" />
 
         <ImageButton
-            android:id="@+id/mehrspieler_image_button"
-            android:layout_width="128dp"
-            android:layout_height="128dp"
-            android:background="@android:color/transparent"
-            android:scaleType="fitCenter"
-            android:alpha="@{viewModel.mehrspielerImageButtonAlpha}"
-            android:onClick="@{() -> viewModel.setSpielModus(SpielModus.MEHRSPIELER)}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/einzelspieler_image_button"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_group_24" />
+                android:id="@+id/mehrspieler_image_button"
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:alpha="@{viewModel.mehrspielerImageButtonAlpha}"
+                android:onClick="@{() -> viewModel.setSpielModus(SpielModus.MEHRSPIELER)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/einzelspieler_image_button"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_group_24" />
 
         <SeekBar
-            android:id="@+id/feld_groesse_seekbar"
-            style="@style/Widget.AppCompat.SeekBar.Discrete"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginEnd="@dimen/border_margin"
-            android:layout_marginRight="@dimen/border_margin"
-            android:max="3"
-            android:progress="@{viewModel.feldGroesseSeekBarProgress}"
-            app:layout_constraintBottom_toBottomOf="@+id/feld_groesse_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/feld_groesse_text"
-            app:layout_constraintTop_toTopOf="@+id/feld_groesse_text" />
+                android:id="@+id/feld_groesse_seekbar"
+                style="@style/Widget.AppCompat.SeekBar.Discrete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="@dimen/border_margin"
+                android:layout_marginRight="@dimen/border_margin"
+                android:max="3"
+                android:progress="@{viewModel.feldGroesseSeekBarProgress}"
+                app:layout_constraintBottom_toBottomOf="@+id/feld_groesse_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/feld_groesse_text"
+                app:layout_constraintTop_toTopOf="@+id/feld_groesse_text" />
 
         <TextView
-            android:id="@+id/einzelspieler_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/einzelspieler"
-            android:textSize="@dimen/text_size"
-            app:layout_constraintEnd_toEndOf="@+id/einzelspieler_image_button"
-            app:layout_constraintStart_toStartOf="@+id/einzelspieler_image_button"
-            app:layout_constraintTop_toBottomOf="@+id/einzelspieler_image_button" />
+                android:id="@+id/einzelspieler_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/einzelspieler"
+                android:textSize="@dimen/text_size"
+                app:layout_constraintEnd_toEndOf="@+id/einzelspieler_image_button"
+                app:layout_constraintStart_toStartOf="@+id/einzelspieler_image_button"
+                app:layout_constraintTop_toBottomOf="@+id/einzelspieler_image_button" />
 
         <TextView
-            android:id="@+id/mehrspieler_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/mehrspieler"
-            android:textSize="@dimen/text_size"
-            app:layout_constraintEnd_toEndOf="@+id/mehrspieler_image_button"
-            app:layout_constraintStart_toStartOf="@+id/mehrspieler_image_button"
-            app:layout_constraintTop_toBottomOf="@+id/mehrspieler_image_button" />
+                android:id="@+id/mehrspieler_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mehrspieler"
+                android:textSize="@dimen/text_size"
+                app:layout_constraintEnd_toEndOf="@+id/mehrspieler_image_button"
+                app:layout_constraintStart_toStartOf="@+id/mehrspieler_image_button"
+                app:layout_constraintTop_toBottomOf="@+id/mehrspieler_image_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

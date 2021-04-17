@@ -25,7 +25,9 @@
 package de.stefan_oltmann.kaesekaestchen.ui.views
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.MotionEvent
@@ -44,7 +46,8 @@ import kotlin.math.roundToInt
  * Diese Klasse zeichnet das Spielfeld und nimmt Interaktionen des Benutzers
  * entgegen.
  */
-class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, attrs), OnTouchListener {
+class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, attrs),
+    OnTouchListener {
 
     companion object {
         const val PADDING_PX = 10f
@@ -106,13 +109,15 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         val breitePixelMitPadding = breitePixel.toFloat() - PADDING_PX * 2
         val hoehePixelMitPadding = hoehePixel.toFloat() - PADDING_PX * 2
 
-        val maxBreitePixel : Float = breitePixelMitPadding / spielLogik.spielfeld.breiteInKaestchen
-        val maxHoehePixel : Float = hoehePixelMitPadding / spielLogik.spielfeld.hoeheInKaestchen
+        val maxBreitePixel: Float = breitePixelMitPadding / spielLogik.spielfeld.breiteInKaestchen
+        val maxHoehePixel: Float = hoehePixelMitPadding / spielLogik.spielfeld.hoeheInKaestchen
 
         kaestchenSeitenlaengePixel = kotlin.math.min(maxBreitePixel, maxHoehePixel)
 
-        offsetPixelX = (breitePixelMitPadding - spielLogik.spielfeld.breiteInKaestchen * kaestchenSeitenlaengePixel) / 2.0f
-        offsetPixelY = (hoehePixelMitPadding - spielLogik.spielfeld.hoeheInKaestchen * kaestchenSeitenlaengePixel) / 2.0f
+        offsetPixelX =
+            (breitePixelMitPadding - spielLogik.spielfeld.breiteInKaestchen * kaestchenSeitenlaengePixel) / 2.0f
+        offsetPixelY =
+            (hoehePixelMitPadding - spielLogik.spielfeld.hoeheInKaestchen * kaestchenSeitenlaengePixel) / 2.0f
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -185,33 +190,41 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
             calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.25f,
             calcPixelY(kaestchen) - kaestchenSeitenlaengePixel * 0.25f,
             calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.75f,
-            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.25f)
+            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.25f
+        )
 
     private fun calcRectStrichUnten(kaestchen: Kaestchen): RectF? =
         if (kaestchen.strichUnten == null) null else RectF(
             calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.25f,
             calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.75f,
             calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.75f,
-            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 1.25f)
+            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 1.25f
+        )
 
     private fun calcRectStrichLinks(kaestchen: Kaestchen): RectF? =
         if (kaestchen.strichLinks == null) null else RectF(
             calcPixelX(kaestchen) - kaestchenSeitenlaengePixel * 0.25f,
             calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.25f,
             calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.25f,
-            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.75f)
+            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.75f
+        )
 
     private fun calcRectStrichRechts(kaestchen: Kaestchen): RectF? =
         if (kaestchen.strichRechts == null) null else RectF(
             calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.75f,
             calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.25f,
             calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 1.25f,
-            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.75f)
+            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.75f
+        )
 
     /**
      * Diese Methode bestimmt, auf welchen Strich des Kästchen gedrückt wurde.
      */
-    private fun ermittleStrichAnPosition(kaestchen: Kaestchen, pixelX: Float, pixelY: Float): Strich? {
+    private fun ermittleStrichAnPosition(
+        kaestchen: Kaestchen,
+        pixelX: Float,
+        pixelY: Float
+    ): Strich? {
 
         calcRectStrichOben(kaestchen)?.let {
             if (it.contains(pixelX, pixelY))
@@ -251,9 +264,11 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
                 else
                     AppCompatResources.getDrawable(context!!, R.drawable.ic_spieler_symbol_maus)!!
 
-            symbol.setBounds(0, 0,
+            symbol.setBounds(
+                0, 0,
                 kaestchenSeitenlaengePixel.roundToInt() - SYMBOL_PADDING_PX * 2,
-                kaestchenSeitenlaengePixel.roundToInt() - SYMBOL_PADDING_PX * 2)
+                kaestchenSeitenlaengePixel.roundToInt() - SYMBOL_PADDING_PX * 2
+            )
 
             val pixelXmitPadding = pixelX + SYMBOL_PADDING_PX
             val pixelYmitPadding = pixelY + SYMBOL_PADDING_PX
@@ -352,7 +367,7 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         )
     }
 
-    private fun ermittleStrichFarbe(strich: Strich?) : Int {
+    private fun ermittleStrichFarbe(strich: Strich?): Int {
 
         return if (strich != null && strich == spielLogik.spielfeld.zuletztGesetzterStrich)
             zuletztGesetzterStrichFarbe

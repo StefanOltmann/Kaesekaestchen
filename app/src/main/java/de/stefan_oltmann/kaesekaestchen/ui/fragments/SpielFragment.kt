@@ -35,10 +35,10 @@ import androidx.navigation.fragment.navArgs
 import de.stefan_oltmann.kaesekaestchen.controller.SpielLogik
 import de.stefan_oltmann.kaesekaestchen.controller.SpielLogikCallback
 import de.stefan_oltmann.kaesekaestchen.databinding.FragmentSpielBinding
-import de.stefan_oltmann.kaesekaestchen.model.SpielfeldGroesse
 import de.stefan_oltmann.kaesekaestchen.model.SpielModus
 import de.stefan_oltmann.kaesekaestchen.model.Spieler
 import de.stefan_oltmann.kaesekaestchen.model.Spielfeld
+import de.stefan_oltmann.kaesekaestchen.model.SpielfeldGroesse
 
 class SpielFragment : Fragment(), SpielLogikCallback {
 
@@ -76,7 +76,8 @@ class SpielFragment : Fragment(), SpielLogikCallback {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
+        savedInstanceState: Bundle?
+    ): View? {
 
         binding = FragmentSpielBinding.inflate(inflater, container, false)
 
@@ -105,7 +106,8 @@ class SpielFragment : Fragment(), SpielLogikCallback {
         val action = SpielFragmentDirections.actionNavSpielToGewonnenFragment(
             gewinnerSpieler = gewinner.toString(),
             punktestandKaese = punktestandKaese,
-            punktestandMaus = punktestandMaus)
+            punktestandMaus = punktestandMaus
+        )
 
         findNavController().navigate(action)
     }

@@ -32,7 +32,8 @@ data class Strich(
     private val kaestchenOben: Kaestchen?,
     private val kaestchenUnten: Kaestchen?,
     private val kaestchenLinks: Kaestchen?,
-    private val kaestchenRechts: Kaestchen?) {
+    private val kaestchenRechts: Kaestchen?
+) {
 
     /* Auflistung zum Durch-iterieren */
     private val kaestchenListe: MutableList<Kaestchen> = mutableListOf()

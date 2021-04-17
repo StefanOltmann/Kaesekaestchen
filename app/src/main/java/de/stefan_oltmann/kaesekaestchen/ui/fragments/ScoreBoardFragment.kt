@@ -45,7 +45,8 @@ class ScoreBoardFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
+        savedInstanceState: Bundle?
+    ): View? {
 
         val binding = FragmentScoreboardBinding.inflate(inflater, container, false)
 
@@ -67,7 +68,8 @@ class ScoreBoardFragment : Fragment() {
             if (gewinner == Spieler.KAESE)
                 AppCompatResources.getDrawable(requireContext(), R.drawable.ic_pokal_kaese)
             else
-                AppCompatResources.getDrawable(requireContext(), R.drawable.ic_pokal_maus))
+                AppCompatResources.getDrawable(requireContext(), R.drawable.ic_pokal_maus)
+        )
 
         viewModel.punktestandKaese.value = args.punktestandKaese.toString()
         viewModel.punktestandMaus.value = args.punktestandMaus.toString()

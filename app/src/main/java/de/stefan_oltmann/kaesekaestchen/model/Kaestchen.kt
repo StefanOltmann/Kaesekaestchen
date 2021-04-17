@@ -29,7 +29,8 @@ package de.stefan_oltmann.kaesekaestchen.model
  */
 data class Kaestchen(
     val rasterX: Int,
-    val rasterY: Int) {
+    val rasterY: Int
+) {
 
     /**
      * Konnte ein Spieler ein Kästchen schließen, wird er der Besitzer des

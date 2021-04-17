@@ -1,59 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
-            name="viewModel"
-            type="de.stefan_oltmann.kaesekaestchen.ui.fragments.SpielViewModel" />
+                name="viewModel"
+                type="de.stefan_oltmann.kaesekaestchen.ui.fragments.SpielViewModel" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.fragments.SpielFragment">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.fragments.SpielFragment">
 
         <de.stefan_oltmann.kaesekaestchen.ui.views.SpielfeldView
-            android:id="@+id/spielfeld_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="@dimen/border_margin"
-            android:layout_marginLeft="@dimen/border_margin"
-            android:layout_marginTop="@dimen/border_margin"
-            android:layout_marginEnd="@dimen/border_margin"
-            android:layout_marginRight="@dimen/border_margin"
-            android:layout_marginBottom="@dimen/border_margin"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spiel_kaese_image_view" />
+                android:id="@+id/spielfeld_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/border_margin"
+                android:layout_marginLeft="@dimen/border_margin"
+                android:layout_marginTop="@dimen/border_margin"
+                android:layout_marginEnd="@dimen/border_margin"
+                android:layout_marginRight="@dimen/border_margin"
+                android:layout_marginBottom="@dimen/border_margin"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spiel_kaese_image_view" />
 
         <ImageView
-            android:id="@+id/spiel_kaese_image_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/border_margin"
-            android:layout_marginLeft="@dimen/border_margin"
-            android:layout_marginTop="@dimen/border_margin"
-            android:alpha="@{viewModel.spielKaeseImageViewAlpha}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_spieler_symbol_kaese" />
+                android:id="@+id/spiel_kaese_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/border_margin"
+                android:layout_marginLeft="@dimen/border_margin"
+                android:layout_marginTop="@dimen/border_margin"
+                android:alpha="@{viewModel.spielKaeseImageViewAlpha}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_spieler_symbol_kaese" />
 
         <ImageView
-            android:id="@+id/spiel_maus_image_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/border_margin"
-            android:layout_marginEnd="@dimen/border_margin"
-            android:layout_marginRight="@dimen/border_margin"
-            android:alpha="@{viewModel.spielMausImageViewAlpha}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_spieler_symbol_maus" />
+                android:id="@+id/spiel_maus_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/border_margin"
+                android:layout_marginEnd="@dimen/border_margin"
+                android:layout_marginRight="@dimen/border_margin"
+                android:alpha="@{viewModel.spielMausImageViewAlpha}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_spieler_symbol_maus" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
