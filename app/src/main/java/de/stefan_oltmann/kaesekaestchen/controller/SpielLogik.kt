@@ -110,8 +110,9 @@ class SpielLogik private constructor(val spielfeld: Spielfeld) {
 
     private fun fuehreKiZugDurch() {
 
-        if (!spielerManager.isComputerGegner(aktuellerSpieler))
-            throw IllegalStateException("Soll nur aufgerufen werden, wenn die KI dran ist.")
+        check(spielerManager.isComputerGegner(aktuellerSpieler)) {
+            "Soll nur aufgerufen werden, wenn die KI dran ist."
+        }
 
         /*
          * Führe auf einem separaten Thread die Antwort des Computer-Gegners
@@ -124,7 +125,7 @@ class SpielLogik private constructor(val spielfeld: Spielfeld) {
             while (!isSpielBeendet() && spielerManager.isComputerGegner(aktuellerSpieler)) {
 
                 /* Der Spieler soll die Aktion der KI sehen. */
-                delay(500)
+                delay(DELAY_MS_ZWISCHEN_ZUEGEN)
 
                 /*
                  * FIXME Das sollte nicht vorkommen können, aber hin und wieder tritt
@@ -177,7 +178,7 @@ class SpielLogik private constructor(val spielfeld: Spielfeld) {
              * Noch eine Sekunde warten, damit der Spieler sich in Ruhe
              * die Endsituation anschauen kann.
              */
-            delay(1000)
+            delay(DELAY_MS_SPIEL_BEENDET)
 
             val gewinner = ermittleSpielerMitHoechsterPunktZahl()
 
@@ -210,5 +211,10 @@ class SpielLogik private constructor(val spielfeld: Spielfeld) {
         }
 
         return gewinner!!
+    }
+
+    companion object {
+        private const val DELAY_MS_ZWISCHEN_ZUEGEN = 500L
+        private const val DELAY_MS_SPIEL_BEENDET = 1000L
     }
 }

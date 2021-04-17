@@ -44,9 +44,10 @@ class ScoreBoardFragment : Fragment() {
     private val viewModel by viewModels<ScoreBoardViewModel>()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         val binding = FragmentScoreboardBinding.inflate(inflater, container, false)
 

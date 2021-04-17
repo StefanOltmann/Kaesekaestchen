@@ -75,9 +75,10 @@ class SpielFragment : Fragment(), SpielLogikCallback {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentSpielBinding.inflate(inflater, container, false)
 
@@ -113,7 +114,6 @@ class SpielFragment : Fragment(), SpielLogikCallback {
     }
 
     override fun aktualisiereSpielfeldViewAnzeige() {
-
         binding.spielfeldView.aktualisiereAnzeige()
     }
 }

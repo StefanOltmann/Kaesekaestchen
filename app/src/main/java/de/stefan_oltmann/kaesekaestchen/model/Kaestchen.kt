@@ -27,7 +27,7 @@ package de.stefan_oltmann.kaesekaestchen.model
 /**
  * Ein Kästchen auf dem @{link Spielfeld}.
  */
-data class Kaestchen(
+class Kaestchen(
     val rasterX: Int,
     val rasterY: Int
 ) {
@@ -59,4 +59,5 @@ data class Kaestchen(
 
     val isAlleStricheHabenBesitzer: Boolean
         get() = stricheOhneBesitzer.isEmpty()
+
 }

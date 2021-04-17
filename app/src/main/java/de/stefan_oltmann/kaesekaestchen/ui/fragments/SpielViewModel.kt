@@ -33,12 +33,6 @@ import de.stefan_oltmann.kaesekaestchen.model.Spielfeld
 
 class SpielViewModel : ViewModel() {
 
-    companion object {
-
-        private const val AUSGEWAEHLT_ALPHA = 1.0f
-        private const val AUSGEGRAUT_ALPHA = 0.1f
-    }
-
     val spielfeld = MutableLiveData<Spielfeld>()
     val spielLogik = MutableLiveData<SpielLogik>()
 
@@ -59,5 +53,10 @@ class SpielViewModel : ViewModel() {
      */
     override fun onCleared() {
         spielLogik.value?.onCleared()
+    }
+
+    companion object {
+        private const val AUSGEWAEHLT_ALPHA = 1.0f
+        private const val AUSGEGRAUT_ALPHA = 0.1f
     }
 }

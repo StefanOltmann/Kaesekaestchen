@@ -46,22 +46,15 @@ import kotlin.math.roundToInt
  * Diese Klasse zeichnet das Spielfeld und nimmt Interaktionen des Benutzers
  * entgegen.
  */
-class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, attrs),
-    OnTouchListener {
-
-    companion object {
-        const val PADDING_PX = 10f
-        const val SYMBOL_PADDING_PX = 12
-        const val ECKPUNKT_RADIUS_PX = 4f
-        const val STRICH_DICKE_PX = 8f
-    }
+class SpielfeldView(context: Context?, attrs: AttributeSet?) :
+    View(context, attrs), OnTouchListener {
 
     private lateinit var spielLogik: SpielLogik
 
     /*
      * Seitenlaenge eines Kästchens in Pixel
      */
-    private var kaestchenSeitenlaengePixel = 50.0f
+    private var kaestchenSeitenlaengePixel = INITIAL_KAESTCHEN_SEITENLAENGE_PIXEL
 
     /*
      * Ein Offset, um das Spielfeld zentriert zu haben
@@ -186,7 +179,9 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         kaestchen.rasterY * kaestchenSeitenlaengePixel + PADDING_PX + offsetPixelY
 
     private fun calcRectStrichOben(kaestchen: Kaestchen): RectF? =
-        if (kaestchen.strichOben == null) null else RectF(
+        if (kaestchen.strichOben == null)
+            null
+        else RectF(
             calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.25f,
             calcPixelY(kaestchen) - kaestchenSeitenlaengePixel * 0.25f,
             calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.75f,
@@ -194,7 +189,9 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         )
 
     private fun calcRectStrichUnten(kaestchen: Kaestchen): RectF? =
-        if (kaestchen.strichUnten == null) null else RectF(
+        if (kaestchen.strichUnten == null)
+            null
+        else RectF(
             calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.25f,
             calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.75f,
             calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.75f,
@@ -202,7 +199,9 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         )
 
     private fun calcRectStrichLinks(kaestchen: Kaestchen): RectF? =
-        if (kaestchen.strichLinks == null) null else RectF(
+        if (kaestchen.strichLinks == null)
+            null
+        else RectF(
             calcPixelX(kaestchen) - kaestchenSeitenlaengePixel * 0.25f,
             calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.25f,
             calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.25f,
@@ -210,7 +209,9 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
         )
 
     private fun calcRectStrichRechts(kaestchen: Kaestchen): RectF? =
-        if (kaestchen.strichRechts == null) null else RectF(
+        if (kaestchen.strichRechts == null)
+            null
+        else RectF(
             calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.75f,
             calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.25f,
             calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 1.25f,
@@ -265,7 +266,8 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
                     AppCompatResources.getDrawable(context!!, R.drawable.ic_spieler_symbol_maus)!!
 
             symbol.setBounds(
-                0, 0,
+                0,
+                0,
                 kaestchenSeitenlaengePixel.roundToInt() - SYMBOL_PADDING_PX * 2,
                 kaestchenSeitenlaengePixel.roundToInt() - SYMBOL_PADDING_PX * 2
             )
@@ -381,5 +383,13 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) : View(context, att
 
     fun aktualisiereAnzeige() {
         postInvalidate() // View zwingen, neu zu zeichnen
+    }
+
+    companion object {
+        const val INITIAL_KAESTCHEN_SEITENLAENGE_PIXEL = 50f
+        const val PADDING_PX = 10f
+        const val SYMBOL_PADDING_PX = 12
+        const val ECKPUNKT_RADIUS_PX = 4f
+        const val STRICH_DICKE_PX = 8f
     }
 }

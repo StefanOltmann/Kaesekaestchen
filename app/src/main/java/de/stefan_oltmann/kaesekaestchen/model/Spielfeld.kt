@@ -137,8 +137,10 @@ class Spielfeld private constructor() {
     fun getKaestchen(rasterX: Int, rasterY: Int): Kaestchen {
 
         /* Außerhalb des Rasters gibts kein Kästchen. */
-        if (!isImRaster(rasterX, rasterY))
-            throw IllegalArgumentException("Das Kästchen liegt außerhalb des Rasters: $rasterX >= $spielfeldGroesse.groesseX || $rasterY >= $spielfeldGroesse.groesseY")
+        require(isImRaster(rasterX, rasterY)) {
+            "Das Kästchen liegt außerhalb des Rasters: " +
+                "$rasterX >= $spielfeldGroesse.groesseX || $rasterY >= $spielfeldGroesse.groesseY"
+        }
 
         return kaestchenArray[rasterX][rasterY]!!
     }
@@ -218,7 +220,7 @@ class Spielfeld private constructor() {
 
             zufallsStrich = findeZufaelligenStrich()
 
-            if (++loopCounter >= 30)
+            if (++loopCounter >= ANZAHL_KI_VERSUCHE)
                 break
         }
 
@@ -236,8 +238,7 @@ class Spielfeld private constructor() {
 
     private fun findeZufaelligenStrich(): Strich {
 
-        if (!isEsGibtFreieStriche())
-            throw IllegalStateException("Es gibt keine freien Striche mehr.")
+        check(isEsGibtFreieStriche()) { "Es gibt keine freien Striche mehr." }
 
         val stricheOhneBesitzer = stricheOhneBesitzer.toList()
 
@@ -255,5 +256,9 @@ class Spielfeld private constructor() {
                 punkte++
 
         return punkte
+    }
+
+    companion object {
+        private const val ANZAHL_KI_VERSUCHE = 30
     }
 }

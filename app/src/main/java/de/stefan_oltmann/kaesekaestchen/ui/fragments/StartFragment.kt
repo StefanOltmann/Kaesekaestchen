@@ -40,12 +40,6 @@ import de.stefan_oltmann.kaesekaestchen.model.SpielfeldGroesse
 
 class StartFragment : Fragment() {
 
-    companion object {
-
-        private const val GAME_SETTINGS_KEY_SPIEL_MODUS = "spiel_modus"
-        private const val GAME_SETTINGS_KEY_FELD_GROESSE = "feld_groesse"
-    }
-
     private val viewModel by viewModels<StartViewModel>()
 
     /**
@@ -58,8 +52,10 @@ class StartFragment : Fragment() {
     private lateinit var binding: FragmentStartBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         gameSettings = requireContext().getSharedPreferences("game_settings", Context.MODE_PRIVATE)
 
@@ -85,7 +81,8 @@ class StartFragment : Fragment() {
                 override fun onStopTrackingTouch(seekBar: SeekBar) {
                     viewModel.feldGroesse.value = SpielfeldGroesse.values()[seekBar.progress]
                 }
-            })
+            }
+        )
 
         binding.spielenButton.setOnClickListener { navigateToSpielenFragment() }
 
@@ -139,13 +136,20 @@ class StartFragment : Fragment() {
         val gameSettingsEditor = gameSettings.edit()
 
         gameSettingsEditor.putString(
-            GAME_SETTINGS_KEY_SPIEL_MODUS, viewModel.spielModus.value.toString()
+            GAME_SETTINGS_KEY_SPIEL_MODUS,
+            viewModel.spielModus.value.toString()
         )
 
         gameSettingsEditor.putString(
-            GAME_SETTINGS_KEY_FELD_GROESSE, viewModel.feldGroesse.value.toString()
+            GAME_SETTINGS_KEY_FELD_GROESSE,
+            viewModel.feldGroesse.value.toString()
         )
 
         gameSettingsEditor.apply()
+    }
+
+    companion object {
+        private const val GAME_SETTINGS_KEY_SPIEL_MODUS = "spiel_modus"
+        private const val GAME_SETTINGS_KEY_FELD_GROESSE = "feld_groesse"
     }
 }

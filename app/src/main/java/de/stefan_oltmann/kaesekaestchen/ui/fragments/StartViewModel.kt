@@ -30,21 +30,10 @@ import androidx.lifecycle.ViewModel
 import de.stefan_oltmann.kaesekaestchen.model.SpielModus
 import de.stefan_oltmann.kaesekaestchen.model.SpielfeldGroesse
 
-
 class StartViewModel : ViewModel() {
-
-    companion object {
-
-        private const val AUSGEWAEHLT_ALPHA = 1.0f
-        private const val AUSGEGRAUT_ALPHA = 0.1f
-    }
 
     val spielModus = MutableLiveData(SpielModus.EINZELSPIELER)
     val feldGroesse = MutableLiveData(SpielfeldGroesse.KLEIN)
-
-    fun setSpielModus(spielModus: SpielModus) {
-        this.spielModus.value = spielModus
-    }
 
     val einzelspielerImageButtonAlpha = Transformations.map(spielModus) {
         if (it == SpielModus.EINZELSPIELER) AUSGEWAEHLT_ALPHA else AUSGEGRAUT_ALPHA
@@ -56,5 +45,14 @@ class StartViewModel : ViewModel() {
 
     val feldGroesseSeekBarProgress = Transformations.map(feldGroesse) {
         feldGroesse.value!!.ordinal
+    }
+
+    fun setSpielModus(spielModus: SpielModus) {
+        this.spielModus.value = spielModus
+    }
+
+    companion object {
+        private const val AUSGEWAEHLT_ALPHA = 1.0f
+        private const val AUSGEGRAUT_ALPHA = 0.1f
     }
 }
