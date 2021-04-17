@@ -182,40 +182,40 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) :
         if (kaestchen.strichOben == null)
             null
         else RectF(
-            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.25f,
-            calcPixelY(kaestchen) - kaestchenSeitenlaengePixel * 0.25f,
-            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.75f,
-            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.25f
+            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * MULTI_0_25,
+            calcPixelY(kaestchen) - kaestchenSeitenlaengePixel * MULTI_0_25,
+            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * MULTI_0_75,
+            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * MULTI_0_25
         )
 
     private fun calcRectStrichUnten(kaestchen: Kaestchen): RectF? =
         if (kaestchen.strichUnten == null)
             null
         else RectF(
-            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.25f,
-            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.75f,
-            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.75f,
-            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 1.25f
+            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * MULTI_0_25,
+            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * MULTI_0_75,
+            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * MULTI_0_75,
+            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * MULTI_1_25
         )
 
     private fun calcRectStrichLinks(kaestchen: Kaestchen): RectF? =
         if (kaestchen.strichLinks == null)
             null
         else RectF(
-            calcPixelX(kaestchen) - kaestchenSeitenlaengePixel * 0.25f,
-            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.25f,
-            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.25f,
-            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.75f
+            calcPixelX(kaestchen) - kaestchenSeitenlaengePixel * MULTI_0_25,
+            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * MULTI_0_25,
+            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * MULTI_0_25,
+            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * MULTI_0_75
         )
 
     private fun calcRectStrichRechts(kaestchen: Kaestchen): RectF? =
         if (kaestchen.strichRechts == null)
             null
         else RectF(
-            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 0.75f,
-            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.25f,
-            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * 1.25f,
-            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * 0.75f
+            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * MULTI_0_75,
+            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * MULTI_0_25,
+            calcPixelX(kaestchen) + kaestchenSeitenlaengePixel * MULTI_1_25,
+            calcPixelY(kaestchen) + kaestchenSeitenlaengePixel * MULTI_0_75
         )
 
     /**
@@ -386,6 +386,9 @@ class SpielfeldView(context: Context?, attrs: AttributeSet?) :
     }
 
     companion object {
+        const val MULTI_0_25 = 0.25f
+        const val MULTI_0_75 = 0.75f
+        const val MULTI_1_25 = 1.25f
         const val INITIAL_KAESTCHEN_SEITENLAENGE_PIXEL = 50f
         const val PADDING_PX = 10f
         const val SYMBOL_PADDING_PX = 12
