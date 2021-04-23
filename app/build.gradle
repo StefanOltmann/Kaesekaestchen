@@ -1,3 +1,8 @@
+plugins {
+    id "io.gitlab.arturbosch.detekt" version "$detektVersion"
+    id "org.sonarqube" version "$sonarqubeVersion"
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
@@ -44,6 +49,27 @@ android {
         dataBinding true
     }
 }
+
+detekt {
+    allRules = true
+    config = files("$projectDir/../detekt.yml")
+
+    // Don't break the build. Just report.
+    ignoreFailures = true
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "StefanOltmann_Kaesekaestchen"
+        property "sonar.organization", "stefanoltmann"
+        property "sonar.host.url", "https://sonarcloud.io"
+        // Include Detekt issues
+        property "sonar.kotlin.detekt.reportPaths", "build/reports/detekt/detekt.xml"
+    }
+}
+
+// SonarQube should always contain Detekt issues
+tasks.findByPath(':app:sonarqube').dependsOn('detekt')
 
 dependencies {
 
