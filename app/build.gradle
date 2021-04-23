@@ -48,6 +48,10 @@ android {
     buildFeatures {
         dataBinding true
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 detekt {
@@ -65,11 +69,13 @@ sonarqube {
         property "sonar.host.url", "https://sonarcloud.io"
         // Include Detekt issues
         property "sonar.kotlin.detekt.reportPaths", "build/reports/detekt/detekt.xml"
+        // Include Android Lint
+        property "sonar.android.lint.report", "build/reports/lint-results.xml"
     }
 }
 
 // SonarQube should always contain Detekt issues
-tasks.findByPath(':app:sonarqube').dependsOn('detekt')
+tasks.findByPath(':app:sonarqube').dependsOn('detekt', 'lint')
 
 dependencies {
 
