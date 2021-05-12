@@ -27,6 +27,40 @@ buildscript {
     }
 }
 
+plugins {
+    id "io.gitlab.arturbosch.detekt" version "$detektVersion"
+    id "org.sonarqube" version "$sonarqubeVersion"
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "kaesekaestchen"
+        property "sonar.projectName", "Käsekästchen"
+        property "sonar.organization", "stefanoltmann"
+        property "sonar.host.url", "https://sonarcloud.io"
+        // Include Detekt issues
+        property "sonar.kotlin.detekt.reportPaths", "app/build/reports/detekt/detekt.xml"
+        // Include Android Lint
+        property "sonar.android.lint.report", "app/build/reports/lint-results.xml"
+    }
+}
+
+subprojects {
+
+    apply plugin: 'io.gitlab.arturbosch.detekt'
+
+    detekt {
+        allRules = true
+        config = files("$projectDir/../detekt.yml")
+
+        // Don't break the build. Just report.
+        ignoreFailures = true
+    }
+}
+
+// SonarQube should always contain Detekt issues
+tasks.findByPath(':sonarqube').dependsOn(':app:detekt', ':app:lint')
+
 allprojects {
     repositories {
         google()
