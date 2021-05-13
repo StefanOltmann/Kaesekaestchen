@@ -1,6 +1,9 @@
 name: SonarCloud
 
-on: push
+on:
+  push:
+    branches-ignore:
+      - 'dependabot/**'
 
 jobs:
   build:
