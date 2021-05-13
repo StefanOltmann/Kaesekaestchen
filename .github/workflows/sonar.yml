@@ -1,15 +1,13 @@
-name: SonarCloud
+name: SonarQube
 
 on:
   push:
-    branches:
-      - master
-  pull_request:
-    types: [opened, synchronize, reopened]
+    branches-ignore:
+      - 'dependabot/**'
 
 jobs:
   build:
-    name: SonarCloud Analysis
+    name: SonarQube Analysis
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

@@ -1,31 +1,65 @@
 buildscript {
-
     ext {
-
+        // Dependency versions
+        // Must be defined here instead of "gradle.properties" because of
+        // https://github.com/dependabot/dependabot-core/issues/1618
         androidToolsVersion = '4.2.0'
-        kotlinVersion = '1.4.32'
-        coreKtxVersion = '1.3.2'
-        fragmentKtxVersion = '1.3.3'
-
         appCompatVersion = '1.2.0'
+        archLifecycleVersion = '2.2.0'
+        constraintLayoutVersion = '2.0.4'
+        coreKtxVersion = '1.3.2'
+        detektVersion = '1.16.0'
+        fragmentKtxVersion = '1.3.3'
+        kotlinVersion = '1.5.0'
         legacySupportVersion = '1.0.0'
         materialVersion = '1.3.0'
-        constraintLayoutVersion = '2.0.4'
-        archLifecycleVersion = '2.2.0'
         navigationVersion = '2.3.5'
+        sonarqubeVersion = '3.2.0'
     }
-
     repositories {
         google()
         jcenter()
     }
-
     dependencies {
         classpath "com.android.tools.build:gradle:$androidToolsVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
     }
 }
+
+plugins {
+    id "io.gitlab.arturbosch.detekt" version "$detektVersion"
+    id "org.sonarqube" version "$sonarqubeVersion"
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "kaesekaestchen"
+        property "sonar.projectName", "Käsekästchen"
+        property "sonar.organization", "stefanoltmann"
+        property "sonar.host.url", "https://sonarcloud.io"
+        // Include Detekt issues
+        property "sonar.kotlin.detekt.reportPaths", "app/build/reports/detekt/detekt.xml"
+        // Include Android Lint
+        property "sonar.android.lint.report", "app/build/reports/lint-results.xml"
+    }
+}
+
+subprojects {
+
+    apply plugin: 'io.gitlab.arturbosch.detekt'
+
+    detekt {
+        allRules = true
+        config = files("$projectDir/../detekt.yml")
+
+        // Don't break the build. Just report.
+        ignoreFailures = true
+    }
+}
+
+// SonarQube should always contain Detekt issues
+tasks.findByPath(':sonarqube').dependsOn(':app:detekt', ':app:lint')
 
 allprojects {
     repositories {
