@@ -3,7 +3,7 @@ buildscript {
         // Dependency versions
         // Must be defined here instead of "gradle.properties" because of
         // https://github.com/dependabot/dependabot-core/issues/1618
-        androidToolsVersion = '4.2.0'
+        androidToolsVersion = '7.0.0'
         appCompatVersion = '1.2.0'
         archLifecycleVersion = '2.2.0'
         constraintLayoutVersion = '2.0.4'
