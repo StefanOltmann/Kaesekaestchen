@@ -3,4 +3,5 @@
     <dimen name="border_margin">32dp</dimen>
     <dimen name="button_height">64dp</dimen>
     <dimen name="text_size">24sp</dimen>
+    <dimen name="text_fixed_size">24dp</dimen>
 </resources>
