@@ -14,7 +14,7 @@ buildscript {
         legacySupportVersion = '1.0.0'
         materialVersion = '1.3.0'
         navigationVersion = '2.3.5'
-        sonarqubeVersion = '3.2.0'
+        sonarqubeVersion = '3.4.0.2513'
     }
     repositories {
         google()
