@@ -4,7 +4,7 @@ buildscript {
         // Must be defined here instead of "gradle.properties" because of
         // https://github.com/dependabot/dependabot-core/issues/1618
         androidToolsVersion = '4.2.0'
-        appCompatVersion = '1.2.0'
+        appCompatVersion = '1.5.1'
         archLifecycleVersion = '2.2.0'
         constraintLayoutVersion = '2.0.4'
         coreKtxVersion = '1.3.2'
