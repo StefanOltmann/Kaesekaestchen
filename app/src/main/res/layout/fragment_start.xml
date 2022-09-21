@@ -41,7 +41,7 @@
                 android:layout_marginStart="@dimen/border_margin"
                 android:layout_marginLeft="@dimen/border_margin"
                 android:text="@string/feld_groesse"
-                android:textSize="@dimen/text_size"
+                android:textSize="@dimen/text_fixed_size"
                 app:layout_constraintBottom_toTopOf="@+id/spielen_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/einzelspieler_text" />
@@ -58,7 +58,7 @@
                 android:drawableLeft="@drawable/ic_spielen"
                 android:drawablePadding="16dp"
                 android:text="@string/spielen"
-                android:textSize="@dimen/text_size"
+                android:textSize="@dimen/text_fixed_size"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -111,10 +111,12 @@
 
         <TextView
                 android:id="@+id/einzelspieler_text"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/einzelspieler"
-                android:textSize="@dimen/text_size"
+                android:textSize="@dimen/text_fixed_size"
+                app:layout_constraintWidth_percent="0.45"
+                android:autoSizeTextType="uniform"
                 app:layout_constraintEnd_toEndOf="@+id/einzelspieler_image_button"
                 app:layout_constraintStart_toStartOf="@+id/einzelspieler_image_button"
                 app:layout_constraintTop_toBottomOf="@+id/einzelspieler_image_button" />
@@ -124,7 +126,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/mehrspieler"
-                android:textSize="@dimen/text_size"
+                android:textSize="@dimen/text_fixed_size"
                 app:layout_constraintEnd_toEndOf="@+id/mehrspieler_image_button"
                 app:layout_constraintStart_toStartOf="@+id/mehrspieler_image_button"
                 app:layout_constraintTop_toBottomOf="@+id/mehrspieler_image_button" />
