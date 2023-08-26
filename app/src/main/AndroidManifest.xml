@@ -12,6 +12,7 @@
 
         <!-- Der Splash Screen -->
         <activity
+                android:exported="true"
                 android:name=".ui.activities.SplashScreenActivity"
                 android:theme="@style/SplashScreenTheme">
             <intent-filter>
