@@ -1,0 +1,31 @@
+name: Build Web app
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    name: Build Kotlin/Wasm
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout workspace
+        uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '25'
+      - name: Display Java version
+        run: java -version
+      - name: Run Gradle build
+        run: |
+          chmod +x gradlew
+          ./gradlew :app:jvmTest :app:wasmJsBrowserDistribution
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: web
+          path: app/build/dist/wasmJs/productionExecutable/**

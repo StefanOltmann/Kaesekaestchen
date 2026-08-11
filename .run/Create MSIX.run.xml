@@ -1,0 +1,34 @@
+<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="Create MSIX" type="GradleRunConfiguration" factoryName="Gradle">
+        <ExternalSystemSettings>
+            <option name="env">
+                <map>
+                    <entry key="MSIX_SIGN_PFX_BASE64"
+                           value="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"/>
+                    <entry key="MSIX_SIGN_PFX_PASSWORD" value="securePassword"/>
+                </map>
+            </option>
+            <option name="executionName"/>
+            <option name="externalProjectPath" value="$PROJECT_DIR$"/>
+            <option name="externalSystemIdString" value="GRADLE"/>
+            <option name="scriptParameters" value=""/>
+            <option name="taskDescriptions">
+                <list/>
+            </option>
+            <option name="taskNames">
+                <list>
+                    <option value="app:createMsix"/>
+                </list>
+            </option>
+            <option name="vmOptions"/>
+        </ExternalSystemSettings>
+        <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+        <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+        <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
+        <DebugAllEnabled>false</DebugAllEnabled>
+        <RunAsTest>false</RunAsTest>
+        <GradleProfilingDisabled>false</GradleProfilingDisabled>
+        <GradleCoverageDisabled>false</GradleCoverageDisabled>
+        <method v="2"/>
+    </configuration>
+</component>

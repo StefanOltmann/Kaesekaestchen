@@ -1,0 +1,38 @@
+name: Build Desktop app
+
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build Desktop app
+    runs-on: windows-latest
+    steps:
+      - name: Checkout workspace
+        uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'jetbrains'
+          java-version: '25'
+      - name: Display Java version
+        run: java -version
+      - name: List all files
+        run: Get-ChildItem -Force
+      - name: Run Gradle build
+        env:
+          MSIX_SIGN_PFX_BASE64: ${{ secrets.MSIX_SIGN_PFX_BASE64 }}
+          MSIX_SIGN_PFX_PASSWORD: ${{ secrets.MSIX_SIGN_PFX_PASSWORD }}
+        run: .\gradlew.bat :app:jvmTest :app:createMsix
+      - name: List app/build files
+        run: Get-ChildItem -Path app/build -Force -Recurse
+      - name: Create Release and Upload Assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            app/build/Kaesekaestchen.msix

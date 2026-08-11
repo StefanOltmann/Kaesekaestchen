@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Käsekästchen</string>
+    <string name="feld_groesse">Feldgröße:</string>
+    <string name="spielen">Spielen</string>
+    <string name="zurueck_zum_hauptmenue">Hauptmenü</string>
+    <string name="einzelspieler">Einzelspieler</string>
+    <string name="mehrspieler">Mehrspieler</string>
+    <string name="back_to_menu">Zurück zum Menü</string>
+    <string name="current_player">Aktueller Spieler:</string>
+    <string name="board_size_very_small">Sehr klein</string>
+    <string name="board_size_small">Klein</string>
+    <string name="board_size_medium">Mittel</string>
+    <string name="board_size_large">Groß</string>
+</resources>

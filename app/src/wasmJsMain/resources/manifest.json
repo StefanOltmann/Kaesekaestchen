@@ -1,0 +1,16 @@
+{
+  "name": "Käsekästchen",
+  "short_name": "Käsekästchen",
+  "description": "Ein einfaches Kästchenspiel für zwei Spieler, gegen die KI oder am selben Gerät.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FFFFFF",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

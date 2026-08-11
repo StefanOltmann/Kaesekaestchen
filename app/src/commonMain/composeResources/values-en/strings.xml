@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dots'n'Boxes</string>
+    <string name="feld_groesse">Field size:</string>
+    <string name="spielen">Play</string>
+    <string name="zurueck_zum_hauptmenue">main menu</string>
+    <string name="einzelspieler">Single Player</string>
+    <string name="mehrspieler">Multi Player</string>
+    <string name="back_to_menu">Back to menu</string>
+    <string name="current_player">Current player:</string>
+    <string name="board_size_very_small">Very small</string>
+    <string name="board_size_small">Small</string>
+    <string name="board_size_medium">Medium</string>
+    <string name="board_size_large">Large</string>
+</resources>
