@@ -15,6 +15,7 @@ detekt-compose-rules = "0.6.4"
 kover = "0.9.9"
 valkyrie = "0.5.2"
 msix = "0.2.1"
+android-git-version = "0.4.14"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -43,3 +44,4 @@ detekt = { id = "dev.detekt", version.ref = "detekt" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 valkyrie = { id = "io.github.composegears.valkyrie", version.ref = "valkyrie" }
 msix = { id = "de.stefan-oltmann.gradle-msix-plugin", version.ref = "msix" }
+android-git-version = { id = "com.gladed.androidgitversion", version.ref = "android-git-version" }

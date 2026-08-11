@@ -3,9 +3,21 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.android.git.version)
 }
 
-version = "0.7.7"
+/*
+ * The version comes from the newest git tag (v0.7.7 -> 0.7.7), so version
+ * bumps are tag creations and never touch this file.
+ */
+androidGitVersion {
+    format = "%tag%"
+    prefix = "v"
+}
+
+version = androidGitVersion.name()
+
+logger.lifecycle("Android app version $version (Code: ${androidGitVersion.code()})")
 
 android {
 
@@ -19,8 +31,17 @@ android {
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
 
-        versionName = "0.7.7"
-        versionCode = 19
+        if (androidGitVersion.code() == 0) {
+
+            /* Values for the dev version. */
+            versionName = "1.0.0"
+            versionCode = 1
+
+        } else {
+
+            versionName = androidGitVersion.name()
+            versionCode = androidGitVersion.code()
+        }
     }
 
     buildFeatures {

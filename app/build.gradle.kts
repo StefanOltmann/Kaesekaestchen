@@ -12,10 +12,22 @@ plugins {
     alias(libs.plugins.kover)
     alias(libs.plugins.valkyrie)
     alias(libs.plugins.msix)
+    alias(libs.plugins.android.git.version)
+}
+
+/*
+ * The version comes from the newest git tag (v0.7.7 -> 0.7.7), so version
+ * bumps are tag creations and never touch this file.
+ */
+androidGitVersion {
+    format = "%tag%"
+    prefix = "v"
 }
 
 group = "de.stefan_oltmann.kaesekaestchen"
-version = "0.7.7"
+version = androidGitVersion.name()
+
+logger.lifecycle("App version $version (Code: ${androidGitVersion.code()})")
 
 detekt {
     source.setFrom(fileTree("src"), files("build.gradle.kts"))
@@ -111,6 +123,10 @@ kotlin {
 
     sourceSets {
 
+        sourceSets["commonMain"].kotlin.srcDirs(
+            file("build/generated/src/commonMain/kotlin/")
+        )
+
         commonMain.dependencies {
 
             /* Compose UI */
@@ -181,7 +197,16 @@ compose.desktop {
             modules("jdk.accessibility")
 
             packageName = "Kaesekaestchen"
-            packageVersion = "0.7.7"
+
+            if (androidGitVersion.code() == 0) {
+
+                /* Values for the dev version. */
+                packageVersion = "1.0.0"
+
+            } else {
+
+                packageVersion = version.toString()
+            }
 
             macOS {
                 iconFile.set(project.file("../icon/icon.icns"))
@@ -208,9 +233,27 @@ msix {
         identityName.set("StefanOltmann.Kaesekaestchen")
         publisher.set("CN=1A06AF6C-2943-4BE6-BB85-12677BA3F28D")
         publisherDisplayName.set("Stefan Oltmann")
-        version.set("0.7.7.0")
+        version.set(androidGitVersion.name() + ".0")
         processorArchitecture.set("x64")
         appExecutable.set("Kaesekaestchen.exe")
+    }
+}
+// endregion
+
+// region BuildInfo.kt
+project.afterEvaluate {
+
+    logger.lifecycle("Generate BuildInfo.kt")
+
+    val outputDir = layout.buildDirectory.file("generated/src/commonMain/kotlin").get().asFile
+
+    outputDir.mkdirs()
+
+    outputDir.resolve("BuildInfo.kt").printWriter().use { writer ->
+
+        writer.println("const val APP_VERSION: String = \"$version\"")
+
+        writer.flush()
     }
 }
 // endregion
@@ -276,7 +319,9 @@ kover {
                     /* The UI, the generated Valkyrie icons and Compose resources. */
                     "de.stefan_oltmann.kaesekaestchen.ui.*",
                     "de.stefan_oltmann.kaesekaestchen.icons.*",
-                    "de.stefan_oltmann.kaesekaestchen.app.generated.*"
+                    "de.stefan_oltmann.kaesekaestchen.app.generated.*",
+                    /* The generated version constant. */
+                    "BuildInfo*"
                 )
             }
         }
@@ -295,6 +340,59 @@ kover {
                 }
             }
         }
+    }
+}
+// endregion
+
+// region Cleanup stale JARs
+/*
+ * `jvmJar` names its output after the project version (`version =
+ * androidGitVersion.name()` above), so every version bump leaves the
+ * previous jar in `app/build/libs` forever - Gradle never prunes old
+ * outputs. This task deletes every `app-jvm-*` jar that does not belong to
+ * the current version (including old `-sources`/`-javadoc` siblings) and
+ * runs right after `jvmJar`, so the pruning itself never touches
+ * incremental compilation or test outputs: the current version's jar is
+ * kept by prefix match, anything else named `app-jvm-*` is stale by
+ * definition.
+ */
+val pruneStaleBuildLibs = tasks.register("pruneStaleBuildLibs") {
+
+    description = "Deletes versioned jars from app/build/libs that belong to an older build."
+    group = "build"
+
+    val libsDirectory = layout.buildDirectory.dir("libs")
+    val currentJarPrefix = "app-jvm-$version"
+
+    doLast {
+
+        val directory = libsDirectory.get().asFile
+
+        if (!directory.isDirectory)
+            return@doLast
+
+        directory.listFiles { file ->
+            file.isFile &&
+                file.name.startsWith("app-jvm-") &&
+                !file.name.startsWith(currentJarPrefix)
+        }?.forEach { staleJar ->
+
+            if (staleJar.delete())
+                logger.lifecycle("Pruned stale build jar: ${staleJar.name}")
+            else
+                logger.warn("Could not delete stale build jar (file in use?): ${staleJar.name}")
+        }
+    }
+}
+
+gradle.projectsEvaluated {
+    /*
+     * jvmJar is created by the Kotlin plugin during its own configuration, so the finalizedBy
+     * wiring must wait until every plugin has registered its tasks - see pruneStaleBuildLibs'
+     * doc comment above.
+     */
+    tasks.named("jvmJar") {
+        finalizedBy(pruneStaleBuildLibs)
     }
 }
 // endregion

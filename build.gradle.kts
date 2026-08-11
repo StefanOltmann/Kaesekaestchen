@@ -16,4 +16,5 @@ plugins {
     alias(libs.plugins.kover) apply false
     alias(libs.plugins.valkyrie) apply false
     alias(libs.plugins.msix) apply false
+    alias(libs.plugins.android.git.version) apply false
 }
