@@ -15,7 +15,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
+          distribution: 'jetbrains'
           java-version: '25'
       - name: Display Java version
         run: java -version
