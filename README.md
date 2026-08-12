@@ -9,6 +9,12 @@ A classic Dots'n'Boxes ("Käsekästchen") game built with Kotlin Multiplatform a
 to the original Android app: same rules, same handcrafted cheese and mouse artwork, same look and
 feel.
 
+<a href="https://play.google.com/store/apps/details?id=de.stefan_oltmann.kaesekaestchen">
+  <img src="https://play.google.com/intl/en_us/badges/static/images/badges/de_badge_web_generic.png"
+       alt="Jetzt bei Google Play"
+       height="80">
+</a>
+
 ## Features
 
 - Classic Dots'n'Boxes: draw lines, complete boxes, capture the most boxes.
