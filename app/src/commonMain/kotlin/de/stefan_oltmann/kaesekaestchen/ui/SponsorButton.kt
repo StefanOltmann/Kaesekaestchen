@@ -47,8 +47,8 @@ import de.stefan_oltmann.kaesekaestchen.icons.GithubSponsors
  */
 private const val SPONSOR_LABEL = "Sponsor"
 
-/* The background color of the sponsor button. */
-private val sponsorBackgroundColor = Color(0xFF28292A)
+/* The background color of the sponsor button, the dark surface tone. */
+private val sponsorBackgroundColor = Color(0xFF333333)
 
 /* The color of the GitHub Sponsors heart. */
 private val heartColor = Color(0xFFEA4AAA)

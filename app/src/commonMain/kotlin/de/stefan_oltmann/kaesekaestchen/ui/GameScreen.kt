@@ -155,7 +155,7 @@ fun GameScreen(
             Icon(
                 imageVector = AppIcon.ArrowBack,
                 contentDescription = stringResource(Res.string.back_to_menu),
-                tint = colors.onSurface,
+                tint = colors.onBackground,
                 modifier = Modifier
                     .size(AppTheme.backButtonSize)
                     .align(Alignment.CenterStart)

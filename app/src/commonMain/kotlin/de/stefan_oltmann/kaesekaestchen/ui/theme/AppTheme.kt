@@ -33,46 +33,42 @@ import androidx.compose.ui.unit.sp
 /**
  * All colors of the application theme.
  *
- * The palette is small on purpose; every screen and component draws with one
- * of these colors, so the UI stays consistent and readable in both themes.
+ * The palette is deliberately tiny: one background, one text color and one
+ * tone in between for inactive elements. Every screen and component draws
+ * with one of these three colors, so the UI stays consistent and readable
+ * in both themes.
  *
- * @property background The background of the screens.
- * @property surface Elevated areas: the header band, the selected mode chip
- *   and the inactive slider track.
- * @property onSurface Text and icons drawn on the background or the surface.
- * @property primary Action color: buttons, the active slider track and the
- *   slider thumb.
- * @property onPrimary Text and icons drawn on the primary color.
+ * @property background The background of the screens and the button text.
+ * @property onBackground Text and icons, the fill of the primary buttons
+ *   and the board frame.
+ * @property surface The tone between background and text for inactive
+ *   elements: the header band, the selected mode chip, the inactive slider
+ *   track and the unset board lines.
  */
 data class AppColors(
     val background: Color,
-    val surface: Color,
-    val onSurface: Color,
-    val primary: Color,
-    val onPrimary: Color
+    val onBackground: Color,
+    val surface: Color
 )
 
 /** The light colors with gray tones, faithful to the original app. */
 val LightAppColors = AppColors(
     background = Color.White,
-    surface = Color(0xFFE9E9E9),
-    onSurface = Color.Black,
-    primary = Color(0xFF333333),
-    onPrimary = Color.White
+    onBackground = Color.Black,
+    surface = Color(0xFFE9E9E9)
 )
 
 /**
  * The dark colors.
  *
  * The background is pitch black, matching the black border strokes of the
- * handcrafted icons from the original app.
+ * handcrafted icons from the original app. Text and lines are white, so
+ * they contrast strongly with the background.
  */
 val DarkAppColors = AppColors(
     background = Color.Black,
-    surface = Color(0xFF2E2E2E),
-    onSurface = Color(0xFFF0F0F0),
-    primary = Color(0xFFD6D6D6),
-    onPrimary = Color(0xFF1A1A1A)
+    onBackground = Color.White,
+    surface = Color(0xFF333333)
 )
 
 /** The colors of the current composition, provided by the theme. */
@@ -99,25 +95,19 @@ fun KaesekaestchenTheme(
 
     CompositionLocalProvider(
         LocalAppColors provides colors,
-        LocalContentColor provides colors.onSurface,
+        LocalContentColor provides colors.onBackground,
         content = content
     )
 }
 
 /**
- * The board drawing colors and all UI sizes of the app.
+ * All UI sizes of the app and the single accent color.
  *
  * Every size in the UI is defined here so that no dimension is scattered
- * over the screens. The board colors stay the same in both themes, faithful
- * to the original Android app.
+ * over the screens. The board draws its neutral lines with the theme
+ * colors; only the accent stays here, faithful to the original app.
  */
 object AppTheme {
-
-    /** The color of the frame and of lines with an owner. */
-    val frame = Color(0xFF333333)
-
-    /** The color of lines without an owner. */
-    val lineWithoutOwner = Color(0xFFF8F8F8)
 
     /** The color of the most recently set line. */
     val lastSetLine = Color(0xFFCC0000)
@@ -174,5 +164,5 @@ object AppTheme {
     const val selectedAlpha = 1.0f
 
     /** The alpha of a not selected game mode symbol. */
-    const val dimmedAlpha = 0.1f
+    const val dimmedAlpha = 0.3f
 }

@@ -52,13 +52,17 @@ import de.stefan_oltmann.kaesekaestchen.model.Box
 import de.stefan_oltmann.kaesekaestchen.model.Line
 import de.stefan_oltmann.kaesekaestchen.model.Player
 import de.stefan_oltmann.kaesekaestchen.ui.theme.AppTheme
+import de.stefan_oltmann.kaesekaestchen.ui.theme.AppColors
+import de.stefan_oltmann.kaesekaestchen.ui.theme.LocalAppColors
 
 /**
  * Renders the board and forwards taps on free lines.
  *
  * The drawing faithfully ports the original board view from the
  * Android app: shared lines are drawn once, border lines in the frame
- * color, the last drawn line in red, and corner dots as squares.
+ * color, the last drawn line in red, and corner dots as squares. The
+ * neutral line colors follow the theme, so the frame stays visible in
+ * both themes.
  *
  * @param board The board to render.
  * @param boardVersion Incremented on every change to force a redraw.
@@ -72,6 +76,8 @@ fun BoardView(
     modifier: Modifier = Modifier,
     onLineSelect: (Line) -> Unit = {}
 ) {
+
+    val colors = LocalAppColors.current
 
     val currentOnLineSelected by rememberUpdatedState(onLineSelect)
 
@@ -117,7 +123,8 @@ fun BoardView(
                     pixelY = box.gridY * geometry.sideLength + paddingPx + geometry.offsetY,
                     geometry = geometry,
                     lineThicknessPx = lineThicknessPx,
-                    cornerDotSizePx = cornerDotSizePx
+                    cornerDotSizePx = cornerDotSizePx,
+                    colors = colors
                 )
         }
 
@@ -207,7 +214,8 @@ private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawBox(
     pixelY: Float,
     geometry: BoardGeometry,
     lineThicknessPx: Float,
-    cornerDotSizePx: Float
+    cornerDotSizePx: Float,
+    colors: AppColors
 ) {
 
     val sideLength = geometry.sideLength
@@ -215,7 +223,7 @@ private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawBox(
     if (box.topLine == null) {
 
         drawLine(
-            color = AppTheme.frame,
+            color = colors.onBackground,
             start = Offset(pixelX, pixelY),
             end = Offset(pixelX + sideLength, pixelY),
             strokeWidth = lineThicknessPx,
@@ -224,7 +232,7 @@ private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawBox(
     }
 
     drawLine(
-        color = lineColor(box.bottomLine, board),
+        color = lineColor(box.bottomLine, board, colors),
         start = Offset(pixelX, pixelY + sideLength),
         end = Offset(pixelX + sideLength, pixelY + sideLength),
         strokeWidth = lineThicknessPx,
@@ -234,7 +242,7 @@ private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawBox(
     if (box.leftLine == null) {
 
         drawLine(
-            color = AppTheme.frame,
+            color = colors.onBackground,
             start = Offset(pixelX, pixelY),
             end = Offset(pixelX, pixelY + sideLength),
             strokeWidth = lineThicknessPx,
@@ -243,7 +251,7 @@ private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawBox(
     }
 
     drawLine(
-        color = lineColor(box.rightLine, board),
+        color = lineColor(box.rightLine, board, colors),
         start = Offset(pixelX + sideLength, pixelY),
         end = Offset(pixelX + sideLength, pixelY + sideLength),
         strokeWidth = lineThicknessPx,
@@ -257,13 +265,13 @@ private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawBox(
      */
 
     drawRect(
-        color = AppTheme.frame,
+        color = colors.onBackground,
         topLeft = Offset(pixelX - cornerDotSizePx / 2, pixelY - cornerDotSizePx / 2),
         size = Size(cornerDotSizePx, cornerDotSizePx)
     )
 
     drawRect(
-        color = AppTheme.frame,
+        color = colors.onBackground,
         topLeft = Offset(
             pixelX + sideLength - cornerDotSizePx / 2,
             pixelY - cornerDotSizePx / 2
@@ -272,7 +280,7 @@ private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawBox(
     )
 
     drawRect(
-        color = AppTheme.frame,
+        color = colors.onBackground,
         topLeft = Offset(
             pixelX - cornerDotSizePx / 2,
             pixelY + sideLength - cornerDotSizePx / 2
@@ -281,7 +289,7 @@ private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawBox(
     )
 
     drawRect(
-        color = AppTheme.frame,
+        color = colors.onBackground,
         topLeft = Offset(
             pixelX + sideLength - cornerDotSizePx / 2,
             pixelY + sideLength - cornerDotSizePx / 2
@@ -292,15 +300,16 @@ private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawBox(
 
 private fun lineColor(
     line: Line?,
-    board: Board
+    board: Board,
+    colors: AppColors
 ): Color {
 
     return if (line != null && line == board.lastSetLine)
         AppTheme.lastSetLine
     else if (line?.owner != null)
-        AppTheme.frame
+        colors.onBackground
     else if (line != null)
-        AppTheme.lineWithoutOwner
+        colors.surface
     else
-        AppTheme.frame
+        colors.onBackground
 }

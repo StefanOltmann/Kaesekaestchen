@@ -241,7 +241,7 @@ private fun GameModeButton(
         Icon(
             imageVector = symbol,
             contentDescription = null,
-            tint = colors.onSurface,
+            tint = colors.onBackground,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(AppTheme.chipIconPadding)

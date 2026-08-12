@@ -22,7 +22,6 @@
 package de.stefan_oltmann.kaesekaestchen.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -56,7 +55,7 @@ private const val MADE_BY_TEXT = "Made by Stefan Oltmann"
 private val FOOTER_HEIGHT = 32.dp
 
 /* The horizontal padding of the footer bar. */
-private val FOOTER_HORIZONTAL_PADDING = 2.dp
+private val FOOTER_HORIZONTAL_PADDING = 4.dp
 
 /* The gap left of the credit text. */
 private val FOOTER_LEFT_GAP = 8.dp
@@ -90,7 +89,7 @@ fun AppFooter(
             .background(Color.Black)
             .fillMaxWidth()
             .padding(horizontal = FOOTER_HORIZONTAL_PADDING)
-            .clickable {
+            .noRippleClickable {
                 uriHandler.openUri(AUTHOR_WEBSITE_URL)
             }
     ) {

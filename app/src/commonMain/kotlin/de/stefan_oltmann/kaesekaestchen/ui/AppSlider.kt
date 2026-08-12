@@ -136,7 +136,7 @@ fun AppSlider(
             )
 
             drawLine(
-                color = colors.primary,
+                color = colors.onBackground,
                 start = Offset(startX, trackY),
                 end = Offset(thumbX, trackY),
                 strokeWidth = trackThicknessPx
@@ -147,20 +147,20 @@ fun AppSlider(
                 val stepX = startX + step.toFloat() / max(1, maximum) * trackWidth
 
                 drawRect(
-                    color = colors.onSurface.copy(alpha = STEP_DOT_ALPHA),
+                    color = colors.onBackground.copy(alpha = STEP_DOT_ALPHA),
                     topLeft = Offset(stepX - stepDotSizePx / 2, trackY - stepDotSizePx / 2),
                     size = Size(stepDotSizePx, stepDotSizePx)
                 )
             }
 
             drawCircle(
-                color = colors.primary,
+                color = colors.onBackground,
                 radius = thumbRadiusPx,
                 center = Offset(thumbX, trackY)
             )
 
             drawCircle(
-                color = colors.onSurface,
+                color = colors.background,
                 radius = thumbRadiusPx - thumbRingThicknessPx / 2,
                 center = Offset(thumbX, trackY),
                 style = Stroke(width = thumbRingThicknessPx)

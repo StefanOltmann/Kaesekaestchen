@@ -42,8 +42,8 @@ private val BUTTON_HORIZONTAL_PADDING = 16.dp
 /**
  * The primary action button of the app.
  *
- * It fills with the primary color and centers its content, which is drawn in
- * the on-primary color.
+ * It fills with the text color and centers its content, which is drawn in
+ * the background color.
  *
  * @param onClick Invoked when the button is pressed.
  * @param modifier The modifier applied to the button.
@@ -61,12 +61,12 @@ fun AppButton(
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(percent = 50))
-            .background(colors.primary)
+            .background(colors.onBackground)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
 
-        CompositionLocalProvider(LocalContentColor provides colors.onPrimary) {
+        CompositionLocalProvider(LocalContentColor provides colors.background) {
 
             Row(
                 modifier = Modifier.padding(horizontal = BUTTON_HORIZONTAL_PADDING),
