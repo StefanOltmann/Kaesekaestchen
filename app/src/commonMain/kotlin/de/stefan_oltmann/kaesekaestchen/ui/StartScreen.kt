@@ -23,8 +23,6 @@ package de.stefan_oltmann.kaesekaestchen.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -33,25 +31,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.russhwolf.settings.Settings
 import de.stefan_oltmann.kaesekaestchen.app.generated.resources.Res
-import de.stefan_oltmann.kaesekaestchen.app.generated.resources.board_size_large
-import de.stefan_oltmann.kaesekaestchen.app.generated.resources.board_size_medium
-import de.stefan_oltmann.kaesekaestchen.app.generated.resources.board_size_small
-import de.stefan_oltmann.kaesekaestchen.app.generated.resources.board_size_very_small
 import de.stefan_oltmann.kaesekaestchen.app.generated.resources.einzelspieler
 import de.stefan_oltmann.kaesekaestchen.app.generated.resources.feld_groesse
 import de.stefan_oltmann.kaesekaestchen.app.generated.resources.mehrspieler
@@ -181,84 +170,3 @@ fun StartScreen(
     }
 }
 
-/*
- * One game mode option: the selectable symbol with its label below.
- *
- * The label font is small enough that the label never wraps to a
- * second line.
- */
-@Composable
-private fun ModeOption(
-    symbol: ImageVector,
-    label: String,
-    selected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        GameModeButton(
-            symbol = symbol,
-            selected = selected,
-            onClick = onClick
-        )
-
-        Spacer(Modifier.height(8.dp))
-
-        Text(
-            text = label,
-            fontSize = AppTheme.modeLabelTextSize,
-            textAlign = TextAlign.Center
-        )
-    }
-}
-
-/*
- * A selectable mode symbol that is greyed out when not selected, with a
- * highlighted chip around the selected one.
- */
-@Composable
-private fun GameModeButton(
-    symbol: ImageVector,
-    selected: Boolean,
-    onClick: () -> Unit
-) {
-
-    val colors = LocalAppColors.current
-
-    Box(
-        modifier = Modifier
-            .size(AppTheme.modeButtonSize)
-            .clip(RoundedCornerShape(AppTheme.chipCornerRadius))
-            .background(if (selected) colors.surface else Color.Transparent)
-            .clickable(onClick = onClick)
-    ) {
-
-        Icon(
-            imageVector = symbol,
-            contentDescription = null,
-            tint = colors.onBackground,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(AppTheme.chipIconPadding)
-                .alpha(if (selected) AppTheme.selectedAlpha else AppTheme.dimmedAlpha)
-        )
-    }
-}
-
-/*
- * The localized name of the given board size.
- */
-@Composable
-private fun boardSizeLabel(boardSize: BoardSize): String =
-    when (boardSize) {
-
-        BoardSize.VERY_SMALL -> stringResource(Res.string.board_size_very_small)
-        BoardSize.SMALL -> stringResource(Res.string.board_size_small)
-        BoardSize.MEDIUM -> stringResource(Res.string.board_size_medium)
-        BoardSize.LARGE -> stringResource(Res.string.board_size_large)
-    }

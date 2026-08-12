@@ -26,11 +26,6 @@ import de.stefan_oltmann.kaesekaestchen.model.BoardSize
 import de.stefan_oltmann.kaesekaestchen.model.GameMode
 import de.stefan_oltmann.kaesekaestchen.model.Line
 import de.stefan_oltmann.kaesekaestchen.model.Player
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.advanceTimeBy
-import kotlinx.coroutines.test.runCurrent
-import kotlinx.coroutines.test.runTest
 import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -38,6 +33,11 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.advanceTimeBy
+import kotlinx.coroutines.test.runCurrent
+import kotlinx.coroutines.test.runTest
 
 /**
  * Tests for the [GameLogic] game flow with virtual time.

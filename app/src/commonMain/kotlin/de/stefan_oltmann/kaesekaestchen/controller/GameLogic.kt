@@ -25,10 +25,10 @@ import de.stefan_oltmann.kaesekaestchen.model.Board
 import de.stefan_oltmann.kaesekaestchen.model.GameMode
 import de.stefan_oltmann.kaesekaestchen.model.Line
 import de.stefan_oltmann.kaesekaestchen.model.Player
+import kotlin.random.Random
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.random.Random
 
 /**
  * This class is responsible for handling the game flow.

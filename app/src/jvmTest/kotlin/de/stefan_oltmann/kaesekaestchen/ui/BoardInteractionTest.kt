@@ -37,10 +37,10 @@ import androidx.compose.ui.unit.dp
 import de.stefan_oltmann.kaesekaestchen.model.Board
 import de.stefan_oltmann.kaesekaestchen.model.BoardSize
 import de.stefan_oltmann.kaesekaestchen.model.Player
-import org.junit.Rule
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+import org.junit.Rule
 
 private const val BOARD_TAG = "board"
 

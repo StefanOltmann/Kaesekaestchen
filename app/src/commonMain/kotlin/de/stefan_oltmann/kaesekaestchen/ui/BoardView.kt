@@ -22,12 +22,9 @@
 package de.stefan_oltmann.kaesekaestchen.ui
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -44,15 +41,11 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntSize
-import de.stefan_oltmann.kaesekaestchen.icons.AppIcon
-import de.stefan_oltmann.kaesekaestchen.icons.CheeseSymbol
-import de.stefan_oltmann.kaesekaestchen.icons.MouseSymbol
 import de.stefan_oltmann.kaesekaestchen.model.Board
 import de.stefan_oltmann.kaesekaestchen.model.Box
 import de.stefan_oltmann.kaesekaestchen.model.Line
-import de.stefan_oltmann.kaesekaestchen.model.Player
-import de.stefan_oltmann.kaesekaestchen.ui.theme.AppTheme
 import de.stefan_oltmann.kaesekaestchen.ui.theme.AppColors
+import de.stefan_oltmann.kaesekaestchen.ui.theme.AppTheme
 import de.stefan_oltmann.kaesekaestchen.ui.theme.LocalAppColors
 
 /**
@@ -150,58 +143,6 @@ fun BoardView(
             }
         }
     }
-}
-
-/*
- * The owner symbols, placed inside their boxes.
- */
-@Composable
-private fun OwnerSymbols(
-    board: Board,
-    geometry: BoardGeometry,
-    symbolPaddingPx: Float
-) {
-
-    for (box in board.boxes)
-        OwnerSymbol(
-            box = box,
-            geometry = geometry,
-            symbolPaddingPx = symbolPaddingPx
-        )
-}
-
-/*
- * The owner symbol of one box, or nothing when the box has no owner yet.
- */
-@Composable
-private fun OwnerSymbol(
-    box: Box,
-    geometry: BoardGeometry,
-    symbolPaddingPx: Float
-) {
-
-    val owner = box.owner ?: return
-
-    val density = LocalDensity.current
-
-    val symbolSize = with(density) { (geometry.sideLength - symbolPaddingPx * 2).toDp() }
-
-    Image(
-        imageVector = if (owner == Player.CHEESE) AppIcon.CheeseSymbol else AppIcon.MouseSymbol,
-        contentDescription = null,
-        modifier = Modifier
-            .offset(
-                x = with(density) {
-                    (box.gridX * geometry.sideLength +
-                        geometry.paddingPx + geometry.offsetX + symbolPaddingPx).toDp()
-                },
-                y = with(density) {
-                    (box.gridY * geometry.sideLength +
-                        geometry.paddingPx + geometry.offsetY + symbolPaddingPx).toDp()
-                }
-            )
-            .size(symbolSize)
-    )
 }
 
 /*

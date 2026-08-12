@@ -23,12 +23,12 @@ package de.stefan_oltmann.kaesekaestchen.ui
 
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import com.russhwolf.settings.MapSettings
+import java.util.Locale
+import kotlin.test.Test
 import org.junit.Rule
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
-import java.util.Locale
-import kotlin.test.Test
 
 /**
  * Golden screenshots of the start screen, in both locales and themes.

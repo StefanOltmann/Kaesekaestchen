@@ -21,10 +21,10 @@
  */
 package de.stefan_oltmann.kaesekaestchen.ui
 
+import java.util.Locale
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
-import java.util.Locale
 
 /**
  * Pins the JVM default locale for the duration of a test.
