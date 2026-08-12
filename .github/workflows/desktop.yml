@@ -28,7 +28,7 @@ jobs:
         env:
           MSIX_SIGN_PFX_BASE64: ${{ secrets.MSIX_SIGN_PFX_BASE64 }}
           MSIX_SIGN_PFX_PASSWORD: ${{ secrets.MSIX_SIGN_PFX_PASSWORD }}
-        run: .\gradlew.bat :app:jvmTest :app:createMsix
+        run: .\gradlew.bat :app:jvmTest :app:koverVerify :app:createMsix
       - name: List app/build files
         run: Get-ChildItem -Path app/build -Force -Recurse
       - name: Create Release and Upload Assets
